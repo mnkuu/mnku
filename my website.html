@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Ryan Minkyu Chung - mechanical engineering portfolio</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+body {
+  background: linear-gradient(45deg, #7dc2c7, rgb(180, 182, 161));
+  background-size: 200% 200%;
+  animation: gradientAnimation 10s ease infinite;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+[data-bs-theme="dark"] body {
+  background: linear-gradient(45deg, #000000, #4d215a);
+  background-size: 200% 200%;
+  animation: gradientAnimation 10s ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.blur-on-hover {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.blur-on-hover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.3s ease;
+}
+
+.blur-on-hover .overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black;
+  font-size: 24px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.blur-on-hover:hover img {
+  filter: blur(6px);
+}
+
+.blur-on-hover:hover .overlay-text {
+  opacity: 1;
+}
+
+.tooltip-custom {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 1000;
+}
+
+.dark-theme {
+  color: #aa8a4a;
+  transition: color 0.5s ease;
+}
+
+.dark-theme .footer-icon {
+  color: #aa8a4a;
+  transition: color 0.5s ease;
+}
+
+.dark-theme h6 {
+  color: #aa8a4a;
+  transition: color 0.5s ease;
+}
+
+.dark-theme .btn-outline-dark {
+  background-color: #3b3b3b;
+  color: #aa8a4a;
+  border-color: #aa8a4a;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.dark-theme .btn-outline-dark:hover {
+  background-color: #18153b;
+  color: #aa8a4a;
+  border-color: #aa8a4a;
+}
+
+.dark-theme .overlay-text {
+  color: #aa8a4a;
+  transition: color 0.5s ease;
+}
+
+.dark-theme .tooltip-custom {
+  color: #aa8a4a;
+  transition: color 0.5s ease;
+}
+
+  .circle-container {
+    position: relative;
+    width: 450px;
+    height: 450px;
+  }
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-origin: 50% 50%; /* Add transform-origin value */
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  text {
+    animation: rotate 20s linear infinite;
+    transform-origin: 50% 50%;
+    fill: rgb(83, 146, 89);
+  }
+
+  .image-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #3498db;
+  }
+
+  .image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .about-me-content {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .about-me-text {
+        flex: 1;
+        font-family: 'Outfit', sans-serif;
+        font-size: 20px;
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- title section -->
+     
+    <div class="container text-center">
+      <div class="col text-start"></div>
+        <h1 class="display-1" style="font-family:'Outfit', sans-serif;">Ryan Minkyu Chung</h1>
+        <h1 class="display-6" style="font-family:'Outfit', sans-serif;">studying Mechanical Engineering @ Korea University</h1>
+      </div>
+      </div>
+    </div>
+    <!-- Dark mode button -->
+    <div class="d-flex justify-content-end m-4">
+      <button class="btn btn-outline-dark" id="btnSwitch">Dark Theme</button>
+    </div>
+
+    <hr class="title-spacer">
+    <br>
+    <!-- about me modal -->
+    <div class="text-center">
+      <button type="button" class="btn btnSwitch" data-bs-toggle="modal" data-bs-target="#aboutMeModal">
+        <div class="circle-container">
+          <svg viewBox="0 0 100 100">
+            <defs>
+              <path id="circle" d="
+                M 50, 50
+                m -37, 0
+                a 37,37 0 1,1 74,0
+                a 37,37 0 1,1 -74,0"/>
+            </defs>
+            <text font-size="10.2">
+              <textPath xlink:href="#circle" textLength="232" lengthAdjust="spacingAndGlyphs">
+                | Ryan Minkyu Chung | Click me! 
+              </textPath>
+            </text>
+          </svg>
+          <div class="image-container">
+            <img src="C:\Users\minky\Desktop\website photos\about me rotation photo.jpg" alt="Center Image">
+          </div>
+        </div>
+      </button>
+      <div class="modal fade" id="aboutMeModal" tabindex="-1" aria-labelledby="aboutMeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <div class="modal-title fs-3 w-100 text-center" id="aboutMeModalLabel">about me</div>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body about-me-content">
+              <div class="circle-container">
+                <svg viewBox="0 0 100 100">
+                  <defs>
+                    <path id="circle" d="
+                      M 50, 50
+                      m -37, 0
+                      a 37,37 0 1,1 74,0
+                      a 37,37 0 1,1 -74,0"/>
+                  </defs>
+                  <text font-size="10.2">
+                    <textPath xlink:href="#circle" textLength="232" lengthAdjust="spacingAndGlyphs">
+                      Ryan Minkyu Chung | Mechanical Engineer | Traveler | 
+                    </textPath>
+                  </text>
+                </svg>
+                <div class="image-container">
+                  <img src="C:\Users\minky\Desktop\website photos\about me rotation photo.jpg" alt="Center Image">
+                </div>
+              </div>
+              <div class="about-me-text">
+                I was born in Washington, D.C. in 2003, where I spent my childhood surrounded by Smithsonian Museums. My father would take me to explore museums on the weekends, and it was during these visits that I developed a deep passion for science and technology. The National Air and Space Museum, in particular, sparked my interest in robotics, aviation, basically all things that autonomously move.
+                <br><br>In 2014, my family moved to South Korea, where I faced the challenge of adapting to a new culture and education system. However, I quickly found my footing, making friends with like-minded peers who shared my interests. Throughout my middle and high school years, I remained committed to nurturing my passion for technology.
+                <br><br>This drive and determination led me to pursue a degree in Mechanical Engineering at Korea University, where I continue to expand my knowledge and skills in the field. My journey so far has been shaped by a curiosity for innovation and a desire to create technologies that make a meaningful impact on society.
+                <br><br>My hobbies are watching Formula 1(a ferrari enthusiast), jogging(even though i'm not that good at it), and reading books regardless of genre. I also love traveling to new places and taking pictures with my Sony Camera.
+                <br><br>This website is the amalgamation of all my projects and experiences after university. I hope you enjoy reading.
+              </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br> <br>
+
+    <!-- my projects -->
+    <div class="text-center">
+      <p class="display-6"> my projects </p>
+    </div> 
+    <br>
+
+    <!-- Row 1 -->
+    <div class="container">
+      <div class="row">
+      <div class="col-md-6 col-12 mb-4">
+        <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modalHearo" data-tooltip-text="@Korea Economic Daily Building, 2024.03 - 2024.07" style="width: 100%; height: 300px;">
+          <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"></div>
+        <img src="C:\Users\minky\Desktop\website photos\hearo\IMG_1492.JPEG" class="rounded" alt="Hearo">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">ROKAF National Start-up Competition</div>
+        </div>
+      </div>
+      <div class="col-md-6 col-12 mb-4">
+        <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modalMLO" data-tooltip-text="@Incheon International Airport, 2024.01 - 2025.10" style="width: 100%; height: 300px;">
+        <img src="C:\Users\minky\Desktop\website photos\military liaison\IMG_2221.JPEG" class="rounded" alt="MLO">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;">Military Liaison Office</div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <!-- Modals for Row 1 -->
+    <div class="modal fade" id="modalHearo" tabindex="-1" aria-labelledby="modalHearoLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalHearoLabel">Hearo</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" style="font-family: 'Outfit', sans-serif; font-size: 20px; margin-bottom: 20px;">
+            Hearo was a conceptual wearable device, a bracelet designed to aid the deaf and hard of hearing, developed for the Republic of Korea Air Force (ROKAF) National Start-up Contest (공군창업경진대회). Unlike typical projects focused on physical prototypes, Hearo emphasized a robust manufacturing plan and profit model due to resource limitations faced by our team of active-duty airmen. Utilizing an Arduino Nano BLE Sense with an integrated microphone, we implemented a custom sound recognition AI to identify specific sounds, like the wearer's name. Upon recognition, Hearo vibrates and indicates the direction of the sound source, addressing our personal need for clear communication during noisy activities like shooting practice. We explored various government policies and subsidies to support future development. <br><br>
+            Despite limited access to the internet and materials, and working only during our evening free time, we focused on the core aspects of product development: AI implementation, manufacturing planning, and business strategy. This project provided invaluable entrepreneurial experience, highlighting the importance of conceptual design and sustainable business models. By focusing on the potential of Hearo and the practicalities of its production, we demonstrated the ability to innovate and address real-world challenges, even within the constraints of military service. <br>
+            <div class="text-center" style="margin-top: 10px;">
+              <img src="C:\Users\minky\Desktop\website photos\hearo\Screenshot 2025-03-09 224029.png" class="img-fluid rounded" alt="Hearo prototype" style="width: 500px; height: 350px;"> <br>
+              <i style="font-size: 12pt;">a CAD model of the bracelet model made in limited conditions</i></div>
+            We wrote a business plan and presented our project to a panel of judges, receiving positive feedback on our innovative approach and potential for future development. We were placed in the top 20 teams and were invited to the award ceremony at The Korea Economic Daily(한국경제신문사) Building, the experience was invaluable, providing a unique opportunity to develop our entrepreneurial skills and apply our engineering knowledge to real-world challenges. <br><br>
+            <div class="text-center" style="margin-top: 10px;">
+              <img src="C:\Users\minky\Desktop\website photos\hearo\IMG_1479.JPEG" class="img-fluid rounded" alt="award ceremony" style="width: 400px; height: 500px;"> <br>
+              <i style="font-size: 12pt;">We placed in 17th and were awarded 대전창업진흥원장상</i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalMLO" tabindex="-1" aria-labelledby="modalMLOLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalMLOLabel">Military Liaison Office</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+            <div class="modal-body" style="font-family: 'Outfit', sans-serif; font-size: 20px; margin-bottom: 20px;">
+            <p>
+              For my mandatory military service, I decided to put my English skills to good use as well as replenish my rusty speaking. I applied for the Korean-English military interpreter(영어 어학병) program for the Republic of Korea Air Force.
+              <br> After a translating and interpreting test and series of interviews I was officially recruited as an airman. I was stationed at one of the biggest international airports on the globe, Incheon International Airport(ICN).
+              <br><br> My role is to assist the Chief of Military Protocol when international guests require English translation aid. I also assist Korean military generals on their way to their business trips. Spending my time here I experienced international diplomacy firsthand.
+            </p>
+            <div class="text-center" style="margin-top: 10px;">
+              <img src="C:\Users\minky\Desktop\website photos\military liaison\mlo modal photo.jpg" class="img-fluid rounded" alt="Military Liaison Office" style="width: 500px; height: 350px;"> <br>
+              <i style="font-size: 12pt;">the beautiful sunset of ICN (only employees get to see this type of view)</i></div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-12 mb-4">
+          <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modalJGS" data-tooltip-text="@Korea University, 2023.07 - 2023.12" style="width: 100%; height: 300px;">
+            <img src="C:\Users\minky\Desktop\website photos\brachiation\BR cover.png" class="rounded" alt="JGS">
+            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 50px;">Two-handed Brachiating Robot</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-12 mb-4">
+          <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modal23EoulPCB" data-tooltip-text="@Korea University, 2022.12 - 2023.09" style="width: 100%; height: 300px;">
+            <img src="C:\Users\minky\Desktop\website photos\eoul23 pcb\cover.png" class="rounded" alt="23EoulPCB">
+            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;">2023 Eoulsure PCB</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modals for Row 2 -->
+    <div class="modal fade" id="modalJGS" tabindex="-1" aria-labelledby="modalJGSLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalJGSLabel">Brachiating Robot</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" style="font-family: 'Outfit', sans-serif; font-size: 20px;">
+            For my MECH300 class my team and I were assigned to design and build a robot that could cross a jungle gym with sporadically missing bars. It was my first time building a machine from scratch so I immediately knew it was going to be a challenging task. <br><br>
+            Brachiation is a form of transportation for apes, think of when tarzan swings from branch to branch. One arm goes after the other. Thinking that this is the most efficient way of traversing a jungle gym I came up with a moving mechanism and persuaded my fellow teammates.<br><br>
+            My team and I decided to make the body and grippers out of lightweight acrylic and Arduino with servo motors for the powertrain mechanism. I designed the powertrain and gearbox so that a minimum amount of motors and gears were used to reduce weight and prevent gear slip. Using Excel I made a simple program that visualized each motor's angular displacement and grip strength.
+            <div class="text-center" style="margin-top: 10px;">
+              <img src="C:\Users\minky\Desktop\website photos\brachiation\excel.png" class="img-fluid rounded" alt="powertrain" style="width: 800px; height: 400px;"> <br>
+              <i style="font-size: 12pt;"></i></div>
+            With my knowledge of C++ and Arduino, I used a motor controller to control each motor movement for each phase of brachiation.
+            <div class="text-center" style="margin-top: 10px;">
+               <img src="C:\Users\minky\Desktop\website photos\brachiation\code.png" class="img-fluid rounded" alt="cplusplus code" style="width: 400px; height: 550px;"> <br>
+               <i style="font-size: 12pt;">Servo motor C++ code</i></div>
+
+            After three months of brainstorming and building, our team was able to get the shortest crossing time out of all of the competing teams.<br>
+            <div class="container">
+              <div class="row">
+              <div class="col-md-6 text-start" style="margin-top: 10px;">
+                <img src="C:\Users\minky\Desktop\website photos\brachiation\_talkv_wuyx7TlU46_dOFct2HDlTeuKDs4gdKAQk_talkv_high.gif" class="img-fluid rounded" alt="moving mechanism" style="width: 100%; height: 600px;"> <br>
+                <i style="font-size: 12pt;">Brachiation test drive.</i></div>
+              
+              <div class="col-md-6 text-end" style="margin-top: 10px;">
+                <img src="C:\Users\minky\Desktop\website photos\brachiation\IMG_8286.JPEG" class="img-fluid rounded" alt="award" style="width: 100%; height: 600px;"> <br>
+                <i style="font-size: 12pt;">Final product and award(최우수, 1st place)</i></div>
+              </div>
+              </div>
+              </div>
+            </div>
+
+            
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal23EoulPCB" tabindex="-1" aria-labelledby="modal23EoulPCBLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modal23EoulPCBLabel">2023 Eoulsure PCB</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" style="font-family: 'Outfit', sans-serif; font-size: 20px;">
+            For the electrical safety examination, my teammate(YDS) and I designed and fabricated custom PCB panels, most notably the RTDS (Ready to Drive Sound) circuit. This involved meticulous component selection and layout to ensure reliable signal processing from the brake sensor and activation button, making a loud audible alarm. The panels were then carefully assembled and tested, contributing directly to the vehicle's successful safety inspection. <br><br>
+            <div class="text-center" style="margin-top: 10px;">
+              <img src="C:\Users\minky\Desktop\website photos\eoul23 pcb\KakaoTalk_20250316_203439308.jpg" class="img-fluid rounded" alt="w/parts" style="width: 400px; height: 500px;"> <br>
+              <i style="font-size: 12pt;">PCB panels with its corresponding parts</i></div><br>
+            <div class="text-center" style="margin-top: 10px;">
+              <img src="C:\Users\minky\Desktop\website photos\eoul23 pcb\KakaoTalk_20250316_203528657.jpg" class="img-fluid rounded" alt="TSAL" style="width: 600px; height: 300px;"> <br>
+              <i style="font-size: 12pt;">TSAL panel</i></div><br>
+            The photo above is the PCB for the TSAL(Tractive system active light) circuit. The TSAL circuit is a safety feature that indicates when the car is ready to drive. The circuit is connected to the motor controller and the battery management system. When the car is ready to drive the TSAL circuit lights up and the driver can start the car. <br><br>
+            <div class="text-center" style="margin-top: 10px;">
+              <img src="C:\Users\minky\Desktop\website photos\eoul23 pcb\A8F7527C-C829-41A9-B35E-CAEAED263183.JPEG" class="img-fluid rounded" alt="TSAL in action" style="width: 400px; height: 500px;"> <br>
+              <i style="font-size: 12pt;">TSAL light in action</i></div><br>
+            We also developed countless other PCBs through trial and error, often failing to meet the safety regulations, going back to square one. Although we tried our best and made it to the KSAE competition, undergraduates building an electric car without the help of electric engineers and professional guidance had its limitations and we failed to pass the safety inspection. However it was rewarding to see our hard work pay off to see our to-be sophomores eventually pass the electrical safety examination in 2024. <br><br>
+            <div class="text-center" style="margin-top: 10px;">
+              <img src="C:\Users\minky\Desktop\website photos\eoul23 pcb\IMG_5229.JPEG" class="img-fluid rounded" alt="soldering" style="width: 400px; height: 500px;">
+              <div>
+              <i style="font-size: 12pt;">soldering skills increased exponentially</i>
+              </div>
+            </div><br>
+              <div class="text-center" style="margin-top: 10px;">
+                <img src="C:\Users\minky\Desktop\website photos\eoul23 pcb\final run.gif" class="img-fluid rounded" alt="2024 run" style="width: 100%; height: auto;">
+                <i style="font-size: 12pt;">our car finally running in 2024(30 seconds long)</i></div><br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-12 mb-4">
+          <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modal23EoulBB" data-tooltip-text="@Korea University, 2022.12 - 2023.09" style="width: 100%; height: 300px;">
+            <img src="C:\Users\minky\Desktop\website photos\eoul23 battery box\cover.JPEG" class="rounded" alt="23EoulBB">
+            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;">2023 Eoulsure Battery Box</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-12 mb-4">
+          <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modal22Eoul" data-tooltip-text="@Korea University, 2022.03 - 2022.09" style="width: 100%; height: 300px;">
+            <img src="C:\Users\minky\Desktop\website photos\eoul22\IMG_6735.JPEG" class="rounded" alt="22Eoul">
+            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;">2022 Eoulsure</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modals for Row 3 -->
+    <div class="modal fade" id="modal23EoulBB" tabindex="-1" aria-labelledby="modal23EoulBBLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modal23EoulBBLabel">2023 Eoulsure Battery Box</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" style="font-family: 'Outfit', sans-serif; font-size: 20px;">
+            Around winter break of 2022, our club’s seniors graduated and juniors shifted their attention to the job market, the responsibility of managing the club was in our sophomore’s hands.<br><br>
+            After carefully dissecting last year's(2022) racecar and dedicating countless hours to study sessions over winter break, the challenge of designing our 2023 vehicle began. Eager to push beyond the boundaries of standard mechanical engineering curricula, I chose to join the powertrain team. This team's critical responsibility lay in the intricate task of delivering power to the motor via a sophisticated battery system, and implementing vital safety mechanisms throughout the entire vehicle. This opportunity allowed me to delve into the complex world of high-voltage electrical systems, battery management, and crucial safety protocols, equipping me with invaluable skills beyond traditional mechanical engineering knowledge.<br><br>
+            <div class="text-center" style="margin-top: 10px;">
+              <img src="C:\Users\minky\Desktop\website photos\eoul23 battery box\KakaoTalk_20250316_214441605.jpg" class="img-fluid rounded" alt="dissecting BB" style="width: 400px; height: 400px;"> <br>
+              <i style="font-size: 12pt;">Our team dissecting the previous year's battery box</i><br>
+            Regarding the battery box, I actively participated in its construction, utilizing CATIA to optimize component placement for efficient space utilization and thermal management. To enhance durability and protect sensitive circuitry from vibrations, I designed and 3D-printed custom holsters for various components within the box. This approach ensured that the battery system remained secure and functional under the demanding conditions of the race.<br><br>
+            <img src="C:\Users\minky\Desktop\website photos\eoul23 battery box\KakaoTalk_20250316_203344829.gif" class="img-fluid rounded" alt="motor gif" style="width: 400px; height: 400px;"> <br>
+            <i style="font-size: 12pt;">spinning the motor</i><br>
+            I also assisted the Chassis team on holding weekly seminars teaching freshmen CAD. This experience allowed me to develop my leadership skills and foster a sense of camaraderie within the club. By sharing my knowledge and experience, I was able to contribute to the development of our younger members, ensuring that they were well-equipped to tackle the challenges they will eventually face when making their own race car.<br><br>
+            <img src="C:\Users\minky\Desktop\website photos\eoul23 battery box\IMG_4548.JPEG" class="img-fluid rounded" alt="semiar" style="width: 400px; height: 400px;"> <br>
+            <i style="font-size: 12pt;">teaching CAD to freshmen</i></div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal22Eoul" tabindex="-1" aria-labelledby="modal22EoulLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modal22EoulLabel">2022 Eoulsure</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" style="font-family: 'Outfit', sans-serif; font-size: 20px;">
+            During my freshman year I wanted to join a club. A club where I could experience the engineering process in reality(and also drink beer). Eoulsure was the perfect fit for that mission. Eoulsure in Korean is a compound word Eoul(어울) meaning ‘getting along with’ and sure(수레, pronounced soo-re) meaning ‘wagon’ or ‘car’. As you can tell from the name, Eoulsure is a club where people interested in automobiles come together to compete in the annual Korean Student Formula Grand Prix.<br><br>
+We competed in the E-formula division where the car runs on lithium batteries and a motor instead of the conventional diesel engine. E-formulas are generally considered more challenging than regular formulas and bajas as there are a lot more safety regulations and systems that need to be implemented to the car. 2022 was the first year Eoulsure competed in E-formula, starting from square one with no knowledge of making an electric car.<br><br>
+At the start of the semester freshmen like me are not used to using heavy duty tools like grinders, welders, and drills, we were first taught how to use each tool along with safety precautions. 
+<div class="text-center" style="margin-top: 10px;">
+  <img src="C:\Users\minky\Desktop\website photos\eoul22\safety seminar.jpg" class="img-fluid rounded" alt="safety seminar" style="width: 400px; height: 400px;"> <br>
+  <i style="font-size: 12pt;">Me in the blue hoodie learning how to weld.</i></div>
+Summer break is when the actual building begins, sophomores and juniors did the design process while us freshmen were stuck out in the garage underneath the scorching sun cutting pipes and pieces of metal.<br>
+<div class="text-center" style="margin-top: 10px;">
+  <img src="C:\Users\minky\Desktop\website photos\eoul22\grinder.jpg" class="img-fluid rounded" alt="grinder" style="width: 300px; height: 400px;"> <br>
+  <i style="font-size: 12pt;">To use the grinder you must get used to sparks tickling your skin.</i></div>
+We went to Gunsan(군산) with our car to compete on the track. Although the process was hard(dealing with the heat was even harder) I felt fulfilled seeing my contribution on the final product. By observing from behind their shoulders I learnt a lot from my upperclassmen; I was glad that I chose engineering as my career. 
+<div class="text-center" style="margin-top: 10px;">
+  <img src="C:\Users\minky\Desktop\website photos\eoul22\baja.jpg" class="img-fluid rounded" alt="bajaeoul" style="width: 300px; height: 400px;"> <br>
+  <i style="font-size: 12pt;">Race cars are cool.</i></div>
+  <div class="text-center" style="margin-top: 10px;">
+    <img src="C:\Users\minky\Desktop\website photos\eoul22\soju.jpg" class="img-fluid rounded" alt="soju" style="width: 300px; height: 400px;"> <br>
+    <i style="font-size: 12pt;">After-party with tons of soju.</i></div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tooltip" class="tooltip-custom"></div>
+
+    <hr class="title-spacer" style="width: 50%; margin: 0 auto;">
+
+    <!-- MINI PROJECTS-->
+    <div class="text-center">
+      <p class="display-6"> my mini projects </p>
+    </div> 
+    <br>
+    <!--Row 1-->
+    <div class="container">
+      <div class="row">
+      <div class="col-md-4 col-12 mb-4">
+        <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modalWeb" data-tooltip-text="@home, 2025.02 - 2025.03" style="width: 100%; height: 300px;">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"></div>
+        <img src="C:\Users\minky\Desktop\website photos\my website\cover final.png" class="rounded" alt="Website">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">Making my own Website</div>
+        </div>
+      </div>
+      <div class="col-md-4 col-12 mb-4">
+        <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modalcomingsoon" data-tooltip-text="..." style="width: 100%; height: 300px;">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"></div>
+        <img src="C:\Users\minky\Desktop\website photos\coming soon.jpeg" class="rounded" alt="coming soon">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">Coming soon!</div>
+        </div>
+      </div>
+      <div class="col-md-4 col-12 mb-4">
+        <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modalcomingsoon" data-tooltip-text="..." style="width: 100%; height: 300px;">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"></div>
+        <img src="C:\Users\minky\Desktop\website photos\coming soon.jpeg" class="rounded" alt="coming soon">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">Coming soon!</div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <!-- Modals for Row 1 -->
+    <div class="modal fade" id="modalWeb" tabindex="-1" aria-labelledby="modalWebLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="modalWebLabel">Designing my own website</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body"style="font-family: 'Outfit', sans-serif; font-size: 20px;">
+          As a corporal in the Air Force I had nothing to do during my free time. Of course there was always going to the gym, playing video games with my mates; but none of that was fulfilling to the mind. After deep consideration on how to spend my time I decided to study the basics of HTML. Cause why not? I had nothing else to do anyways.<br><br>
+          By simulating some HTML and CSS I naturally wanted to make my own website. Rather than explaining my projects to every new person I meet,  I thought it would be a good way to introduce myself and my projects in a more orderly fashion.<br>
+          Learning bootstrap helped me a lot in organizing code and simulating effects.
+          <br>This website is the result of my HTML learning journey. I hope you enjoy reading. 
+          <br> <br> P.S. I'm still learning so please mind the bugs!!
+          <div class="text-center" style="margin-top: 10px;">
+            <img src="C:\Users\minky\Desktop\website photos\my website\early stages.jpg" class="img-fluid rounded" alt="early stages" style="width: 700px; height: 400px;"> <br>
+            <i style="font-size: 12pt;">Learning HTML the hard way</i></div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+
+    <script>
+document.getElementById('btnSwitch').addEventListener('click', () => {
+  const theme = document.documentElement.getAttribute('data-bs-theme');
+  const btnSwitch = document.getElementById('btnSwitch');
+  const body = document.body;
+
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-bs-theme', 'light');
+    btnSwitch.textContent = 'Dark Theme';
+    btnSwitch.classList.remove('btn-outline-light');
+    btnSwitch.classList.add('btn-outline-dark');
+    body.classList.remove('dark-theme');
+  } else {
+    document.documentElement.setAttribute('data-bs-theme', 'dark');
+    btnSwitch.textContent = 'Light Theme';
+    btnSwitch.classList.remove('btn-outline-dark');
+    btnSwitch.classList.add('btn-outline-light');
+    body.classList.add('dark-theme');
+  }
+});
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const tooltip = document.getElementById('tooltip');
+    const projects = document.querySelectorAll('.blur-on-hover');
+
+    projects.forEach(project => {
+      project.addEventListener('mousemove', (e) => {
+        const text = project.getAttribute('data-tooltip-text');
+        tooltip.textContent = text;
+        tooltip.style.left = `${e.pageX + 10}px`;
+        tooltip.style.top = `${e.pageY + 10}px`;
+        tooltip.style.opacity = 1;
+      });
+
+      project.addEventListener('mouseleave', () => {
+        tooltip.style.opacity = 0;
+      });
+    });
+  });
+    </script>
+
+    <br> <br> <br>
+    <hr class="title-spacer">
+    <!-- Contact lines -->
+    <h6 class="text-center">how to contact me</h6>
+    <div class="col" style="text-align: center;">
+      <a href="mailto:minkyu414@korea.ac.kr">
+        <i class="bi bi-envelope footer-icon" style="font-size: 2em; margin-right:30px;"></i>
+      </a>
+      <a href="https://www.linkedin.com/in/ryan-chung-2a42a1262/">
+        <i class="bi bi-linkedin footer-icon" style="font-size: 2em"></i>
+      </a>
+      <a href="https://www.instagram.com/m_n.k_u/">
+        <i class="bi bi-instagram footer-icon" style="font-size: 2em; margin-left:30px"></i>
+      </a>
+    </div>
+
+    <br>
+    <h6 class="text-center">
+      korean version coming soon, maybe.
+    </h6>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="scripts/script.js"></script>
+  </body>
+</html>
