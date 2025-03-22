@@ -1,1 +1,1 @@
-this is the repository for my personal website, i wanted the theme to be was friendly as possible and provide a brief introduction to the projects i was/am doing. Enjoy!
+This is the repository for my personal website. I wanted the theme to be as user-friendly as possible and provide a brief introduction to the projects I have done/am doing. Enjoy!
