@@ -158,6 +158,55 @@ body {
       transform: rotate(360deg);
     }
   }
+  /* Button Styling */
+.updates-btn {
+    background: linear-gradient(45deg, #27d79c 0%, #2575fc 100%);
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(37, 117, 252, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.updates-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(37, 117, 252, 0.6);
+    color: white;
+}
+
+/* Modal Styling */
+.news-modal {
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #333;
+    border-radius: 20px;
+}
+
+.modal-header { border-bottom: 1px solid #333; }
+
+.news-item {
+  background: #252525;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  border-left: 4px solid #2575fc;
+  transition: transform 0.2s;
+  margin-left: -20px; /* shift item to the left */
+}
+
+.news-item:hover {
+    transform: scale(1.02);
+    background: #2d2d2d;
+}
+
+.news-date {
+    font-size: 0.8rem;
+    color: #aaa;
+}
 
   text {
     animation: rotate 20s linear infinite;
@@ -281,14 +330,94 @@ body {
         </div>
       </div>
     </div>
-    <!-- Updates & News Button -->
-    <div class="text-center mt-4 mb-4">
-        <button type="button" class="btn updates-btn" data-bs-toggle="modal" data-bs-target="#updatesModal">
-            <i class="bi bi-newspaper"></i> Updates & News
-        </button>
-    </div>
+<div class="text-center mt-5 mb-5">
+    <button type="button" class="btn updates-btn" data-bs-toggle="modal" data-bs-target="#updatesModal">
+        <div class="btn-content">
+            <i class="bi bi-newspaper me-2"></i>
+            <span>Updates & News</span>
+        </div>
+    </button>
+</div>
 
-                      
+<!-- Updates & News Modal -->
+<div class="modal fade" id="updatesModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content news-modal">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-megaphone me-2"></i>Latest Updates</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <style>
+          /* Keep modal white */
+          #updatesModal .modal-content,
+          #updatesModal .news-modal { background: #ffffff; color: #000000; }
+
+          /* Reserve left gutter for timeline line and dots */
+          #updatesModal .timeline { position: relative; padding-left: 56px; }
+
+          /* Vertical line running under the dots */
+          #updatesModal .timeline::before {
+            display: none !important;
+          }
+
+          /* Each timeline item stays in normal flow; dot is absolutely positioned inside it */
+          #updatesModal .timeline-item { position: relative; margin-bottom: 18px; }
+
+          /* Position the dot so it overlaps/centers on the vertical line */
+          #updatesModal .timeline-dot {
+            position: absolute;
+            left: 26px; /* same as line center */
+            transform: translateX(-50%); /* center dot on the line */
+            top: 8px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #2575fc;
+            box-shadow: 0 0 0 6px rgba(37,117,252,0.06);
+            border: 2px solid #ffffff;
+            z-index: 2;
+            box-sizing: border-box;
+          }
+
+          /* Date sits to the right of the dot */
+          #updatesModal .timeline-entry { margin-left: 0; padding-left: 12px; font-size: 0.98rem; word-break: break-word; }
+          #updatesModal .timeline-date { display:inline-block; font-weight:700; color:#2575fc; margin:0 8px 6px 36px; }
+
+          /* Smaller screens: tighten the gutter and scale dots */
+          @media (max-width:576px){
+            #updatesModal .timeline { padding-left: 44px; }
+            #updatesModal .timeline::before { left: 22px; }
+            #updatesModal .timeline-dot { left: 22px; width: 12px; height: 12px; top: 6px; }
+            #updatesModal .timeline-date { margin-left: 32px; }
+          }
+        </style>
+
+        <div class="timeline" id="newsContainer">
+          <!-- Example entries — edit / add .timeline-item blocks to update -->
+          <div class="timeline-item">
+            <div class="timeline-dot" aria-hidden="true"></div>
+            <div class="timeline-entry">
+              <div class="timeline-date">2025-10-07</div>
+              <div class="timeline-text">Officially discharged from the Republic of Korea Air Force as a Staff Sergeant.</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot" aria-hidden="true"></div>
+            <div class="timeline-entry">
+              <div class="timeline-date">2025-09-01</div>
+              <div class="timeline-text">Started an undergraduate research internship @ Mekateka Lab, Korea University (PI: Prof. Daniel Dahyun Lim)</div>
+            </div>
+          </div>
+
+
+          <!-- Add more timeline-item blocks below to extend the timeline -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
     <!-- my projects -->
     <div class="text-center">
       <p class="display-6"> my projects </p>
@@ -674,8 +803,3 @@ document.getElementById('btnSwitch').addEventListener('click', () => {
     <script type="text/javascript" src="scripts/script.js"></script>
   </body>
 </html>
-
-
-
-
-
