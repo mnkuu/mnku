@@ -261,7 +261,7 @@ body {
     </div>
 <!-- View CV button-->
 <div class="d-flex justify-content-center m-4">
-  <a class="btn btn-outline-dark" id="btnSwitch" href="https://drive.google.com/file/d/1dhsjrNpSL8-tMSR0czJzEV-3WvTVCjuW/view?usp=sharing" target="_blank">View CV</a>
+  <a class="btn btn-outline-dark" id="btnSwitch" href="https://drive.google.com/file/d/1_ba9IfZ_tWjIxl6FwFMzNEioijDQeOmS/view?usp=sharing" target="_blank">View CV</a>
 </div>
 
     <hr class="title-spacer">
@@ -349,26 +349,21 @@ body {
       </div>
       <div class="modal-body">
         <style>
-          /* Keep modal white */
+
           #updatesModal .modal-content,
           #updatesModal .news-modal { background: #ffffff; color: #000000; }
 
-          /* Reserve left gutter for timeline line and dots */
+         
           #updatesModal .timeline { position: relative; padding-left: 56px; }
 
-          /* Vertical line running under the dots */
           #updatesModal .timeline::before {
             display: none !important;
           }
-
-          /* Each timeline item stays in normal flow; dot is absolutely positioned inside it */
           #updatesModal .timeline-item { position: relative; margin-bottom: 18px; }
-
-          /* Position the dot so it overlaps/centers on the vertical line */
           #updatesModal .timeline-dot {
             position: absolute;
-            left: 26px; /* same as line center */
-            transform: translateX(-50%); /* center dot on the line */
+            left: 26px;
+            transform: translateX(-50%);
             top: 8px;
             width: 14px;
             height: 14px;
@@ -380,11 +375,8 @@ body {
             box-sizing: border-box;
           }
 
-          /* Date sits to the right of the dot */
           #updatesModal .timeline-entry { margin-left: 0; padding-left: 12px; font-size: 0.98rem; word-break: break-word; }
           #updatesModal .timeline-date { display:inline-block; font-weight:700; color:#2575fc; margin:0 8px 6px 36px; }
-
-          /* Smaller screens: tighten the gutter and scale dots */
           @media (max-width:576px){
             #updatesModal .timeline { padding-left: 44px; }
             #updatesModal .timeline::before { left: 22px; }
@@ -392,9 +384,16 @@ body {
             #updatesModal .timeline-date { margin-left: 32px; }
           }
         </style>
-
         <div class="timeline" id="newsContainer">
           <!-- Example entries — edit / add .timeline-item blocks to update -->
+            <div class="timeline-item">
+            <div class="timeline-dot" aria-hidden="true"></div>
+            <div class="timeline-entry">
+              <div class="timeline-date">2025-12-18</div>
+              <div class="timeline-text">Finished my 1st semester of junior year</div>
+            </div>
+          </div>
+
           <div class="timeline-item">
             <div class="timeline-dot" aria-hidden="true"></div>
             <div class="timeline-entry">
@@ -407,12 +406,12 @@ body {
             <div class="timeline-dot" aria-hidden="true"></div>
             <div class="timeline-entry">
               <div class="timeline-date">2025-09-01</div>
-              <div class="timeline-text">Started an undergraduate research internship @ Mekateka Lab, Korea University (PI: Prof. Daniel Dahyun Lim)</div>
+             <div class="timeline-text"> Started an undergraduate research internship @ <a href="https://mekateka.com/" target="_blank">Mekateka Lab</a>, Korea University (PI: Prof. Daniel Dahyun Lim)</div>
+            </div>
             </div>
           </div>
 
 
-          <!-- Add more timeline-item blocks below to extend the timeline -->
         </div>
       </div>
     </div>
@@ -803,3 +802,4 @@ document.getElementById('btnSwitch').addEventListener('click', () => {
     <script type="text/javascript" src="scripts/script.js"></script>
   </body>
 </html>
+
