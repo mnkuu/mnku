@@ -21,7 +21,8 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
-body {
+body { font-family: 'Outfit', sans-serif;
+  color: #000000; /* make all page text the same (black) */
   
   overflow-x: hidden;
   overflow-y: scroll;
@@ -29,14 +30,14 @@ body {
   background: linear-gradient(45deg, #7dc2c7, rgb(180, 182, 161));
   background-size: 200% 200%;
   animation: gradientAnimation 10s ease infinite;
-  transition: background 0.5s ease, color 0.5s ease;
+  transition: background 700ms cubic-bezier(0.22,1,0.36,1), color 500ms ease-in-out;
 }
 
 [data-bs-theme="dark"] body {
   background: linear-gradient(45deg, #000000, #4d215a);
   background-size: 200% 200%;
   animation: gradientAnimation 10s ease infinite;
-  transition: background 0.5s ease, color 0.5s ease;
+  transition: background 700ms cubic-bezier(0.22,1,0.36,1), color 500ms ease-in-out;
 }
 
 @keyframes gradientAnimation {
@@ -159,23 +160,32 @@ body {
     }
   }
   /* Button Styling */
+
 .updates-btn {
-    background: linear-gradient(45deg, #27d79c 0%, #2575fc 100%);
-    border: none;
-    color: white;
-    padding: 12px 30px;
-    border-radius: 50px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(37, 117, 252, 0.4);
-    position: relative;
-    overflow: hidden;
+  background: linear-gradient(45deg, #27d79c 0%, #2575fc 100%);
+  border: none;
+  color: white;
+  padding: 6px 30px; /* reduced vertical padding to compress button */
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 420ms cubic-bezier(0.22,1,0.36,1);
+  box-shadow: 0 4px 15px rgba(37, 117, 252, 0.4);
+  position: relative;
+  overflow: hidden;
+  margin-top: 0;
 }
 
 .updates-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(37, 117, 252, 0.6);
     color: white;
+}
+
+/* Tighten spacing for "learn more about me" circular button */
+.btnSwitch {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: 0 !important;
 }
 
 /* Modal Styling */
@@ -208,10 +218,33 @@ body {
     color: #aaa;
 }
 
-  text {
-    animation: rotate 20s linear infinite;
+  /* Circular text: unified class used for both button and modal */
+  .circular-text {
+    transform-box: fill-box;
     transform-origin: 50% 50%;
-    fill: rgb(83, 146, 89);
+    will-change: transform;
+    fill: #000000; /* make circular text black */
+    letter-spacing: 0.4px;
+    font-family: 'Outfit', sans-serif;
+    animation: rotate 20s linear infinite;
+    transition: fill 500ms ease-in-out, opacity 300ms ease-in-out;
+  }
+
+  /* Disable rotation on small screens to prevent text distortion */
+  @media (max-width: 576px) {
+    .circular-text {
+      animation: none !important;
+      transform: none !important;
+    }
+  }
+
+  /* Keep updates/view CV/dark-mode buttons text white */
+  .updates-btn, .updates-btn * { color: #ffffff !important; }
+
+  /* Match circular text color to dark-theme accent when dark mode is active */
+  [data-bs-theme="dark"] .circular-text,
+  .dark-theme .circular-text {
+    fill: #aa8a4a !important;
   }
 
   .image-container {
@@ -234,7 +267,8 @@ body {
   .about-me-content {
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 1rem;
+        flex-direction: row;
       }
 
       .about-me-text {
@@ -242,6 +276,14 @@ body {
         font-family: 'Outfit', sans-serif;
         font-size: 20px;
         text-align: left;
+      }
+
+      /* Responsive: stack content vertically on narrow screens and center items */
+      @media (max-width: 900px) {
+        .about-me-content { flex-direction: column; align-items: center; }
+        .about-me-text { text-align: center; }
+        .circle-container { width: 250px; height: 250px; }
+        .image-container { width: 200px; height: 200px; }
       }
     </style>
   </head>
@@ -256,13 +298,10 @@ body {
       </div>
     </div>
     <!-- Dark mode button -->
-    <div class="d-flex justify-content-center m-4">
-      <button class="btn btn-outline-dark" id="btnSwitch">Dark Theme</button>
+    <div class="d-flex justify-content-center gap-3 m-4">
+      <button class="btn updates-btn btn-outline-dark" id="btnSwitch">Dark Theme</button>
+      <a class="btn updates-btn btn-outline-dark" href="https://drive.google.com/file/d/1_ba9IfZ_tWjIxl6FwFMzNEioijDQeOmS/view?usp=sharing" target="_blank">View CV</a>
     </div>
-<!-- View CV button-->
-<div class="d-flex justify-content-center m-4">
-  <a class="btn btn-outline-dark" id="btnSwitch" href="https://drive.google.com/file/d/1_ba9IfZ_tWjIxl6FwFMzNEioijDQeOmS/view?usp=sharing" target="_blank">View CV</a>
-</div>
 
     <hr class="title-spacer">
     <br>
@@ -271,16 +310,16 @@ body {
       <button type="button" class="btn btnSwitch" data-bs-toggle="modal" data-bs-target="#aboutMeModal">
         <div class="circle-container">
           <svg viewBox="0 0 100 100">
-            <defs>
+              <defs>
               <path id="circle" d="
                 M 50, 50
-                m -37, 0
-                a 37,37 0 1,1 74,0
-                a 37,37 0 1,1 -74,0"/>
+                m -42, 0
+                a 42,42 0 1,1 84,0
+                a 42,42 0 1,1 -84,0"/>
             </defs>
-            <text font-size="10.2">
-              <textPath xlink:href="#circle" textLength="232" lengthAdjust="spacingAndGlyphs">
-                | Ryan Minkyu Chung | Click to learn about me!
+            <text class="circular-text" font-size="12" text-anchor="middle">
+              <textPath xlink:href="#circle" startOffset="50%">
+                | Ryan Minkyu Chung | Click to learn about me! 
               </textPath>
             </text>
           </svg>
@@ -296,19 +335,19 @@ body {
               <div class="modal-title fs-3 w-100 text-center" id="aboutMeModalLabel">about me</div>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body about-me-content" style="flex-direction: column; align-items: left; overflow-y: auto;">
+            <div class="modal-body about-me-content" style="overflow-y: auto;">
               <div class="circle-container">
                 <svg viewBox="0 0 100 100">
                   <defs>
-                    <path id="circle" d="
+                    <path id="circle-modal" d="
                       M 50, 50
-                      m -37, 0
-                      a 37,37 0 1,1 74,0
-                      a 37,37 0 1,1 -74,0"/>
+                      m -42, 0
+                      a 42,42 0 1,1 84,0
+                      a 42,42 0 1,1 -84,0"/>
                   </defs>
-                  <text font-size="10.2">
-                    <textPath xlink:href="#circle" textLength="232" lengthAdjust="spacingAndGlyphs">
-                      Ryan Minkyu Chung | Mechanical Engineer | Traveler | 
+                  <text class="circular-text" font-size="11" text-anchor="middle">
+                    <textPath xlink:href="#circle" startOffset="50%">
+                       Ryan Minkyu Chung | Mech. Engineer | Traveler 
                     </textPath>
                   </text>
                 </svg>
@@ -330,7 +369,7 @@ body {
         </div>
       </div>
     </div>
-<div class="text-center mt-5 mb-5">
+<div class="text-center mb-5">
     <button type="button" class="btn updates-btn" data-bs-toggle="modal" data-bs-target="#updatesModal">
         <div class="btn-content">
             <i class="bi bi-newspaper me-2"></i>
@@ -349,21 +388,26 @@ body {
       </div>
       <div class="modal-body">
         <style>
-
+          /* Keep modal white */
           #updatesModal .modal-content,
           #updatesModal .news-modal { background: #ffffff; color: #000000; }
 
-         
+          /* Reserve left gutter for timeline line and dots */
           #updatesModal .timeline { position: relative; padding-left: 56px; }
 
+          /* Vertical line running under the dots */
           #updatesModal .timeline::before {
             display: none !important;
           }
+
+          /* Each timeline item stays in normal flow; dot is absolutely positioned inside it */
           #updatesModal .timeline-item { position: relative; margin-bottom: 18px; }
+
+          /* Position the dot so it overlaps/centers on the vertical line */
           #updatesModal .timeline-dot {
             position: absolute;
-            left: 26px;
-            transform: translateX(-50%);
+            left: 26px; /* same as line center */
+            transform: translateX(-50%); /* center dot on the line */
             top: 8px;
             width: 14px;
             height: 14px;
@@ -375,8 +419,11 @@ body {
             box-sizing: border-box;
           }
 
+          /* Date sits to the right of the dot */
           #updatesModal .timeline-entry { margin-left: 0; padding-left: 12px; font-size: 0.98rem; word-break: break-word; }
           #updatesModal .timeline-date { display:inline-block; font-weight:700; color:#2575fc; margin:0 8px 6px 36px; }
+
+          /* Smaller screens: tighten the gutter and scale dots */
           @media (max-width:576px){
             #updatesModal .timeline { padding-left: 44px; }
             #updatesModal .timeline::before { left: 22px; }
@@ -384,8 +431,9 @@ body {
             #updatesModal .timeline-date { margin-left: 32px; }
           }
         </style>
+
         <div class="timeline" id="newsContainer">
-          <!-- Example entries — edit / add .timeline-item blocks to update -->
+
             <div class="timeline-item">
             <div class="timeline-dot" aria-hidden="true"></div>
             <div class="timeline-entry">
@@ -402,16 +450,16 @@ body {
             </div>
           </div>
 
-          <div class="timeline-item">
+            <div class="timeline-item">
             <div class="timeline-dot" aria-hidden="true"></div>
             <div class="timeline-entry">
               <div class="timeline-date">2025-09-01</div>
-             <div class="timeline-text"> Started an undergraduate research internship @ <a href="https://mekateka.com/" target="_blank">Mekateka Lab</a>, Korea University (PI: Prof. Daniel Dahyun Lim)</div>
+              <div class="timeline-text">Started an undergraduate research internship @ <a href="https://mekateka.com/" target="_blank">Mekateka Lab</a>, Korea University (PI: Prof. Daniel Dahyun Lim)</div>
             </div>
             </div>
-          </div>
 
 
+          <!-- Add more timeline-item blocks below to extend the timeline -->
         </div>
       </div>
     </div>
@@ -503,7 +551,7 @@ body {
         <div class="col-md-6 col-12 mb-4">
           <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modalJGS" data-tooltip-text="@Korea University, 2023.07 - 2023.12" style="width: 100%; height: 300px;">
             <img src="media/brachiation/br_cover.png" class="rounded" alt="JGS">
-            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 50px;">Two-handed Brachiating Robot</div>
+            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">Two-handed Brachiating Robot</div>
           </div>
         </div>
         <div class="col-md-6 col-12 mb-4">
@@ -597,7 +645,7 @@ body {
         <div class="col-md-6 col-12 mb-4">
           <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modal23EoulBB" data-tooltip-text="@Korea University, 2022.12 - 2023.09" style="width: 100%; height: 300px;">
             <img src="media/23eoul bb/23bb_cover.JPEG" class="rounded" alt="23EoulBB">
-            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;">2023 Eoulsure Battery Box</div>
+            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">2023 Eoulsure Battery Box</div>
           </div>
         </div>
         <div class="col-md-6 col-12 mb-4">
@@ -653,7 +701,7 @@ Summer break was when the actual building began, sophomores and juniors did the 
 <div class="text-center" style="margin-top: 10px;">
   <img src="media/eoul22/22_grinder.jpg" class="img-fluid rounded" alt="grinder" style="width: 300px; height: 400px;"> <br>
   <i style="font-size: 12pt;">Grinder sparks often burn a hole in your shirt so you need to be careful.</i></div>
-We went to Gunsan(군산) with our car to compete on the track. Although the process was hard(dealing with the heat was even harder) I felt fulfilled seeing my contribution on the final product. By observing from behind their shoulders I learnt a lot from my upperclassmen; I was glad that I chose engineering as my career. 
+We went to Gunsan(군산) with our car to compete on the track. Although the process was hard(dealing with the heat was even harder) It was fulfilling seeing my contribution to the final product. By observing from behind their shoulders I learnt a lot from my upperclassmen; I was glad that I chose engineering as my career. 
 <div class="container">
   <div class="row">
     <div class="col-md-3 text-start" style="margin-top: 10px;">
@@ -802,4 +850,3 @@ document.getElementById('btnSwitch').addEventListener('click', () => {
     <script type="text/javascript" src="scripts/script.js"></script>
   </body>
 </html>
-
