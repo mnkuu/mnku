@@ -22,19 +22,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
 body { font-family: 'Outfit', sans-serif;
-  color: #000000; /* make all page text the same (black) */
+  color: #0f172a;
   
   overflow-x: hidden;
   overflow-y: scroll;
   
-  background: linear-gradient(45deg, #7dc2c7, rgb(180, 182, 161));
+  background: linear-gradient(135deg, #dbeafe, #eef2ff, #e0f2fe);
   background-size: 200% 200%;
   animation: gradientAnimation 10s ease infinite;
   transition: background 700ms cubic-bezier(0.22,1,0.36,1), color 500ms ease-in-out;
 }
 
 [data-bs-theme="dark"] body {
-  background: linear-gradient(45deg, #000000, #26122d);
+  background: linear-gradient(135deg, #08111f, #102a43, #172554);
   background-size: 200% 200%;
   animation: gradientAnimation 10s ease infinite;
   transition: background 700ms cubic-bezier(0.22,1,0.36,1), color 500ms ease-in-out;
@@ -56,36 +56,68 @@ body { font-family: 'Outfit', sans-serif;
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  height: 320px !important;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: 18px;
+  background: #111;
+  box-shadow: 0 14px 30px rgba(20, 39, 45, 0.14);
+  isolation: isolate;
+  transition: transform 280ms cubic-bezier(0.22,1,0.36,1), box-shadow 280ms ease, border-color 280ms ease;
 }
 
 .blur-on-hover img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: filter 0.3s ease;
+  transition: transform 500ms cubic-bezier(0.22,1,0.36,1), filter 0.3s ease;
 }
 
 .blur-on-hover .overlay-text {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: black;
-  font-size: 24px;
-  text-align: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: none;
+  color: #fff;
+  font-size: clamp(1.25rem, 2.4vw, 2.1rem) !important;
+  font-weight: 700;
+  line-height: 1.05;
+  text-align: left;
+  opacity: 1;
+  padding: 2.75rem 1.25rem 1.15rem;
+  background: linear-gradient(transparent, rgba(7, 14, 18, 0.92));
+  transition: padding 280ms ease;
   z-index: 1;
 }
 
-.blur-on-hover:hover img {
-  filter: blur(6px);
+.blur-on-hover::before,
+.blur-on-hover::after {
+  position: absolute;
+  left: 1rem;
+  z-index: 2;
+  max-width: calc(100% - 2rem);
+  padding: 0.32rem 0.68rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(8, 18, 22, 0.58);
+  backdrop-filter: blur(8px);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
-.blur-on-hover:hover .overlay-text {
-  opacity: 1;
+.blur-on-hover::before {
+  content: attr(data-location);
+  top: 1rem;
 }
 
+.blur-on-hover::after {
+  content: attr(data-date);
+  top: 3.4rem;
+}
+
+/* Legacy tooltip styling is retained for compatibility with older cards. */
 .tooltip-custom {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.75);
@@ -98,41 +130,60 @@ body { font-family: 'Outfit', sans-serif;
   z-index: 1000;
 }
 
+.blur-on-hover:hover img {
+  filter: brightness(0.78);
+  transform: scale(1.045);
+}
+
+.blur-on-hover:hover .overlay-text {
+  padding-bottom: 1.4rem;
+}
+
+.blur-on-hover:hover,
+.blur-on-hover:focus-visible {
+  transform: translateY(-6px);
+  border-color: rgba(37, 117, 252, 0.8);
+  box-shadow: 0 22px 40px rgba(20, 39, 45, 0.24);
+  outline: none;
+}
+
+.coming-soon { cursor: default; }
+
 .dark-theme {
-  color: #aa8a4a;
+  color: #bae6fd;
   transition: color 0.5s ease;
 }
 
 .dark-theme .footer-icon {
-  color: #aa8a4a;
+  color: #7dd3fc;
   transition: color 0.5s ease;
 }
 
 .dark-theme h6 {
-  color: #aa8a4a;
+  color: #bae6fd;
   transition: color 0.5s ease;
 }
 
 .dark-theme .btn-outline-dark {
-  background-color: #3b3b3b;
-  color: #aa8a4a;
-  border-color: #aa8a4a;
+  background-color: rgba(15, 23, 42, 0.75);
+  color: #bae6fd;
+  border-color: #38bdf8;
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .dark-theme .btn-outline-dark:hover {
-  background-color: #18153b;
-  color: #aa8a4a;
-  border-color: #aa8a4a;
+  background-color: #0f2740;
+  color: #e0f2fe;
+  border-color: #7dd3fc;
 }
 
 .dark-theme .overlay-text {
-  color: #aa8a4a;
+  color: #fff;
   transition: color 0.5s ease;
 }
 
 .dark-theme .tooltip-custom {
-  color: #aa8a4a;
+  color: #7dd3fc;
   transition: color 0.5s ease;
 }
 
@@ -162,32 +213,44 @@ body { font-family: 'Outfit', sans-serif;
   /* Button Styling */
 
 .updates-btn {
-  background: linear-gradient(45deg, #27d79c 0%, #2575fc 100%);
-  border: none;
-  color: white;
-  padding: 6px 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  background: rgba(255, 255, 255, 0.56);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  color: #102c42;
+  padding: 0.65rem 1.2rem;
   border-radius: 50px;
-  font-weight: 600;
-  transition: all 420ms cubic-bezier(0.22,1,0.36,1);
-  box-shadow: 0 4px 15px rgba(37, 117, 252, 0.4);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition: transform 260ms cubic-bezier(0.22,1,0.36,1), background 260ms ease, color 260ms ease, box-shadow 260ms ease;
+  box-shadow: 0 10px 24px rgba(20, 50, 75, 0.16);
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(12px);
   margin-top: 0;
 }
 
 [data-bs-theme="dark"] .updates-btn {
-  background: linear-gradient(45deg, #aa8a4a 0%, #d4a574 100%);
-  box-shadow: 0 4px 15px rgba(170, 138, 74, 0.4);
+  background: rgba(35, 28, 43, 0.72);
+  border-color: rgba(125, 211, 252, 0.52);
+  color: #e0f2fe;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
 }
 
 [data-bs-theme="dark"] .updates-btn:hover {
-  box-shadow: 0 8px 25px rgba(170, 138, 74, 0.6);
+  background: #38bdf8;
+  color: #082f49;
+  box-shadow: 0 14px 28px rgba(56, 189, 248, 0.3);
 }
 
 .updates-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(37, 117, 252, 0.6);
-    color: white;
+    background: #4f46e5;
+    border-color: #4f46e5;
+    box-shadow: 0 14px 28px rgba(79, 70, 229, 0.3);
+    color: #fff;
 }
 
 /* Tighten spacing for "learn more about me" circular button */
@@ -213,7 +276,7 @@ body { font-family: 'Outfit', sans-serif;
   padding: 15px;
   border-radius: 12px;
   margin-bottom: 15px;
-  border-left: 4px solid #2575fc;
+  border-left: 4px solid #4f46e5;
   transition: transform 0.2s;
   margin-left: -20px; /* shift item to the left */
 }
@@ -248,13 +311,12 @@ body { font-family: 'Outfit', sans-serif;
     }
   }
 
-  /* Keep updates/view CV/dark-mode buttons text white */
-  .updates-btn, .updates-btn * { color: #ffffff !important; }
+  .updates-btn .btn-content { display: inline-flex; align-items: center; }
 
   /* Match circular text color to dark-theme accent when dark mode is active */
-  [data-bs-theme="dark"] .circular-text,
-  .dark-theme .circular-text {
-    fill: #aa8a4a !important;
+      [data-bs-theme="dark"] .circular-text,
+      .dark-theme .circular-text {
+    fill: #7dd3fc !important;
   }
 
   .image-container {
@@ -295,27 +357,91 @@ body { font-family: 'Outfit', sans-serif;
         .circle-container { width: 250px; height: 250px; }
         .image-container { width: 200px; height: 200px; }
       }
+
+      /* Portfolio structure */
+      html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+      .site-nav {
+        position: sticky;
+        top: 0;
+        z-index: 1030;
+        margin: 1rem auto 0;
+        width: min(1100px, calc(100% - 2rem));
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 8px 25px rgba(20, 39, 45, 0.1);
+      }
+      .site-nav .navbar-brand { font-weight: 800; letter-spacing: -0.03em; }
+      .site-nav .nav-link { border-radius: 999px; color: inherit; font-weight: 600; padding-inline: 0.75rem !important; transition: background 220ms ease, color 220ms ease, transform 220ms ease; }
+      .site-nav .nav-link:hover { color: #4f46e5; }
+      .site-nav .nav-link.is-active { background: #4f46e5; color: #fff; transform: translateY(-1px); }
+      .hero { min-height: 42vh; padding: 5.5rem 0 2.5rem; }
+      .hero .display-1 { font-weight: 800; letter-spacing: -0.065em; }
+      .hero .display-6 { max-width: 40rem; margin: 1rem auto 0; line-height: 1.25; }
+      .section-heading { font-weight: 800; letter-spacing: -0.04em; }
+      .contact-actions .updates-btn { min-width: 8.5rem; }
+      .contact-actions .bi { font-size: 1.1rem; }
+      [data-bs-theme="dark"] .site-nav { background: rgba(8, 17, 31, 0.76); border-color: rgba(125, 211, 252, 0.28); }
+      [data-bs-theme="dark"] .site-nav .nav-link:hover { color: #7dd3fc; }
+      [data-bs-theme="dark"] .site-nav .nav-link.is-active { background: #38bdf8; color: #082f49; }
+      @media (max-width: 576px) {
+        .site-nav { width: calc(100% - 1rem); margin-top: 0.5rem; border-radius: 16px; }
+        .site-nav .navbar-brand { font-size: 0.95rem; }
+        .site-nav .navbar-collapse { padding: 0.5rem 0.35rem; }
+        .hero { min-height: auto; padding: 3.75rem 1rem 1.25rem; }
+        .hero .display-1 { font-size: clamp(2.7rem, 15vw, 4.5rem); }
+        .hero .display-6 { font-size: 1.15rem; }
+        .blur-on-hover { height: 250px !important; }
+        /* On phones the hero becomes a stable portrait button: no rotating ring or offset. */
+        .btnSwitch .circle-container { width: 220px; height: 255px; }
+        .btnSwitch .circle-container > svg { display: none; }
+        .btnSwitch .image-container { top: 0; width: 190px; height: 190px; }
+        .btnSwitch .circle-container::after {
+          content: 'Tap to read about me';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: max-content;
+          font-weight: 700;
+          color: inherit;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+      }
     </style>
   </head>
   <body>
+    <nav class="navbar navbar-expand-md site-nav px-3" aria-label="Primary navigation">
+      <a class="navbar-brand" href="#top">RMC</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#siteNav" aria-controls="siteNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="siteNav">
+        <ul class="navbar-nav ms-auto align-items-md-center gap-md-2">
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="#mini-projects">Mini projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
     <!-- title section -->
-     
-    <div class="container text-center">
-      <div class="col text-start"></div>
-        <h1 class="display-1" style="font-family:'Outfit', sans-serif;">Ryan Minkyu Chung</h1>
-        <h1 class="display-6" style="font-family:'Outfit', sans-serif;">studying Mechanical Engineering @ Korea University</h1>
-      </div>
-      </div>
-    </div>
-    <!-- Dark mode button -->
-    <div class="d-flex justify-content-center gap-3 m-4">
+    <header class="container text-center hero" id="top">
+      <h1 class="display-1">Ryan Minkyu Chung</h1>
+      <p class="display-6">Mechanical Engineering student at Korea University, building thoughtful machines and systems.</p>
+      <div class="d-flex justify-content-center gap-3 mt-4">
       <button class="btn updates-btn btn-outline-dark" id="btnSwitch">Dark Theme</button>
-    </div>
+      </div>
+    </header>
 
     <hr class="title-spacer">
     <br>
     <!-- about me modal -->
-    <div class="text-center">
+    <div class="text-center" id="about">
       <button type="button" class="btn btnSwitch" data-bs-toggle="modal" data-bs-target="#aboutMeModal">
         <div class="circle-container">
           <svg viewBox="0 0 100 100">
@@ -355,7 +481,7 @@ body { font-family: 'Outfit', sans-serif;
                       a 42,42 0 1,1 -84,0"/>
                   </defs>
                   <text class="circular-text" font-size="11" text-anchor="middle">
-                    <textPath xlink:href="#circle" startOffset="50%">
+                    <textPath xlink:href="#circle-modal" startOffset="50%">
                        Ryan Minkyu Chung | Mech. Engineer | Traveler 
                     </textPath>
                   </text>
@@ -385,7 +511,7 @@ body { font-family: 'Outfit', sans-serif;
       <span>Updates & News</span>
     </div>
   </button>
-  <a class="btn updates-btn btn-outline-dark" href="https://drive.google.com/file/d/1fDgC25t8bHrCmSQHAYDw689XPwX015Bb/view?usp=sharing" target="_blank">View CV</a>
+  <a class="btn updates-btn btn-outline-dark" href="https://drive.google.com/file/d/1fDgC25t8bHrCmSQHAYDw689XPwX015Bb/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
 </div>
 
 <!-- Updates & News Modal -->
@@ -409,8 +535,8 @@ body { font-family: 'Outfit', sans-serif;
           /* Dark theme */
           [data-bs-theme="dark"] #updatesModal .modal-content,
           [data-bs-theme="dark"] #updatesModal .news-modal {
-            background: #1a1a1a;
-            color: #aa8a4a;
+            background: #0f172a;
+            color: #e0f2fe;
           }
 
           /* Reserve left gutter for timeline line and dots */
@@ -433,8 +559,8 @@ body { font-family: 'Outfit', sans-serif;
             width: 14px;
             height: 14px;
             border-radius: 50%;
-            background: #2575fc;
-            box-shadow: 0 0 0 6px rgba(37,117,252,0.06);
+            background: #4f46e5;
+            box-shadow: 0 0 0 6px rgba(79,70,229,0.08);
             border: 2px solid #ffffff;
             z-index: 2;
             box-sizing: border-box;
@@ -443,9 +569,9 @@ body { font-family: 'Outfit', sans-serif;
 
           /* Dark theme dot styling */
           [data-bs-theme="dark"] #updatesModal .timeline-dot {
-            background: #aa8a4a;
-            border-color: #1a1a1a;
-            box-shadow: 0 0 0 6px rgba(170,138,74,0.06);
+            background: #38bdf8;
+            border-color: #0f172a;
+            box-shadow: 0 0 0 6px rgba(56,189,248,0.08);
           }
 
           /* Date sits to the right of the dot */
@@ -459,24 +585,24 @@ body { font-family: 'Outfit', sans-serif;
           #updatesModal .timeline-date { 
             display: inline-block; 
             font-weight: 700; 
-            color: #2575fc;
+            color: #4f46e5;
             margin: 0 8px 6px 36px;
             transition: color 500ms ease-in-out;
           }
 
           /* Dark theme date styling */
           [data-bs-theme="dark"] #updatesModal .timeline-date {
-            color: #aa8a4a;
+            color: #7dd3fc;
           }
 
           /* Link styling */
           #updatesModal .timeline-text a {
-            color: #2575fc;
+            color: #4f46e5;
             transition: color 500ms ease-in-out;
           }
 
           [data-bs-theme="dark"] #updatesModal .timeline-text a {
-            color: #aa8a4a;
+            color: #7dd3fc;
           }
 
           /* Smaller screens: tighten the gutter and scale dots */
@@ -495,7 +621,7 @@ body { font-family: 'Outfit', sans-serif;
             <div class="timeline-dot" aria-hidden="true"></div>
             <div class="timeline-entry">
               <div class="timeline-date">2026-06-19</div>
-              <div class="timeline-text">Finished my junior year with a cumulative GPA of 3.85/4.0. Currently conducting research on robotic end-effectors @ <a href="https://mekateka.com/" target="_blank">Mekateka</a>.</div>
+              <div class="timeline-text">Finished my junior year with a cumulative GPA of 3.85/4.0. Currently conducting research on robotic end-effectors @ <a href="https://mekateka.com/" target="_blank" rel="noopener noreferrer">Mekateka</a>.</div>
             </div>
           </div>
           
@@ -520,7 +646,7 @@ body { font-family: 'Outfit', sans-serif;
             <div class="timeline-dot" aria-hidden="true"></div>
             <div class="timeline-entry">
               <div class="timeline-date">2025-09-01</div>
-              <div class="timeline-text">Started an undergraduate research internship @ <a href="https://mekateka.com/" target="_blank">Mekateka Lab</a>, Korea University (Prof. Daniel Dahyun Lim)</div>
+              <div class="timeline-text">Started an undergraduate research internship @ <a href="https://mekateka.com/" target="_blank" rel="noopener noreferrer">Mekateka Lab</a>, Korea University (Prof. Daniel Dahyun Lim)</div>
             </div>
             </div>
 
@@ -530,22 +656,22 @@ body { font-family: 'Outfit', sans-serif;
   </div>
 </div>
     <!-- my projects -->
+    <section id="projects" class="pt-3">
     <div class="text-center">
-      <p class="display-6"> my projects </p>
+      <p class="display-6 section-heading">selected projects</p>
     </div> 
-    <br>
     <!-- Row 1 -->
     <div class="container">
       <div class="row">
       <div class="col-md-6 col-12 mb-4">
-        <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modalDG" data-tooltip-text="@MEKATEKA, 2026.01 - Present" style="width: 100%; height: 300px;">
+        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalDG" data-location="MEKATEKA" data-date="Jan 2026 - present" style="width: 100%;">
           <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"></div>
         <img src="media/AG_cover.jpg" class="rounded" alt="Deployable Gripper">
         <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;">Deployable Agri-Gripper</div>
         </div>
       </div>
       <div class="col-md-6 col-12 mb-4">
-        <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modalHexa" data-tooltip-text="@Korea University, 2026.05 - Present" style="width: 100%; height: 300px;">
+        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalHexa" data-location="Korea University" data-date="May 2026 - present" style="width: 100%;">
         <img src="media/Hexa_cover.png" class="rounded" alt="Hexagonal Packaging">
         <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;">Reuseable Hexagonal Packaging</div>
         </div>
@@ -602,14 +728,14 @@ body { font-family: 'Outfit', sans-serif;
     <div class="container">
       <div class="row">
       <div class="col-md-6 col-12 mb-4">
-        <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modalHearo" data-tooltip-text="@Korea Economic Daily Building, 2024.03 - 2024.07" style="width: 100%; height: 300px;">
+        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalHearo" data-location="Korean Economic Daily Building" data-date="Mar 2024 - Jul 2024" style="width: 100%;">
           <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"></div>
         <img src="media/hearo/hro_cover.JPEG" class="rounded" alt="Hearo">
         <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">ROKAF National Start-up Competition</div>
         </div>
       </div>
       <div class="col-md-6 col-12 mb-4">
-        <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modalMLO" data-tooltip-text="@Incheon International Airport, 2024.01 - 2025.10" style="width: 100%; height: 300px;">
+        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalMLO" data-location="Incheon International Airport" data-date="Jan 2024 - Oct 2025" style="width: 100%;">
         <img src="media/mlo/mlo_cover.JPEG" class="rounded" alt="MLO">
         <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;">Military Liaison Office</div>
         </div>
@@ -676,13 +802,13 @@ body { font-family: 'Outfit', sans-serif;
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-12 mb-4">
-          <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modalJGS" data-tooltip-text="@Korea University, 2023.07 - 2023.12" style="width: 100%; height: 300px;">
+          <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalJGS" data-location="Korea University" data-date="Jul 2023 - Dec 2023" style="width: 100%;">
             <img src="media/brachiation/br_cover.png" class="rounded" alt="JGS">
             <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">Two-handed Brachiating Robot</div>
           </div>
         </div>
         <div class="col-md-6 col-12 mb-4">
-          <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modal23EoulPCB" data-tooltip-text="@Korea University, 2022.12 - 2023.09" style="width: 100%; height: 300px;">
+          <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modal23EoulPCB" data-location="Korea University" data-date="Dec 2022 - Sep 2023" style="width: 100%;">
             <img src="media/eoul23 pcb/23pcb_cover.png" class="rounded" alt="23EoulPCB">
             <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;">2023 Eoulsure PCB</div>
           </div>
@@ -770,13 +896,13 @@ body { font-family: 'Outfit', sans-serif;
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-12 mb-4">
-          <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modal23EoulBB" data-tooltip-text="@Korea University, 2022.12 - 2023.09" style="width: 100%; height: 300px;">
+          <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modal23EoulBB" data-location="Korea University" data-date="Dec 2022 - Sep 2023" style="width: 100%;">
             <img src="media/23eoul bb/23bb_cover.JPEG" class="rounded" alt="23EoulBB">
             <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">2023 Eoulsure Battery Box</div>
           </div>
         </div>
         <div class="col-md-6 col-12 mb-4">
-          <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modal22Eoul" data-tooltip-text="@Korea University, 2022.03 - 2022.09" style="width: 100%; height: 300px;">
+          <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modal22Eoul" data-location="Korea University" data-date="Mar 2022 - Sep 2022" style="width: 100%;">
             <img src="media/eoul22/22_cover.JPEG" class="rounded" alt="22Eoul">
             <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;">2022 Eoulsure</div>
           </div>
@@ -846,32 +972,34 @@ We went to Gunsan(군산) with our car to compete on the track. Although the pro
 
     <div id="tooltip" class="tooltip-custom"></div>
 
+    </section>
     <hr class="title-spacer" style="width: 50%; margin: 0 auto;">
 
     <!-- MINI PROJECTS-->
+    <section id="mini-projects" class="pt-3">
     <div class="text-center">
-      <p class="display-6"> my mini projects </p>
+      <p class="display-6 section-heading">mini projects</p>
     </div> 
     <br>
     <!--Row 1-->
     <div class="container">
       <div class="row">
               <div class="col-md-4 col-12 mb-4">
-        <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modalcomingsoon" data-tooltip-text="..." style="width: 100%; height: 300px;">
+        <div class="blur-on-hover coming-soon" data-location="Coming soon" data-date="In progress" style="width: 100%;">
         <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"></div>
         <img src="media/coming soon.jpeg" class="rounded" alt="coming soon">
         <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">Coming soon!</div>
         </div>
       </div>
       <div class="col-md-4 col-12 mb-4">
-        <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modalWeb" data-tooltip-text="@home, 2025.02 - 2025.03" style="width: 100%; height: 300px;">
+        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalWeb" data-location="Personal project" data-date="Feb 2025 - Mar 2025" style="width: 100%;">
         <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"></div>
         <img src="media/mini projects/my website/web_cover.png" class="rounded" alt="Website">
         <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">Making my own Website</div>
         </div>
       </div>
       <div class="col-md-4 col-12 mb-4">
-        <div class="blur-on-hover" data-bs-toggle="modal" data-bs-target="#modaleoulmini" data-tooltip-text="@Korea University, 2023.03 - 2023.12" style="width: 100%; height: 300px;">
+        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modaleoulmini" data-location="Korea University" data-date="Mar 2023 - Dec 2023" style="width: 100%;">
         <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"></div>
         <img src="media/mini projects/eoulmini_cover.jpg" class="rounded" alt="coming soon">
         <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">Workshops @ Eoulsure</div>
@@ -946,49 +1074,77 @@ We went to Gunsan(군산) with our car to compete on the track. Although the pro
     </div>  
 
 
+    </section>
+
     <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const tooltip = document.getElementById('tooltip');
-    const projects = document.querySelectorAll('.blur-on-hover');
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.blur-on-hover[role="button"]').forEach(card => {
+          card.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              card.click();
+            }
+          });
+        });
 
-    projects.forEach(project => {
-      project.addEventListener('mousemove', (e) => {
-        const text = project.getAttribute('data-tooltip-text');
-        tooltip.textContent = text;
-        tooltip.style.left = `${e.pageX + 10}px`;
-        tooltip.style.top = `${e.pageY + 10}px`;
-        tooltip.style.opacity = 1;
-      });
+        const navLinks = [...document.querySelectorAll('.site-nav .nav-link')];
+        const navSections = navLinks
+          .map(link => ({ link, section: document.querySelector(link.getAttribute('href')) }))
+          .filter(item => item.section);
+        const setActiveLink = id => navLinks.forEach(link => {
+          const active = link.getAttribute('href') === `#${id}`;
+          link.classList.toggle('is-active', active);
+          if (active) link.setAttribute('aria-current', 'page');
+          else link.removeAttribute('aria-current');
+        });
 
-      project.addEventListener('mouseleave', () => {
-        tooltip.style.opacity = 0;
+        const updateActiveLink = () => {
+          const pageHeight = document.documentElement.scrollHeight;
+          const atBottom = window.innerHeight + window.scrollY >= pageHeight - 4;
+
+          if (atBottom) {
+            setActiveLink('contact');
+            return;
+          }
+
+          const readingLine = window.scrollY + window.innerHeight * 0.35;
+          let activeSection = navSections[0]?.section;
+          navSections.forEach(({ section }) => {
+            if (section.offsetTop <= readingLine) activeSection = section;
+          });
+          if (activeSection) setActiveLink(activeSection.id);
+        };
+
+        updateActiveLink();
+        window.addEventListener('scroll', updateActiveLink, { passive: true });
+        window.addEventListener('resize', updateActiveLink);
       });
-    });
-  });
     </script>
 
     <br> <br>
     <hr class="title-spacer">
     <!-- Contact lines -->
+    <section id="contact">
     <h6 class="text-center">how to contact me</h6>
-    <div class="col" style="text-align: center;">
-      <a href="mailto:minkyu414@korea.ac.kr">
-        <i class="bi bi-envelope footer-icon" style="font-size: 2em; margin-right:30px;"></i>
+    <div class="contact-actions d-flex flex-wrap justify-content-center gap-3">
+      <a class="btn updates-btn" href="mailto:minkyu414@korea.ac.kr">
+        <i class="bi bi-envelope"></i><span>Email</span>
       </a>
-      <a href="https://www.linkedin.com/in/ryan-chung-2a42a1262/">
-        <i class="bi bi-linkedin footer-icon" style="font-size: 2em"></i>
+      <a class="btn updates-btn" href="https://www.linkedin.com/in/ryan-chung-2a42a1262/" target="_blank" rel="noopener noreferrer">
+        <i class="bi bi-linkedin"></i><span>LinkedIn</span>
       </a>
-      <a href="https://www.instagram.com/m_n.k_u/">
-        <i class="bi bi-instagram footer-icon" style="font-size: 2em; margin-left:30px"></i>
+      <a class="btn updates-btn" href="https://www.instagram.com/m_n.k_u/" target="_blank" rel="noopener noreferrer">
+        <i class="bi bi-instagram"></i><span>Instagram</span>
       </a>
     </div>
 
     <br>
     <h6 class="text-center">
       korean version coming soon, maybe.<br><br>
-      Last major update: 2026 Feb 6th <br>
+      Last updated: July 30, 2026 <br>
       Ryan Minkyu Chung © 2026 <br>
     </h6>
+    </section>
 
     <script>
       document.addEventListener('DOMContentLoaded', function(){
