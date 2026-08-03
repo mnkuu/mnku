@@ -14,53 +14,111 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="icon" type="image/png" href="media/favicon-32x32.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+:root {
+  --ink: #0b1d30;
+  --ink-soft: #45607f;
+  --rule: rgba(11, 29, 48, 0.16);
+  --paper-a: #e3ecf7;
+  --paper-b: #eef3fb;
+  --paper-c: #dfeafa;
+  --grid-line: rgba(30, 74, 138, 0.055);
+  --grid-strong: rgba(30, 74, 138, 0.10);
+  --accent: #1a56d6;
+  --accent-contrast: #ffffff;
+  --accent-glow: rgba(26, 86, 214, 0.16);
+  --accent-2: #e8590c;            
+  --tick: rgba(11, 29, 48, 0.55);
+  --tick-faint: rgba(11, 29, 48, 0.2);
+  --glass: rgba(255, 255, 255, 0.58);
+  --glass-border: rgba(255, 255, 255, 0.78);
+  --modal-bg: #ffffff;
+  --card-shadow: 0 14px 30px rgba(16, 42, 74, 0.14);
+  --card-shadow-hover: 0 22px 40px rgba(16, 42, 74, 0.22);
+  --font-display: 'Chakra Petch', 'Outfit', sans-serif;
+  --font-body: 'Outfit', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
 
-body { font-family: 'Outfit', sans-serif;
-  color: #0f172a;
-  
+[data-bs-theme="dark"] {
+  --ink: #d9e6f6;
+  --ink-soft: #93b1d2;
+  --rule: rgba(151, 196, 255, 0.22);
+  --paper-a: #050d1a;
+  --paper-b: #0b1c31;
+  --paper-c: #0b1f40;
+  --grid-line: rgba(122, 172, 255, 0.055);
+  --grid-strong: rgba(122, 172, 255, 0.1);
+  --accent: #38bdf8;
+  --accent-contrast: #062338;
+  --accent-glow: rgba(56, 189, 248, 0.18);
+  --accent-2: #ff8a4d;
+  --tick: rgba(191, 223, 255, 0.6);
+  --tick-faint: rgba(191, 223, 255, 0.22);
+  --glass: rgba(13, 27, 46, 0.62);
+  --glass-border: rgba(125, 211, 252, 0.36);
+  --modal-bg: #0f172a;
+  --card-shadow: 0 14px 30px rgba(0, 0, 0, 0.42);
+  --card-shadow-hover: 0 22px 40px rgba(0, 0, 0, 0.55);
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
   overflow-x: hidden;
   overflow-y: scroll;
-  
-  background: linear-gradient(135deg, #dbeafe, #eef2ff, #e0f2fe);
+  background: linear-gradient(135deg, var(--paper-a), var(--paper-b), var(--paper-c));
   background-size: 200% 200%;
-  animation: gradientAnimation 10s ease infinite;
+  animation: gradientAnimation 16s ease infinite;
   transition: background 700ms cubic-bezier(0.22,1,0.36,1), color 500ms ease-in-out;
 }
 
-[data-bs-theme="dark"] body {
-  background: linear-gradient(135deg, #08111f, #102a43, #172554);
-  background-size: 200% 200%;
-  animation: gradientAnimation 10s ease infinite;
-  transition: background 700ms cubic-bezier(0.22,1,0.36,1), color 500ms ease-in-out;
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 140px 140px, 140px 140px, 28px 28px, 28px 28px;
 }
 
 @keyframes gradientAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
+
+::selection { background: var(--accent); color: var(--accent-contrast); }
+
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 
 .blur-on-hover {
   position: relative;
   overflow: hidden;
   cursor: pointer;
   height: 320px !important;
-  border: 1px solid rgba(0, 0, 0, 0.16);
-  border-radius: 18px;
-  background: #111;
-  box-shadow: 0 14px 30px rgba(20, 39, 45, 0.14);
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  background: #101820;
+  box-shadow: var(--card-shadow);
   isolation: isolate;
   transition: transform 280ms cubic-bezier(0.22,1,0.36,1), box-shadow 280ms ease, border-color 280ms ease;
 }
@@ -79,45 +137,54 @@ body { font-family: 'Outfit', sans-serif;
   left: 0;
   transform: none;
   color: #fff;
-  font-size: clamp(1.25rem, 2.4vw, 2.1rem) !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(1.2rem, 2.3vw, 1.95rem) !important;
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 1.08;
+  letter-spacing: 0.01em;
   text-align: left;
   opacity: 1;
-  padding: 2.75rem 1.25rem 1.15rem;
-  background: linear-gradient(transparent, rgba(7, 14, 18, 0.92));
+  padding: 2.75rem 1.25rem 1.1rem;
+  background: linear-gradient(transparent, rgba(5, 11, 17, 0.92));
   transition: padding 280ms ease;
   z-index: 1;
 }
 
+
 .blur-on-hover::before,
 .blur-on-hover::after {
   position: absolute;
-  left: 1rem;
+  left: 0.9rem;
   z-index: 2;
-  max-width: calc(100% - 2rem);
-  padding: 0.32rem 0.68rem;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 999px;
+  max-width: calc(100% - 1.8rem);
+  padding: 0.3rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 6px;
   color: #fff;
-  background: rgba(8, 18, 22, 0.58);
+  background: rgba(6, 14, 20, 0.6);
   backdrop-filter: blur(8px);
-  font-size: 0.76rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-.blur-on-hover::before {
-  content: attr(data-location);
-  top: 1rem;
+.blur-on-hover::before { content: attr(data-location); top: 0.9rem; }
+.blur-on-hover::after  { content: attr(data-date);     top: 2.95rem; }
+
+.blur-on-hover:hover img { filter: brightness(0.78); transform: scale(1.045); }
+.blur-on-hover:hover .overlay-text { padding-bottom: 1.35rem; }
+
+.blur-on-hover:hover,
+.blur-on-hover:focus-visible {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+  box-shadow: var(--card-shadow-hover);
 }
 
-.blur-on-hover::after {
-  content: attr(data-date);
-  top: 3.4rem;
-}
+.coming-soon { cursor: default; }
 
-/* Legacy tooltip styling is retained for compatibility with older cards. */
 .tooltip-custom {
   position: absolute;
   background-color: rgba(0, 0, 0, 0.75);
@@ -130,300 +197,858 @@ body { font-family: 'Outfit', sans-serif;
   z-index: 1000;
 }
 
-.blur-on-hover:hover img {
-  filter: brightness(0.78);
-  transform: scale(1.045);
-}
+/* Legacy dark-theme helpers (kept for the JS toggle's body class) */
+.dark-theme { color: var(--ink); transition: color 0.5s ease; }
+.dark-theme .footer-icon,
+.dark-theme h6 { color: var(--ink); transition: color 0.5s ease; }
 
-.blur-on-hover:hover .overlay-text {
-  padding-bottom: 1.4rem;
-}
-
-.blur-on-hover:hover,
-.blur-on-hover:focus-visible {
-  transform: translateY(-6px);
-  border-color: rgba(37, 117, 252, 0.8);
-  box-shadow: 0 22px 40px rgba(20, 39, 45, 0.24);
-  outline: none;
-}
-
-.coming-soon { cursor: default; }
-
-.dark-theme {
-  color: #bae6fd;
-  transition: color 0.5s ease;
-}
-
-.dark-theme .footer-icon {
-  color: #7dd3fc;
-  transition: color 0.5s ease;
-}
-
-.dark-theme h6 {
-  color: #bae6fd;
-  transition: color 0.5s ease;
-}
-
-.dark-theme .btn-outline-dark {
-  background-color: rgba(15, 23, 42, 0.75);
-  color: #bae6fd;
-  border-color: #38bdf8;
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-.dark-theme .btn-outline-dark:hover {
-  background-color: #0f2740;
-  color: #e0f2fe;
-  border-color: #7dd3fc;
-}
-
-.dark-theme .overlay-text {
-  color: #fff;
-  transition: color 0.5s ease;
-}
-
-.dark-theme .tooltip-custom {
-  color: #7dd3fc;
-  transition: color 0.5s ease;
-}
-
-  .circle-container {
-    position: relative;
-    width: 450px;
-    height: 450px;
-  }
-
-  svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transform-origin: 50% 50%; /* Add transform-origin value */
-  }
-
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  /* Button Styling */
 
 .updates-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.45rem;
-  background: rgba(255, 255, 255, 0.56);
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  color: #102c42;
-  padding: 0.65rem 1.2rem;
-  border-radius: 50px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  transition: transform 260ms cubic-bezier(0.22,1,0.36,1), background 260ms ease, color 260ms ease, box-shadow 260ms ease;
-  box-shadow: 0 10px 24px rgba(20, 50, 75, 0.16);
+  gap: 0.5rem;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  color: var(--ink);
+  padding: 0.68rem 1.25rem;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: transform 260ms cubic-bezier(0.22,1,0.36,1), background 260ms ease, color 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
+  box-shadow: 0 10px 24px rgba(16, 42, 74, 0.14);
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(12px);
-  margin-top: 0;
-}
-
-[data-bs-theme="dark"] .updates-btn {
-  background: rgba(35, 28, 43, 0.72);
-  border-color: rgba(125, 211, 252, 0.52);
-  color: #e0f2fe;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
-}
-
-[data-bs-theme="dark"] .updates-btn:hover {
-  background: #38bdf8;
-  color: #082f49;
-  box-shadow: 0 14px 28px rgba(56, 189, 248, 0.3);
 }
 
 .updates-btn:hover {
-    transform: translateY(-3px);
-    background: #4f46e5;
-    border-color: #4f46e5;
-    box-shadow: 0 14px 28px rgba(79, 70, 229, 0.3);
-    color: #fff;
+  transform: translateY(-3px);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+  box-shadow: 0 14px 28px var(--accent-glow);
 }
 
-/* Tighten spacing for "learn more about me" circular button */
+.updates-btn .btn-content { display: inline-flex; align-items: center; }
+
+
 .btnSwitch {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  margin-top: 0 !important;
-  margin-bottom: 1rem !important;
+  padding: 0 !important;
+  margin: 1.4rem auto 0 !important;
+  border: 0;
+  background: none;
 }
 
-/* Modal Styling */
+.circle-container {
+  position: relative;
+  width: min(400px, 78vw);
+  height: min(400px, 78vw);
+  margin-inline: auto;
+}
+
+.circle-container svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ring-track { stroke: var(--tick-faint); transition: stroke 0.5s ease; }
+.ring-marks { stroke: var(--tick);       transition: stroke 0.5s ease; }
+.ring-index { fill: var(--accent-2); }
+
+.ring-text {
+  animation: rotate 32s linear infinite;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.circular-text {
+  fill: var(--ink);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 8.1px;
+  letter-spacing: 0.4px;
+  transition: fill 0.5s ease;
+}
+
+.btnSwitch:hover .circular-text { fill: var(--accent); }
+
+.image-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 62%;
+  height: 62%;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  box-shadow: 0 10px 30px rgba(16, 42, 74, 0.18), 0 0 0 6px var(--glass);
+  transition: transform 320ms cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.btnSwitch:hover .image-container { transform: translate(-50%, -50%) scale(1.02); }
+
+
+.about-me-content {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  flex-direction: row;
+}
+
+.about-me-content .circle-container {
+  width: min(300px, 64vw);
+  height: min(300px, 64vw);
+  flex: 0 0 auto;
+}
+
+.about-me-text {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: 19px;
+  line-height: 1.55;
+  text-align: left;
+}
+
+@media (max-width: 900px) {
+  .about-me-content { flex-direction: column; align-items: center; }
+}
+
+
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  margin: 1rem auto 0;
+  width: min(1100px, calc(100% - 2rem));
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 8px 25px rgba(16, 42, 74, 0.1);
+}
+
+.site-nav .navbar-brand {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.22em;
+  color: var(--ink);
+}
+
+.site-nav .nav-link {
+  border-radius: 999px;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding-inline: 0.85rem !important;
+  transition: background 220ms ease, color 220ms ease, transform 220ms ease;
+}
+
+.site-nav .nav-link:hover { color: var(--accent); }
+
+.site-nav .nav-link.is-active {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  transform: translateY(-1px);
+}
+
+[data-bs-theme="dark"] .site-nav { box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35); }
+
+/* theme toggle: icon-only switch living in the nav pill */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  transition: color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+  transition: transform 300ms ease;
+}
+
+.theme-toggle:hover svg { transform: rotate(40deg); }
+
+
+.theme-toggle .icon-sun { display: none; }
+[data-bs-theme="dark"] .theme-toggle .icon-sun { display: block; }
+[data-bs-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+.hero {
+  padding: 1.2rem 0 1.6rem;
+  min-height: calc(100vh - 96px);
+  min-height: calc(100svh - 96px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.hero-eyebrow::before,
+.hero-eyebrow::after {
+  content: "";
+  width: 36px;
+  height: 1px;
+  background: var(--rule);
+}
+
+.hero .display-1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+
+.hero .display-6 {
+  max-width: 42rem;
+  margin: 1rem auto 0;
+  line-height: 1.3;
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+.section-heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+#skills .section-heading { text-align: center; }
+
+hr.title-spacer {
+  position: relative;
+  border: 0;
+  height: 1px;
+  width: min(640px, 74%);
+  margin: 2.6rem auto;
+  background: var(--rule);
+  opacity: 1;
+  overflow: visible;
+}
+
+hr.title-spacer::before,
+hr.title-spacer::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  width: 1px;
+  height: 9px;
+  background: var(--rule);
+}
+
+hr.title-spacer::before { left: 0; }
+hr.title-spacer::after  { right: 0; }
+
+
+.modal-content,
 .news-modal {
-    background: #ffffff;
-    color: #000000;
-    border: 1px solid #333;
-    border-radius: 20px;
+  background: var(--modal-bg);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  /* double frame: a paper-colored gap ring plus an outer rule */
+  box-shadow:
+    0 0 0 5px var(--modal-bg),
+    0 0 0 6px var(--rule),
+    0 30px 70px rgba(10, 20, 40, 0.35);
 }
 
-.modal-header { border-bottom: 1px solid #333; }
-
-.news-item {
-  background: #252525;
-  padding: 15px;
-  border-radius: 12px;
-  margin-bottom: 15px;
-  border-left: 4px solid #4f46e5;
-  transition: transform 0.2s;
-  margin-left: -20px; /* shift item to the left */
+.modal-header {
+  border-bottom: 1px solid var(--rule);
+  padding: 1rem 1.4rem;
 }
 
-.news-item:hover {
-    transform: scale(1.02);
-    background: #2d2d2d;
+.modal-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.35rem;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
 }
 
-.news-date {
-    font-size: 0.8rem;
-    color: #aaa;
+.modal-title::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 0.5em;
+  height: 0.5em;
+  margin-right: 0.6em;
+  background: var(--accent-2);
+  transform: rotate(45deg);
 }
 
-  /* Circular text: unified class used for both button and modal */
-  .circular-text {
-    transform-box: fill-box;
-    transform-origin: 50% 50%;
+.modal-title.text-center { justify-content: center; }
+
+.modal .btn-close {
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 0.55rem;
+  opacity: 0.75;
+  transition: opacity 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.modal .btn-close:hover,
+.modal .btn-close:focus-visible {
+  opacity: 1;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.modal-body {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  padding: 1.25rem 1.4rem 1.5rem;
+}
+
+.modal-body.about-me-content { overflow-y: auto; }
+
+/* Keep fixed-size modal images from overflowing small screens */
+.modal-body img { max-width: 100%; height: auto !important; }
+
+.modal-footer { border-top: 1px solid var(--rule); }
+
+@media (max-width: 576px) {
+  .modal-content,
+  .news-modal {
+    box-shadow:
+      0 0 0 4px var(--modal-bg),
+      0 0 0 5px var(--rule),
+      0 18px 40px rgba(10, 20, 40, 0.4);
+  }
+  .modal-body { font-size: 1rem; }
+}
+
+/* --------------------------------------------------------------------------
+   Contact: drawing title block
+   -------------------------------------------------------------------------- */
+#contact { padding-bottom: 3rem; }
+
+.title-block {
+  max-width: 860px;
+  margin: 0 auto;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(16, 42, 74, 0.1);
+  transition: background 700ms cubic-bezier(0.22,1,0.36,1);
+}
+
+.tb-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.tb-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.tb-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.title-block .contact-actions {
+  padding: 1.4rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.contact-actions .updates-btn { min-width: 8.5rem; }
+.contact-actions .bi { font-size: 1.05rem; }
+
+.tb-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+
+.tb-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.85rem 1.4rem;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.tb-cell:nth-child(2n) { border-right: 0; }
+.tb-cell:nth-last-child(-n+2) { border-bottom: 0; }
+
+.tb-label {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.tb-value { font-size: 0.95rem; font-weight: 500; }
+
+.tb-copy {
+  margin: 0;
+  padding: 0.8rem 1.4rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   Small screens
+   -------------------------------------------------------------------------- */
+@media (max-width: 576px) {
+  .site-nav { width: calc(100% - 1rem); margin-top: 0.5rem; border-radius: 16px; }
+  .site-nav .navbar-brand { font-size: 0.9rem; }
+  .site-nav .navbar-collapse { padding: 0.5rem 0.35rem; }
+  .hero { min-height: auto; padding: 3.5rem 1rem 1rem; }
+  .hero .display-1 { font-size: clamp(2.4rem, 13vw, 4rem); }
+  .hero .display-6 { font-size: 1.08rem; }
+  .hero-eyebrow { font-size: 0.62rem; letter-spacing: 0.22em; gap: 0.6rem; }
+  .hero-eyebrow::before, .hero-eyebrow::after { width: 22px; }
+  .blur-on-hover { height: 240px !important; }
+  .blur-on-hover::after { top: 2.8rem; }
+  .circle-container { width: min(320px, 86vw); height: min(320px, 86vw); }
+  .tb-grid { grid-template-columns: 1fr; }
+  .tb-cell { border-right: 0; }
+  .tb-cell:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
+  .tb-cell:last-child { border-bottom: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+/* --------------------------------------------------------------------------
+   Updates modal timeline (moved out of the modal body)
+   -------------------------------------------------------------------------- */
+/* Light theme: Keep modal white */
+#updatesModal .modal-content,
+#updatesModal .news-modal { 
+  background: #ffffff; 
+  color: #000000; 
+  transition: background 700ms cubic-bezier(0.22,1,0.36,1), color 500ms ease-in-out;
+}
+
+/* Dark theme */
+[data-bs-theme="dark"] #updatesModal .modal-content,
+[data-bs-theme="dark"] #updatesModal .news-modal {
+  background: #0f172a;
+  color: #e0f2fe;
+}
+
+/* Reserve left gutter for timeline line and dots */
+#updatesModal .timeline { position: relative; padding-left: 56px; }
+
+/* Vertical line running under the dots */
+#updatesModal .timeline::before {
+  display: none !important;
+}
+
+/* Each timeline item stays in normal flow; dot is absolutely positioned inside it */
+#updatesModal .timeline-item { position: relative; margin-bottom: 18px; }
+
+/* Position the dot so it overlaps/centers on the vertical line */
+#updatesModal .timeline-dot {
+  position: absolute;
+  left: 26px;
+  transform: translateX(-50%) rotate(45deg);
+  top: 8px;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: var(--accent);
+  box-shadow: 0 0 0 6px var(--accent-glow);
+  border: 2px solid #ffffff;
+  z-index: 2;
+  box-sizing: border-box;
+  transition: background 500ms ease-in-out, border-color 500ms ease-in-out, box-shadow 500ms ease-in-out;
+}
+
+/* Dark theme dot styling */
+[data-bs-theme="dark"] #updatesModal .timeline-dot {
+  background: #38bdf8;
+  border-color: #0f172a;
+  box-shadow: 0 0 0 6px rgba(56,189,248,0.08);
+}
+
+/* Date sits to the right of the dot */
+#updatesModal .timeline-entry { 
+  margin-left: 0; 
+  padding-left: 12px; 
+  font-size: 0.98rem; 
+  word-break: break-word; 
+}
+
+#updatesModal .timeline-date { 
+  display: inline-block; 
+  font-weight: 700; 
+  color: var(--accent);
+  margin: 0 8px 6px 36px;
+  transition: color 500ms ease-in-out;
+}
+
+/* Dark theme date styling */
+[data-bs-theme="dark"] #updatesModal .timeline-date {
+  color: var(--accent);
+}
+
+/* Link styling */
+#updatesModal .timeline-text a {
+  color: var(--accent);
+  transition: color 500ms ease-in-out;
+}
+
+[data-bs-theme="dark"] #updatesModal .timeline-text a {
+  color: var(--accent);
+}
+
+/* Smaller screens: tighten the gutter and scale dots */
+@media (max-width:576px){
+  #updatesModal .timeline { padding-left: 44px; }
+  #updatesModal .timeline::before { left: 22px; }
+  #updatesModal .timeline-dot { left: 22px; width: 12px; height: 12px; top: 6px; }
+  #updatesModal .timeline-date { margin-left: 32px; }
+}
+
+/* --------------------------------------------------------------------------
+   Hero extras: inline subtitle links and a dimension-arrow scroll cue
+   -------------------------------------------------------------------------- */
+.scroll-cue {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.2rem;
+  color: var(--ink);
+  opacity: 0.65;
+  text-decoration: none;
+  transition: opacity 200ms ease, color 200ms ease;
+}
+
+.scroll-cue:hover,
+.scroll-cue:focus-visible { opacity: 1; color: var(--accent); }
+
+.scroll-cue-label {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  padding-left: 0.34em;
+}
+
+.scroll-cue svg {
+  width: 14px;
+  height: 40px;
+  display: block;
+  animation: cueBob 2.2s ease-in-out infinite;
+}
+
+.scroll-cue line,
+.scroll-cue polyline {
+  stroke: currentColor;
+  stroke-width: 1.6;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes cueBob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(7px); }
+}
+
+/* --------------------------------------------------------------------------
+   Project tech tags on card overlays
+   -------------------------------------------------------------------------- */
+.overlay-text .tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 240ms ease, transform 240ms ease;
+}
+
+.blur-on-hover:hover .tag-row,
+.blur-on-hover:focus-visible .tag-row,
+.blur-on-hover:focus-within .tag-row {
+  opacity: 1;
+  transform: none;
+}
+
+.overlay-text .tag {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  padding: 0.28rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: rgba(6, 14, 20, 0.55);
+  backdrop-filter: blur(6px);
+}
+
+@media (max-width: 576px) {
+  .overlay-text .tag { font-size: 0.58rem; padding: 0.24rem 0.5rem; }
+}
+
+/* --------------------------------------------------------------------------
+   Instruments & tooling: skills laid out like a bill-of-materials table
+   -------------------------------------------------------------------------- */
+.bom-wrap {
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  overflow-x: auto;
+  margin-bottom: 3rem;
+}
+
+.bom-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.bom-table th {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  text-align: left;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.bom-table td {
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+.bom-table tbody tr:last-child td { border-bottom: 0; }
+
+.bom-table .bom-no {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.bom-table .bom-cat {
+  font-family: var(--font-display);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.bom-table .bom-ref {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+.bom-table tbody tr { transition: background 180ms ease; }
+.bom-table tbody tr:hover { background: var(--accent-glow); }
+
+@media (max-width: 576px) {
+  .bom-table { font-size: 0.9rem; }
+  .bom-table th, .bom-table td { padding: 0.7rem 0.8rem; }
+}
+
+/* --------------------------------------------------------------------------
+   Scroll reveal: cards and headings drift in as they enter the viewport.
+   The .reveal class is only ever added by JS, so everything stays visible
+   if JS is unavailable; reduced-motion visitors get no movement at all.
+   -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 650ms ease, transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Cursor reticle - follows the mouse, locks on over anything clickable.
+   Only activates on mouse devices (never touch) and only when the visitor
+   has not asked for reduced motion; JS adds .cursor-fx to <html> if so.
+   -------------------------------------------------------------------------- */
+.cursor-dot,
+.cursor-ring { display: none; }
+
+@media (hover: hover) and (pointer: fine) {
+  .cursor-fx,
+  .cursor-fx * { cursor: none !important; }
+
+  .cursor-fx .cursor-dot,
+  .cursor-fx .cursor-ring {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 99999;
+    opacity: 0;
+    transition: opacity 250ms ease;
     will-change: transform;
-    fill: #000000; /* make circular text black */
-    letter-spacing: 0.4px;
-    font-family: 'Outfit', sans-serif;
-    animation: rotate 20s linear infinite;
-    transition: fill 500ms ease-in-out, opacity 300ms ease-in-out;
   }
 
-  /* Disable rotation on small screens to prevent text distortion */
-  @media (max-width: 576px) {
-    .circular-text {
-      animation: none !important;
-      transform: none !important;
-    }
-  }
+  .cursor-fx .cursor-dot.is-on,
+  .cursor-fx .cursor-ring.is-on { opacity: 1; }
 
-  .updates-btn .btn-content { display: inline-flex; align-items: center; }
-
-  /* Match circular text color to dark-theme accent when dark mode is active */
-      [data-bs-theme="dark"] .circular-text,
-      .dark-theme .circular-text {
-    fill: #7dd3fc !important;
-  }
-
-  .image-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    height: 300px;
+  /* the precise point: a small orange dot glued to the real cursor position */
+  .cursor-dot {
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
-    overflow: hidden;
-    border: 2px solid #3498db;
+    background: var(--accent-2);
   }
 
-  .image-container img {
+  /* idle: a soft orange disc; over anything clickable the disc fades out
+     as the rotating 8-point cross fades in at full size */
+  .cursor-ring {
+    width: 64px;
+    height: 64px;
+    color: var(--accent-2);
+    transition: opacity 250ms ease, color 200ms ease;
+  }
+
+  .cursor-ring svg {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    display: block;
+    transform: scale(0.6);
+    transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .about-me-content {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        flex-direction: row;
-      }
 
-      .about-me-text {
-        flex: 1;
-        font-family: 'Outfit', sans-serif;
-        font-size: 20px;
-        text-align: left;
-      }
+  .cursor-ring.is-engaged svg { transform: scale(1); }
+  .cursor-ring.is-pressed svg { transform: scale(0.78); }
 
-      /* Responsive: stack content vertically on narrow screens and center items */
-      @media (max-width: 900px) {
-        .about-me-content { flex-direction: column; align-items: center; }
-        .about-me-text { text-align: center; }
-        .circle-container { width: 250px; height: 250px; }
-        .image-container { width: 200px; height: 200px; }
-      }
+  .cursor-ring line {
+    stroke: currentColor;
+    stroke-width: 5;
+  }
 
-      /* Portfolio structure */
-      html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
-      .site-nav {
-        position: sticky;
-        top: 0;
-        z-index: 1030;
-        margin: 1rem auto 0;
-        width: min(1100px, calc(100% - 2rem));
-        border: 1px solid rgba(0, 0, 0, 0.12);
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.72);
-        backdrop-filter: blur(14px);
-        box-shadow: 0 8px 25px rgba(20, 39, 45, 0.1);
-      }
-      .site-nav .navbar-brand { font-weight: 800; letter-spacing: -0.03em; }
-      .site-nav .nav-link { border-radius: 999px; color: inherit; font-weight: 600; padding-inline: 0.75rem !important; transition: background 220ms ease, color 220ms ease, transform 220ms ease; }
-      .site-nav .nav-link:hover { color: #4f46e5; }
-      .site-nav .nav-link.is-active { background: #4f46e5; color: #fff; transform: translateY(-1px); }
-      .hero { min-height: 42vh; padding: 5.5rem 0 2.5rem; }
-      .hero .display-1 { font-weight: 800; letter-spacing: -0.065em; }
-      .hero .display-6 { max-width: 40rem; margin: 1rem auto 0; line-height: 1.25; }
-      .section-heading { font-weight: 800; letter-spacing: -0.04em; }
-      .contact-actions .updates-btn { min-width: 8.5rem; }
-      .contact-actions .bi { font-size: 1.1rem; }
-      [data-bs-theme="dark"] .site-nav { background: rgba(8, 17, 31, 0.76); border-color: rgba(125, 211, 252, 0.28); }
-      [data-bs-theme="dark"] .site-nav .nav-link:hover { color: #7dd3fc; }
-      [data-bs-theme="dark"] .site-nav .nav-link.is-active { background: #38bdf8; color: #082f49; }
-      @media (max-width: 576px) {
-        .site-nav { width: calc(100% - 1rem); margin-top: 0.5rem; border-radius: 16px; }
-        .site-nav .navbar-brand { font-size: 0.95rem; }
-        .site-nav .navbar-collapse { padding: 0.5rem 0.35rem; }
-        .hero { min-height: auto; padding: 3.75rem 1rem 1.25rem; }
-        .hero .display-1 { font-size: clamp(2.7rem, 15vw, 4.5rem); }
-        .hero .display-6 { font-size: 1.15rem; }
-        .blur-on-hover { height: 250px !important; }
-        /* On phones the hero becomes a stable portrait button: no rotating ring or offset. */
-        .btnSwitch .circle-container { width: 220px; height: 255px; }
-        .btnSwitch .circle-container > svg { display: none; }
-        .btnSwitch .image-container { top: 0; width: 190px; height: 190px; }
-        .btnSwitch .circle-container::after {
-          content: 'Tap to read about me';
-          position: absolute;
-          bottom: 0;
-          left: 50%;
-          transform: translateX(-50%);
-          width: max-content;
-          font-weight: 700;
-          color: inherit;
-        }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-      }
+  .cursor-ring .cur-idle {
+    fill: currentColor;
+    opacity: 0.5;
+    transition: opacity 220ms ease;
+  }
+
+  .cursor-ring.is-engaged .cur-idle { opacity: 0; }
+
+  .cursor-ring .cur-cross {
+    transform-origin: center;
+    transform-box: view-box;
+    animation: rotate 10s linear infinite;
+    opacity: 0;
+    transition: opacity 220ms ease;
+  }
+
+  .cursor-ring.is-engaged .cur-cross { opacity: 0.72; }
+}
     </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-md site-nav px-3" aria-label="Primary navigation">
       <a class="navbar-brand" href="#top">RMC</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#siteNav" aria-controls="siteNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <div class="d-flex align-items-center gap-2 ms-auto order-md-last">
+        <button class="theme-toggle" id="btnSwitch" type="button" aria-label="Switch to dark theme" title="Switch to dark theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4.6"/><line x1="12" y1="19.4" x2="12" y2="22"/><line x1="2" y1="12" x2="4.6" y2="12"/><line x1="19.4" y1="12" x2="22" y2="12"/><line x1="4.9" y1="4.9" x2="6.8" y2="6.8"/><line x1="17.2" y1="17.2" x2="19.1" y2="19.1"/><line x1="4.9" y1="19.1" x2="6.8" y2="17.2"/><line x1="17.2" y1="6.8" x2="19.1" y2="4.9"/></svg>
+        </button>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#siteNav" aria-controls="siteNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
       <div class="collapse navbar-collapse" id="siteNav">
-        <ul class="navbar-nav ms-auto align-items-md-center gap-md-2">
+        <ul class="navbar-nav ms-auto align-items-md-center gap-md-2 me-md-2">
           <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
           <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
           <li class="nav-item"><a class="nav-link" href="#mini-projects">Mini projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
         </ul>
       </div>
@@ -431,35 +1056,49 @@ body { font-family: 'Outfit', sans-serif;
 
     <!-- title section -->
     <header class="container text-center hero" id="top">
+      <p class="hero-eyebrow">Mechanical Engineering Portfolio &#183; Seoul, KR</p>
       <h1 class="display-1">Ryan Minkyu Chung</h1>
       <p class="display-6">Mechanical Engineering student at Korea University, building thoughtful machines and systems.</p>
-      <div class="d-flex justify-content-center gap-3 mt-4">
-      <button class="btn updates-btn btn-outline-dark" id="btnSwitch">Dark Theme</button>
-      </div>
-    </header>
-
-    <hr class="title-spacer">
-    <br>
-    <!-- about me modal -->
+<div class="hero-actions d-flex justify-content-center flex-wrap gap-3 mt-1">
+  <button type="button" class="btn updates-btn" data-bs-toggle="modal" data-bs-target="#updatesModal">
+    <div class="btn-content">
+      <i class="bi bi-newspaper me-2"></i>
+      <span>Updates & News</span>
+    </div>
+  </button>
+  <a class="btn updates-btn btn-outline-dark" href="https://drive.google.com/file/d/1fDgC25t8bHrCmSQHAYDw689XPwX015Bb/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
+</div>
     <div class="text-center" id="about">
-      <button type="button" class="btn btnSwitch" data-bs-toggle="modal" data-bs-target="#aboutMeModal">
+      <button type="button" class="btn btnSwitch" data-bs-toggle="modal" data-bs-target="#aboutMeModal" aria-label="Learn more about me">
         <div class="circle-container">
-          <svg viewBox="0 0 100 100">
-              <defs>
-              <path id="circle" d="
-                M 50, 50
-                m -42, 0
-                a 42,42 0 1,1 84,0
-                a 42,42 0 1,1 -84,0"/>
+          <svg class="ring-base" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+            <circle class="ring-track" cx="50" cy="50" r="47.4" fill="none" stroke-width="1.1" stroke-dasharray="0.55 4.41"/>
+            <g class="ring-marks" stroke-width="0.8">
+              <line id="heroTick" x1="50" y1="1.6" x2="50" y2="5.4"/>
+              <use href="#heroTick" transform="rotate(30 50 50)"/>
+              <use href="#heroTick" transform="rotate(60 50 50)"/>
+              <use href="#heroTick" transform="rotate(90 50 50)"/>
+              <use href="#heroTick" transform="rotate(120 50 50)"/>
+              <use href="#heroTick" transform="rotate(150 50 50)"/>
+              <use href="#heroTick" transform="rotate(180 50 50)"/>
+              <use href="#heroTick" transform="rotate(210 50 50)"/>
+              <use href="#heroTick" transform="rotate(240 50 50)"/>
+              <use href="#heroTick" transform="rotate(270 50 50)"/>
+              <use href="#heroTick" transform="rotate(300 50 50)"/>
+              <use href="#heroTick" transform="rotate(330 50 50)"/>
+            </g>
+            <g class="ring-needle"><path class="ring-index" d="M 50 1.4 L 52.6 8 L 47.4 8 Z"/></g>
+          </svg>
+          <svg class="ring-text" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+            <defs>
+              <path id="heroRingPath" fill="none" d="M 50,50 m -35,0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0"/>
             </defs>
-            <text class="circular-text" font-size="12" text-anchor="middle">
-              <textPath xlink:href="#circle" startOffset="50%">
-                | Ryan Minkyu Chung | Click to learn about me! 
-              </textPath>
+            <text class="circular-text" textLength="220" lengthAdjust="spacing">
+              <textPath href="#heroRingPath" startOffset="0" textLength="220" lengthAdjust="spacing">RYAN MINKYU CHUNG &#183; CLICK TO LEARN ABOUT ME &#183; </textPath>
             </text>
           </svg>
           <div class="image-container">
-            <img src="media/about_me_photo 2.0.jpg" alt="Center Image">
+            <img fetchpriority="high" decoding="async" src="media/about_me_photo 2.0.jpg" alt="Ryan Minkyu Chung portrait">
           </div>
         </div>
       </button>
@@ -470,24 +1109,36 @@ body { font-family: 'Outfit', sans-serif;
               <div class="modal-title fs-3 w-100 text-center" id="aboutMeModalLabel">about me</div>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body about-me-content" style="overflow-y: auto;">
+            <div class="modal-body about-me-content">
               <div class="circle-container">
-                <svg viewBox="0 0 100 100">
+                <svg class="ring-base" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+                  <circle class="ring-track" cx="50" cy="50" r="47.4" fill="none" stroke-width="1.1" stroke-dasharray="0.55 4.41"/>
+                  <g class="ring-marks" stroke-width="0.8">
+                    <line id="modalTick" x1="50" y1="1.6" x2="50" y2="5.4"/>
+                    <use href="#modalTick" transform="rotate(30 50 50)"/>
+                    <use href="#modalTick" transform="rotate(60 50 50)"/>
+                    <use href="#modalTick" transform="rotate(90 50 50)"/>
+                    <use href="#modalTick" transform="rotate(120 50 50)"/>
+                    <use href="#modalTick" transform="rotate(150 50 50)"/>
+                    <use href="#modalTick" transform="rotate(180 50 50)"/>
+                    <use href="#modalTick" transform="rotate(210 50 50)"/>
+                    <use href="#modalTick" transform="rotate(240 50 50)"/>
+                    <use href="#modalTick" transform="rotate(270 50 50)"/>
+                    <use href="#modalTick" transform="rotate(300 50 50)"/>
+                    <use href="#modalTick" transform="rotate(330 50 50)"/>
+                  </g>
+                  <g class="ring-needle"><path class="ring-index" d="M 50 1.4 L 52.6 8 L 47.4 8 Z"/></g>
+                </svg>
+                <svg class="ring-text" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
                   <defs>
-                    <path id="circle-modal" d="
-                      M 50, 50
-                      m -42, 0
-                      a 42,42 0 1,1 84,0
-                      a 42,42 0 1,1 -84,0"/>
+                    <path id="modalRingPath" fill="none" d="M 50,50 m -35,0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0"/>
                   </defs>
-                  <text class="circular-text" font-size="11" text-anchor="middle">
-                    <textPath xlink:href="#circle-modal" startOffset="50%">
-                       Ryan Minkyu Chung | Mech. Engineer | Traveler 
-                    </textPath>
+                  <text class="circular-text" textLength="220" lengthAdjust="spacing">
+                    <textPath href="#modalRingPath" startOffset="0" textLength="220" lengthAdjust="spacing">RYAN MINKYU CHUNG &#183; MECH. ENGINEER &#183; TRAVELER &#183; </textPath>
                   </text>
                 </svg>
                 <div class="image-container">
-                  <img src="media/inner about me photo.jpg" alt="Center Image">
+                  <img loading="lazy" decoding="async" src="media/inner about me photo.jpg" alt="Ryan Minkyu Chung portrait">
                 </div>
               </div>
               <div class="about-me-text">
@@ -504,15 +1155,15 @@ body { font-family: 'Outfit', sans-serif;
         </div>
       </div>
     </div>
-<div class="text-center mb-5 d-flex justify-content-center gap-3">
-  <button type="button" class="btn updates-btn" data-bs-toggle="modal" data-bs-target="#updatesModal">
-    <div class="btn-content">
-      <i class="bi bi-newspaper me-2"></i>
-      <span>Updates & News</span>
-    </div>
-  </button>
-  <a class="btn updates-btn btn-outline-dark" href="https://drive.google.com/file/d/1fDgC25t8bHrCmSQHAYDw689XPwX015Bb/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
-</div>
+      <a class="scroll-cue" href="#projects" aria-label="Scroll down to the projects section">
+        <span class="scroll-cue-label">Scroll</span>
+        <svg viewBox="0 0 16 44" focusable="false" aria-hidden="true">
+          <line x1="8" y1="2" x2="8" y2="34"/>
+          <polyline points="2 28, 8 36, 14 28"/>
+        </svg>
+      </a>
+    </header>
+
 
 <!-- Updates & News Modal -->
 <div class="modal fade" id="updatesModal" tabindex="-1" aria-hidden="true">
@@ -523,97 +1174,6 @@ body { font-family: 'Outfit', sans-serif;
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <style>
-          /* Light theme: Keep modal white */
-          #updatesModal .modal-content,
-          #updatesModal .news-modal { 
-            background: #ffffff; 
-            color: #000000; 
-            transition: background 700ms cubic-bezier(0.22,1,0.36,1), color 500ms ease-in-out;
-          }
-
-          /* Dark theme */
-          [data-bs-theme="dark"] #updatesModal .modal-content,
-          [data-bs-theme="dark"] #updatesModal .news-modal {
-            background: #0f172a;
-            color: #e0f2fe;
-          }
-
-          /* Reserve left gutter for timeline line and dots */
-          #updatesModal .timeline { position: relative; padding-left: 56px; }
-
-          /* Vertical line running under the dots */
-          #updatesModal .timeline::before {
-            display: none !important;
-          }
-
-          /* Each timeline item stays in normal flow; dot is absolutely positioned inside it */
-          #updatesModal .timeline-item { position: relative; margin-bottom: 18px; }
-
-          /* Position the dot so it overlaps/centers on the vertical line */
-          #updatesModal .timeline-dot {
-            position: absolute;
-            left: 26px;
-            transform: translateX(-50%);
-            top: 8px;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #4f46e5;
-            box-shadow: 0 0 0 6px rgba(79,70,229,0.08);
-            border: 2px solid #ffffff;
-            z-index: 2;
-            box-sizing: border-box;
-            transition: background 500ms ease-in-out, border-color 500ms ease-in-out, box-shadow 500ms ease-in-out;
-          }
-
-          /* Dark theme dot styling */
-          [data-bs-theme="dark"] #updatesModal .timeline-dot {
-            background: #38bdf8;
-            border-color: #0f172a;
-            box-shadow: 0 0 0 6px rgba(56,189,248,0.08);
-          }
-
-          /* Date sits to the right of the dot */
-          #updatesModal .timeline-entry { 
-            margin-left: 0; 
-            padding-left: 12px; 
-            font-size: 0.98rem; 
-            word-break: break-word; 
-          }
-
-          #updatesModal .timeline-date { 
-            display: inline-block; 
-            font-weight: 700; 
-            color: #4f46e5;
-            margin: 0 8px 6px 36px;
-            transition: color 500ms ease-in-out;
-          }
-
-          /* Dark theme date styling */
-          [data-bs-theme="dark"] #updatesModal .timeline-date {
-            color: #7dd3fc;
-          }
-
-          /* Link styling */
-          #updatesModal .timeline-text a {
-            color: #4f46e5;
-            transition: color 500ms ease-in-out;
-          }
-
-          [data-bs-theme="dark"] #updatesModal .timeline-text a {
-            color: #7dd3fc;
-          }
-
-          /* Smaller screens: tighten the gutter and scale dots */
-          @media (max-width:576px){
-            #updatesModal .timeline { padding-left: 44px; }
-            #updatesModal .timeline::before { left: 22px; }
-            #updatesModal .timeline-dot { left: 22px; width: 12px; height: 12px; top: 6px; }
-            #updatesModal .timeline-date { margin-left: 32px; }
-          }
-
-        </style>
 
         <div class="timeline" id="newsContainer">
 
@@ -650,6 +1210,14 @@ body { font-family: 'Outfit', sans-serif;
             </div>
             </div>
 
+          <div class="timeline-item">
+            <div class="timeline-dot" aria-hidden="true"></div>
+            <div class="timeline-entry">
+              <div class="timeline-date">2025-08-17</div>
+              <div class="timeline-text">Earned the Certified SOLIDWORKS Associate (CSWA) certification from Dassault Syst&#232;mes.</div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -665,15 +1233,14 @@ body { font-family: 'Outfit', sans-serif;
       <div class="row">
       <div class="col-md-6 col-12 mb-4">
         <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalDG" data-location="MEKATEKA" data-date="Jan 2026 - present" style="width: 100%;">
-          <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"></div>
-        <img src="media/AG_cover.jpg" class="rounded" alt="Deployable Gripper">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;">Deployable Agri-Gripper</div>
+        <img loading="lazy" decoding="async" src="media/AG_cover.jpg" class="rounded" alt="Deployable Gripper">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;"><span class="tag-row"><span class="tag">Robotics</span><span class="tag">CAD</span><span class="tag">3D Printing</span></span>Deployable Agri-Gripper</div>
         </div>
       </div>
       <div class="col-md-6 col-12 mb-4">
         <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalHexa" data-location="Korea University" data-date="May 2026 - present" style="width: 100%;">
-        <img src="media/Hexa_cover.png" class="rounded" alt="Hexagonal Packaging">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;">Reuseable Hexagonal Packaging</div>
+        <img loading="lazy" decoding="async" src="media/Hexa_cover.png" class="rounded" alt="Hexagonal Packaging">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;"><span class="tag-row"><span class="tag">CAD</span><span class="tag">Structures</span><span class="tag">Sustainability</span></span>Reuseable Hexagonal Packaging</div>
         </div>
       </div>
       </div>
@@ -687,14 +1254,14 @@ body { font-family: 'Outfit', sans-serif;
             <h5 class="modal-title" id="modalDGLabel">A Deployable End-Effector</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body" style="font-family: 'Outfit', sans-serif; font-size: 20px; margin-bottom: 20px;">
+          <div class="modal-body">
             COMING SOON! <br><br> This project is currently under development and will be updated soon. Stay tuned for more information on the Deployable Agri-Gripper project, including design details, research findings, and potential applications in agricultural robotics.
             <div class="row g-3 mt-2">
               <div class="col-md-6 text-center">
-                <img src="media/AG_open.JPG" class="img-fluid rounded w-100" alt="open DG">
+                <img loading="lazy" decoding="async" src="media/AG_open.JPG" class="img-fluid rounded w-100" alt="open DG">
               </div>
               <div class="col-md-6 text-center">
-                <img src="media/AG_closed.JPG" class="img-fluid rounded w-100" alt="closed DG">
+                <img loading="lazy" decoding="async" src="media/AG_closed.JPG" class="img-fluid rounded w-100" alt="closed DG">
               </div>
             </div>
           </div>
@@ -709,14 +1276,14 @@ body { font-family: 'Outfit', sans-serif;
             <h5 class="modal-title" id="modalHexaLabel">Reuseable Hexagonal Packaging</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body" style="font-family: 'Outfit', sans-serif; font-size: 20px; margin-bottom: 20px;">
+          <div class="modal-body">
             COMING SOON! <br><br> This project is currently under development and will be updated soon. Stay tuned for more information on the Reuseable Hexagonal Packaging project, including design details, research findings, and potential transformable structure applications in sustainable packaging.
             <div class="row g-3 mt-2 justify-content-center">
               <div class="col-md-6 text-center">
-                <img src="media/Hexa_unit.png" class="img-fluid rounded" alt="Hexagonal Packaging Unit" style="width: 150px; height: 290px;">
+                <img loading="lazy" decoding="async" src="media/Hexa_unit.png" class="img-fluid rounded" alt="Hexagonal Packaging Unit" style="width: 150px; height: 290px;">
               </div>
               <div class="col-md-6 text-center">
-                <img src="media/Hexa_444.png" class="img-fluid rounded" alt="Hexagonal Packaging 4x4x4" style="width: 300px; height: 290px;">
+                <img loading="lazy" decoding="async" src="media/Hexa_444.png" class="img-fluid rounded" alt="Hexagonal Packaging 4x4x4" style="width: 300px; height: 290px;">
               </div>
             </div><br>
           </div>
@@ -729,15 +1296,14 @@ body { font-family: 'Outfit', sans-serif;
       <div class="row">
       <div class="col-md-6 col-12 mb-4">
         <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalHearo" data-location="Korean Economic Daily Building" data-date="Mar 2024 - Jul 2024" style="width: 100%;">
-          <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"></div>
-        <img src="media/hearo/hro_cover.JPEG" class="rounded" alt="Hearo">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">ROKAF National Start-up Competition</div>
+        <img loading="lazy" decoding="async" src="media/hearo/hro_cover.JPEG" class="rounded" alt="Hearo">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">Start-up</span><span class="tag">CAD</span><span class="tag">Pitching</span></span>ROKAF National Start-up Competition</div>
         </div>
       </div>
       <div class="col-md-6 col-12 mb-4">
         <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalMLO" data-location="Incheon International Airport" data-date="Jan 2024 - Oct 2025" style="width: 100%;">
-        <img src="media/mlo/mlo_cover.JPEG" class="rounded" alt="MLO">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;">Military Liaison Office</div>
+        <img loading="lazy" decoding="async" src="media/mlo/mlo_cover.JPEG" class="rounded" alt="MLO">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;"><span class="tag-row"><span class="tag">Interpretation</span><span class="tag">Protocol</span></span>Military Liaison Office</div>
         </div>
       </div>
       </div>
@@ -751,21 +1317,21 @@ body { font-family: 'Outfit', sans-serif;
             <h5 class="modal-title" id="modalHearoLabel">Hearo</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body" style="font-family: 'Outfit', sans-serif; font-size: 20px; margin-bottom: 20px;">
+          <div class="modal-body">
             Hearo is a conceptual wearable device, a bracelet designed to aid the deaf and hard of hearing, developed for the Republic of Korea Air Force (ROKAF) National Start-up Contest (공군창업경진대회). Unlike typical projects focused on physical prototypes, Hearo emphasized a realistic manufacturing plan and profit model due to resource limitations faced by our team of active-duty airmen. Utilizing an Arduino Nano BLE Sense with an integrated microphone, we implemented a custom sound recognition AI to identify specific sounds, like the wearer's name. Upon recognition, Hearo vibrates and indicates the direction of the sound source, addressing our personal need for clear communication during noisy activities like shooting practice. We explored various government policies and subsidies to support future development. <br><br>
             Despite limited access to the internet and materials, and working only during our evening free time, we focused on the core aspects of product development: AI implementation, manufacturing planning, and business strategy. This project provided entrepreneurial experience, highlighting the importance of conceptual design and sustainable business models. By focusing on the potential of Hearo and the practicalities of its production, we demonstrated the ability to innovate and address real-world challenges, even within the constraints of military service. <br>
             <div class="text-center" style="margin-top: 10px;">
-              <img src="media/hearo/hro_cad.png" class="img-fluid rounded" alt="Hearo prototype" style="width: 500px; height: 350px;"> <br>
+              <img loading="lazy" decoding="async" src="media/hearo/hro_cad.png" class="img-fluid rounded" alt="Hearo prototype" style="width: 500px; height: 350px;"> <br>
               <i style="font-size: 12pt;">a CAD model of the bracelet model made in limited conditions</i></div><br>
             We wrote a business plan and presented our project to a panel of judges, receiving positive feedback on our innovative approach and potential for future development. We were placed in the top 13 teams and were invited to the award ceremony at the "The Korea Economic Daily(한국경제신문사)" Headquarters in Seoul. <br><br>
 <div class="container">
   <div class="row">
     <div class="col-md-6 text-start" style="margin-top: 10px;">
-        <img src="media/hearo/hro_news.png" class="img-fluid rounded" alt="media hearo" style="width: 100%; height: 500px;"> <br>
+        <img loading="lazy" decoding="async" src="media/hearo/hro_news.png" class="img-fluid rounded" alt="media hearo" style="width: 100%; height: 500px;"> <br>
                 <i style="font-size: 12pt;">A screenshot of South Korea's online news on the day of the ceremony.</i></div>
               
     <div class="col-md-6 text-end" style="margin-top: 10px;">
-        <img src="media/hearo/hro_award.JPEG" class="img-fluid rounded" alt="award ceremony" style="width: 400px; height: 500px;"> <br>
+        <img loading="lazy" decoding="async" src="media/hearo/hro_award.JPEG" class="img-fluid rounded" alt="award ceremony" style="width: 400px; height: 500px;"> <br>
                 <i style="font-size: 12pt;">We placed in 10th out of 441 teams and were awarded 장려상. That's me when I was a PFC(일등병).</i></div>
      </div>
   </div>
@@ -782,20 +1348,18 @@ body { font-family: 'Outfit', sans-serif;
             <h5 class="modal-title" id="modalMLOLabel">Military Liaison Office</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-            <div class="modal-body" style="font-family: 'Outfit', sans-serif; font-size: 20px; margin-bottom: 20px;">
+            <div class="modal-body">
             <p>
               For my Korean military service, I decided to put my English skills to good use. I applied for the Korean-English military interpreter(어학병) enlistment program for the Republic of Korea Air Force.<br>
               <br> After a translation and interpretation test as well as a series of interviews, I was officially recruited as an airman starting January of 2024. After basic training, I was stationed at one of the biggest international airports on the globe, Incheon International Airport(ICN).
               <br><br> My main role was to assist the Chief of Military Protocol when foreign high-ranked military officials required English translation aid and protocol. I also conducted protocol for Korean officials on their way to and from their business trips. Spending my time here I experienced international diplomacy firsthand and had the honor of making countless precious memories talking to diplomats coming to Korea from across the world. <br><br>P.S. Spending about year and a half inside an airport, it feels like you're Tom Hanks from the movie 'Terminal'(2004).<br>
             </p>
             <div class="text-center" style="margin-top: 10px;">
-              <img src="media/mlo/mlo_sunset.jpg" class="img-fluid rounded" alt="Military Liaison Office" style="width: 500px; height: 350px;"> <br>
+              <img loading="lazy" decoding="async" src="media/mlo/mlo_sunset.jpg" class="img-fluid rounded" alt="Military Liaison Office" style="width: 500px; height: 350px;"> <br>
               <i style="font-size: 12pt;">The beautiful sunset of ICN Airport</i></div>
-            </div>
             </div>
           </div>
         </div>
-      </div>
     </div>
 
     <!-- Row 3 -->
@@ -803,14 +1367,14 @@ body { font-family: 'Outfit', sans-serif;
       <div class="row">
         <div class="col-md-6 col-12 mb-4">
           <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalJGS" data-location="Korea University" data-date="Jul 2023 - Dec 2023" style="width: 100%;">
-            <img src="media/brachiation/br_cover.png" class="rounded" alt="JGS">
-            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">Two-handed Brachiating Robot</div>
+            <img loading="lazy" decoding="async" src="media/brachiation/br_cover.png" class="rounded" alt="JGS">
+            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">C++</span><span class="tag">Mechanism Design</span></span>Two-handed Brachiating Robot</div>
           </div>
         </div>
         <div class="col-md-6 col-12 mb-4">
           <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modal23EoulPCB" data-location="Korea University" data-date="Dec 2022 - Sep 2023" style="width: 100%;">
-            <img src="media/eoul23 pcb/23pcb_cover.png" class="rounded" alt="23EoulPCB">
-            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;">2023 Eoulsure PCB</div>
+            <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_cover.png" class="rounded" alt="23EoulPCB">
+            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;"><span class="tag-row"><span class="tag">PCB Design</span><span class="tag">Soldering</span><span class="tag">Formula Student</span></span>2023 Eoulsure PCB</div>
           </div>
         </div>
       </div>
@@ -824,34 +1388,29 @@ body { font-family: 'Outfit', sans-serif;
             <h5 class="modal-title" id="modalJGSLabel">Brachiating Robot</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body" style="font-family: 'Outfit', sans-serif; font-size: 20px;">
+          <div class="modal-body">
             For my MECH300 class my team and I were assigned to design and build a robot that could cross a jungle gym with sporadically missing bars. It was my first time building a machine without any guidance so I immediately knew it was going to be a challenging task. <br><br>
             Brachiation is a form of transportation for apes, think of when Tarzan swings from branch to branch; one arm goes after the other. Thinking that this was the most efficient way of traversing a jungle gym I came up with a moving mechanism and persuaded my fellow teammates.<br><br>
             My team and I decided to make the body and grippers out of lightweight acrylic and Arduino with servo motors for the powertrain mechanism. I designed the powertrain and gearbox so that a minimum amount of motors and gears were used to reduce weight and prevent gear slip. Using Excel my team and I made a simple program that visualized each motor's angular displacement and grip strength.<br><br>
             <div class="text-center" style="margin-top: 10px;">
-              <img src="media/brachiation/br_excel.png" class="img-fluid rounded" alt="powertrain" style="width: 800px; height: 400px;"> <br>
+              <img loading="lazy" decoding="async" src="media/brachiation/br_excel.png" class="img-fluid rounded" alt="powertrain" style="width: 800px; height: 400px;"> <br>
               <i style="font-size: 12pt;"></i></div><br>
             With my knowledge of C++ and Arduino, I used a motor controller to control each motor's precise movement for each phase of brachiation. I also designed and arranged the circuitry as symmetric as possible so that there was no unnecessary shear force while the robot progressed.<br>
             <div class="text-center" style="margin-top: 10px;">
-               <img src="media/brachiation/br_code.png" class="img-fluid rounded" alt="cplusplus code" style="width: 400px; height: 550px;"> <br>
+               <img loading="lazy" decoding="async" src="media/brachiation/br_code.png" class="img-fluid rounded" alt="cplusplus code" style="width: 400px; height: 550px;"> <br>
                <i style="font-size: 12pt;">Servo motor C++ code</i></div><br>
             After four months of brainstorming and building, our team was able to get the shortest crossing time out of all of the competing teams.<br><br>
             <div class="container">
               <div class="row">
               <div class="col-md-6 text-start" style="margin-top: 10px;">
-                <img src="media/brachiation/br_gif.gif" class="img-fluid rounded" alt="moving mechanism" style="width: 100%; height: auto;"> <br>
+                <img loading="lazy" decoding="async" src="media/brachiation/br_gif.gif" class="img-fluid rounded" alt="moving mechanism" style="width: 100%; height: auto;"> <br>
                 <i style="font-size: 12pt;">Brachiation test drive.</i></div>
               
               <div class="col-md-6 text-end" style="margin-top: 10px;">
-                <img class="image" src="media/brachiation/br_award.JPEG" class="img-fluid rounded" alt="award" style="width: 100%; height: auto;" alt> <br>
+                <img loading="lazy" decoding="async" src="media/brachiation/br_award.JPEG" class="img-fluid rounded" alt="Brachiating robot award ceremony" style="width: 100%; height: auto;"> <br>
                 <i style="font-size: 12pt;">Final product and award(최우수상, 1st place)</i></div>
               </div>
-              </div>
-              </div>
             </div>
-
-            
-
           </div>
         </div>
       </div>
@@ -864,27 +1423,27 @@ body { font-family: 'Outfit', sans-serif;
             <h5 class="modal-title" id="modal23EoulPCBLabel">2023 Eoulsure PCB</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body" style="font-family: 'Outfit', sans-serif; font-size: 20px;">
+          <div class="modal-body">
             For the electrical safety examination, my teammate(YDS) and I designed and fabricated custom PCB panels, most notably the RTDS (Ready to Drive Sound) circuit. This involved meticulous component selection and layout to ensure reliable signal processing from the brake sensor and activation button, making a loud audible alarm. The panels were then carefully assembled and tested, contributing directly to the vehicle's successful safety inspection. <br><br>
             <div class="text-center" style="margin-top: 10px;">
-              <img src="media/eoul23 pcb/23pcb_parts.jpg" class="img-fluid rounded" alt="w/parts" style="width: 400px; height: 500px;"> <br>
+              <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_parts.jpg" class="img-fluid rounded" alt="w/parts" style="width: 400px; height: 500px;"> <br>
               <i style="font-size: 12pt;">PCB panels with its corresponding parts</i></div><br>
             <div class="text-center" style="margin-top: 10px;">
-              <img src="media/eoul23 pcb/23pcb_tsalpcb.jpg" class="img-fluid rounded" alt="TSAL" style="width: 600px; height: 300px;"> <br>
+              <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_tsalpcb.jpg" class="img-fluid rounded" alt="TSAL" style="width: 600px; height: 300px;"> <br>
               <i style="font-size: 12pt;">TSAL panel</i></div><br>
             The photo above is the PCB for the TSAL(Tractive system active light) circuit. The TSAL circuit is a safety feature that indicates when the car is ready to drive. The circuit is connected to the motor controller and the battery management system. When the car is ready to drive the TSAL circuit lights up and the driver can start the car. <br><br>
             <div class="text-center" style="margin-top: 10px;">
-              <img src="media/eoul23 pcb/23pcb_tsal.JPEG" class="img-fluid rounded" alt="TSAL in action" style="width: 400px; height: 500px;"> <br>
+              <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_tsal.JPEG" class="img-fluid rounded" alt="TSAL in action" style="width: 400px; height: 500px;"> <br>
               <i style="font-size: 12pt;">TSAL light in action</i></div><br>
             We also developed countless other PCBs through trial and error, often failing to meet the safety regulations, going back to square one. Although we tried our best and made it to the KSAE competition, undergraduates building an electric car without the help of electrical engineers and professional guidance had its limitations and we failed to pass the safety inspection. However it was rewarding seeing our hard work pay off to see our to-be sophomores eventually pass the electrical safety examination in 2024. <br><br>
             <div class="text-center" style="margin-top: 10px;">
-              <img src="media/eoul23 pcb/23pcb_sodler.JPEG" class="img-fluid rounded" alt="soldering" style="width: 400px; height: 500px;">
+              <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_sodler.JPEG" class="img-fluid rounded" alt="soldering" style="width: 400px; height: 500px;">
               <div>
               <i style="font-size: 12pt;">soldering skills increased exponentially</i>
               </div>
             </div><br>
               <div class="text-center" style="margin-top: 10px;">
-                <img src="media/eoul23 pcb/23pcb_finalrungif.gif" class="img-fluid rounded" alt="2024 run" style="width: 100%; height: auto;">
+                <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_finalrungif.gif" class="img-fluid rounded" alt="2024 run" style="width: 100%; height: auto;">
                 <i style="font-size: 12pt;">our car finally running in 2024(30 seconds long)</i></div><br>
             I learned a valuable lesson where even the smallest of components requires countless hours of attention and feedback to achieve its final role in the grand scheme of the machine. This lesson has stuck to me and continued to grow as I learned more and more about the production of a race car. And the joy of finally watching your thought move from idea to paper and then from paper to reality feels like nothing else in this world.
           </div>
@@ -897,14 +1456,14 @@ body { font-family: 'Outfit', sans-serif;
       <div class="row">
         <div class="col-md-6 col-12 mb-4">
           <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modal23EoulBB" data-location="Korea University" data-date="Dec 2022 - Sep 2023" style="width: 100%;">
-            <img src="media/23eoul bb/23bb_cover.JPEG" class="rounded" alt="23EoulBB">
-            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">2023 Eoulsure Battery Box</div>
+            <img loading="lazy" decoding="async" src="media/23eoul bb/23bb_cover.JPEG" class="rounded" alt="23EoulBB">
+            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">Battery Systems</span><span class="tag">Formula Student</span></span>2023 Eoulsure Battery Box</div>
           </div>
         </div>
         <div class="col-md-6 col-12 mb-4">
           <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modal22Eoul" data-location="Korea University" data-date="Mar 2022 - Sep 2022" style="width: 100%;">
-            <img src="media/eoul22/22_cover.JPEG" class="rounded" alt="22Eoul">
-            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;">2022 Eoulsure</div>
+            <img loading="lazy" decoding="async" src="media/eoul22/22_cover.JPEG" class="rounded" alt="22Eoul">
+            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;"><span class="tag-row"><span class="tag">Fabrication</span><span class="tag">Formula Student</span></span>2022 Eoulsure</div>
           </div>
         </div>
       </div>
@@ -918,14 +1477,14 @@ body { font-family: 'Outfit', sans-serif;
             <h5 class="modal-title" id="modal23EoulBBLabel">2023 Eoulsure Battery Box</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body" style="font-family: 'Outfit', sans-serif; font-size: 20px;">
+          <div class="modal-body">
             Around winter break of 2022, our club’s seniors graduated and juniors shifted their attention to the job market, the responsibility of managing the club was in our sophomore’s hands.<br><br>
             After carefully dissecting last year's(2022) racecar and dedicating countless hours to study sessions over winter break, the challenge of designing our 2023 vehicle began. Eager to learn a thing or two outside the boundaries of our school's standard M.E curricula, I chose to join the powertrain team. This team's critical responsibility lay in the intricate task of delivering power to the motor via a sophisticated battery system, and implementing vital safety mechanisms throughout the entire vehicle. This opportunity allowed me to dive into the world of high and low voltage electrical systems, battery management, and crucial safety protocols, equipping me with invaluable skills beyond traditional mechanical engineering knowledge.<br><br>
             <div class="text-center" style="margin-top: 10px;">
-              <img src="media/23eoul bb/23bb_dissect.jpg" class="img-fluid rounded" alt="dissecting BB" style="width: 400px; height: 500px;"> <br>
+              <img loading="lazy" decoding="async" src="media/23eoul bb/23bb_dissect.jpg" class="img-fluid rounded" alt="dissecting BB" style="width: 400px; height: 500px;"> <br>
               <i style="font-size: 12pt;">Our team dissecting the previous year's battery box.</i><br>
             Regarding the battery box, I actively participated in its construction, utilizing CATIA to optimize component placement for efficient space utilization and thermal management. To enhance durability and protect sensitive circuitry from vibrations, I designed and 3D-printed custom holsters for various components within the box. This approach ensured that the battery system remained secure and functional under the demanding conditions of the race.<br><br>
-            <img src="media/23eoul bb/23bb_motorgif.gif" class="img-fluid rounded" alt="motor gif" style="width: auto; height: auto;"> <br>
+            <img loading="lazy" decoding="async" src="media/23eoul bb/23bb_motorgif.gif" class="img-fluid rounded" alt="motor gif" style="width: auto; height: auto;"> <br>
             <i style="font-size: 12pt;">Test driving the main motor.</i><br>
           </div>
           </div>
@@ -940,26 +1499,26 @@ body { font-family: 'Outfit', sans-serif;
             <h5 class="modal-title" id="modal22EoulLabel">My introduction to Formula Racing</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body" style="font-family: 'Outfit', sans-serif; font-size: 20px;">
+          <div class="modal-body">
             During my freshman year I wanted to join a club. A club where I could experience the engineering process in the flesh(and also drink beer). "Eoulsure" was the perfect fit for that mission. Eoulsure in Korean is a compound word Eoul(어울) meaning ‘getting along with’ and sure(수레, pronounced soo-re) meaning ‘wagon’ or ‘car’. As you can tell from the name, Eoulsure is a club where people interested in automobiles come together to compete in the annual Korean Student Formula Grand Prix.<br><br>
 We competed in the E-formula division where the car runs on lithium batteries and a motor instead of the conventional diesel engine. E-formulas are generally considered more challenging than regular formulas and bajas as there are a lot more safety regulations and systems that need to be implemented to the car. 2022 was the first year Eoulsure competed in E-formula, starting from square one with no knowledge of making an electric car.<br><br>
 At the start of the semester freshmen like me were not used to using heavy duty tools like grinders, welders, and drills, we were first taught how to use each tool along with safety precautions. 
 <div class="text-center" style="margin-top: 10px;">
-  <img src="media/eoul22/22_safe.jpg" class="img-fluid rounded" alt="safety seminar" style="width: 500px; height: 400px;"> <br>
+  <img loading="lazy" decoding="async" src="media/eoul22/22_safe.jpg" class="img-fluid rounded" alt="safety seminar" style="width: 500px; height: 400px;"> <br>
   <i style="font-size: 12pt;">Me in the blue hoodie learning how to weld.</i></div>
 Summer break was when the actual building began, sophomores and juniors did the design process while us freshmen were stuck out in the garage underneath the scorching sun cutting pipes and pieces of metal.<br>
 <div class="text-center" style="margin-top: 10px;">
-  <img src="media/eoul22/22_grinder.jpg" class="img-fluid rounded" alt="grinder" style="width: 300px; height: 400px;"> <br>
+  <img loading="lazy" decoding="async" src="media/eoul22/22_grinder.jpg" class="img-fluid rounded" alt="grinder" style="width: 300px; height: 400px;"> <br>
   <i style="font-size: 12pt;">Grinder sparks often burn a hole in your shirt so you need to be careful.</i></div>
 We went to Gunsan(군산) with our car to compete on the track. Although the process was hard(dealing with the heat was even harder) I felt fulfilled seeing my contribution on the final product. By observing from behind their shoulders I learnt a lot from my upperclassmen; I was glad that I chose engineering as my career. 
 <div class="container">
   <div class="row">
     <div class="col-md-3 text-start" style="margin-top: 10px;">
-        <img src="media/eoul22/22_baja.jpg" class="img-fluid rounded" alt="bajaeoul" style="width: 300px; height: 400px;"> <br>
+        <img loading="lazy" decoding="async" src="media/eoul22/22_baja.jpg" class="img-fluid rounded" alt="bajaeoul" style="width: 300px; height: 400px;"> <br>
                 <i style="font-size: 12pt;">racecars are cool.</i></div>
     
     <div class="col-md-6 text-center" style="margin-top: 10px;">
-        <img src="media/eoul22/22_garage.jpg" class="img-fluid rounded" alt="garage" style="width: 100%; height: 300px;"> <br>
+        <img loading="lazy" decoding="async" src="media/eoul22/22_garage.jpg" class="img-fluid rounded" alt="garage" style="width: 100%; height: 300px;"> <br>
                 <i style="font-size: 12pt;">In order to meet the deadline overnight construction is inevitable .</i></div>
               
      </div>
@@ -986,23 +1545,20 @@ We went to Gunsan(군산) with our car to compete on the track. Although the pro
       <div class="row">
               <div class="col-md-4 col-12 mb-4">
         <div class="blur-on-hover coming-soon" data-location="Coming soon" data-date="In progress" style="width: 100%;">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"></div>
-        <img src="media/coming soon.jpeg" class="rounded" alt="coming soon">
+        <img loading="lazy" decoding="async" src="media/coming soon.jpeg" class="rounded" alt="coming soon">
         <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">Coming soon!</div>
         </div>
       </div>
       <div class="col-md-4 col-12 mb-4">
         <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalWeb" data-location="Personal project" data-date="Feb 2025 - Mar 2025" style="width: 100%;">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"></div>
-        <img src="media/mini projects/my website/web_cover.png" class="rounded" alt="Website">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">Making my own Website</div>
+        <img loading="lazy" decoding="async" src="media/mini projects/my website/web_cover.png" class="rounded" alt="Website">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span></span>Making my own Website</div>
         </div>
       </div>
       <div class="col-md-4 col-12 mb-4">
         <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modaleoulmini" data-location="Korea University" data-date="Mar 2023 - Dec 2023" style="width: 100%;">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"></div>
-        <img src="media/mini projects/eoulmini_cover.jpg" class="rounded" alt="coming soon">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">Workshops @ Eoulsure</div>
+        <img loading="lazy" decoding="async" src="media/mini projects/eoulmini_cover.jpg" class="rounded" alt="coming soon">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">CATIA</span><span class="tag">SolidWorks</span><span class="tag">Teaching</span></span>Workshops @ Eoulsure</div>
         </div>
       </div>
 
@@ -1017,14 +1573,14 @@ We went to Gunsan(군산) with our car to compete on the track. Although the pro
         <h5 class="modal-title" id="modalWebLabel">Forging my own website from scratch</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body"style="font-family: 'Outfit', sans-serif; font-size: 20px;">
+        <div class="modal-body">
           As a corporal in the Air Force I had nothing to do during my free time. Of course there was always going to the gym, playing video games with my mates; but none of that was fulfilling to the mind. After deep consideration on how to spend my time I decided to study the basics of HTML. Cause why not? I had nothing else to do anyways.<br><br>
           By simulating some HTML and CSS I naturally wanted to make my own website. Rather than explaining my projects to every new person I meet,  I thought it would be a good way to introduce myself and my projects in a more orderly fashion.<br>
           Learning Bootstrap helped me a lot in organizing code and simulating effects.
           <br>This website is the result of my HTML learning journey. I hope you enjoy reading. 
           <br> <br> P.S. I'm still learning so please mind the bugs!!
           <div class="text-center" style="margin-top: 10px;">
-            <img src="media/mini projects/my website/web_early.jpg" class="img-fluid rounded" alt="early stages" style="width: 700px; height: 400px;"> <br>
+            <img loading="lazy" decoding="async" src="media/mini projects/my website/web_early.jpg" class="img-fluid rounded" alt="early stages" style="width: 700px; height: 400px;"> <br>
             <i style="font-size: 12pt;">Learning HTML the hard way, the early stages of my website</i></div>
         </div>
       </div>
@@ -1038,7 +1594,7 @@ We went to Gunsan(군산) with our car to compete on the track. Although the pro
         <h5 class="modal-title" id="modaleoulminiLabel">camaraderie in formula racing</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body"style="font-family: 'Outfit', sans-serif; font-size: 20px;">
+        <div class="modal-body">
           The moment I became a sophomore member of Eoulsure, I had a batch of freshmen that were so eager to learn but didnt know where to start. Remembering struggles as freshmen, a lot of senior members held weekly or monthly semiars to pass down what they have learned during their time in the team. <br><br>
           Traditionally, the team only held a power tools seminar for freshmen in the spring to prime them for heavy duty work in the summer.
           But as the team grew and became more diverse in its projects, we started to open more specialized seminars for different areas of interest, such as CAD, electrical circuits, racecar dynamics, etc. Additionally we invited KUME alumni working in the automobile industry such as "Hyundai", "Alpine Formula One Team", and "KAI" to give advice from an expert's point of view.<br><br>
@@ -1050,19 +1606,19 @@ We went to Gunsan(군산) with our car to compete on the track. Although the pro
             <div class="container">
               <div class="row">
                 <div class="col-md-6 text-center" style="margin-top: 10px;">
-                  <img src="media/mini projects/eoulmini_cadseminar.jpg" class="img-fluid rounded" alt="Cad seminar" style="width: 80%; height: auto;"> <br>
+                  <img loading="lazy" decoding="async" src="media/mini projects/eoulmini_cadseminar.jpg" class="img-fluid rounded" alt="Cad seminar" style="width: 80%; height: auto;"> <br>
                    <i style="font-size: 12pt;">CAD seminar with freshmen</i>
                 </div>
 
                 <div class="col-md-6 text-center" style="margin-top: 10px;">
-                  <img src="media/mini projects/eoulmini_powertools.png" class="img-fluid rounded" alt="powertoolsem" style="width: 80%; height: auto;"> <br>
+                  <img loading="lazy" decoding="async" src="media/mini projects/eoulmini_powertools.png" class="img-fluid rounded" alt="powertoolsem" style="width: 80%; height: auto;"> <br>
                    <i style="font-size: 12pt;">Teaching how to use the drill with my back against the camera.</i>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-6 text-center" style="margin-top: 10px;">
-                   <img src="media/mini projects/eoulmini_seminar.png" class="img-fluid rounded" alt="LVslides" style="width: 80%; height: auto;"> <br>
+                   <img loading="lazy" decoding="async" src="media/mini projects/eoulmini_seminar.png" class="img-fluid rounded" alt="LVslides" style="width: 80%; height: auto;"> <br>
                   <i style="font-size: 12pt;">The slides I used to teach circuit basics and my personal experiences.</i>
                 </div>
               </div>
@@ -1075,6 +1631,117 @@ We went to Gunsan(군산) with our car to compete on the track. Although the pro
 
 
     </section>
+
+    <!-- cursor reticle (decorative; skipped on touch devices and for reduced motion) -->
+    <div class="cursor-dot" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true">
+      <svg viewBox="0 0 64 64" fill="none" focusable="false">
+        <circle class="cur-idle" cx="32" cy="32" r="30"/>
+        <g class="cur-cross">
+          <line x1="32" y1="11" x2="32" y2="53"/>
+          <line x1="11" y1="32" x2="53" y2="32"/>
+          <line x1="17.2" y1="17.2" x2="46.8" y2="46.8"/>
+          <line x1="17.2" y1="46.8" x2="46.8" y2="17.2"/>
+        </g>
+      </svg>
+    </div>
+
+    <script>
+      (function () {
+        var fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+        var motionOK = window.matchMedia('(prefers-reduced-motion: no-preference)');
+        if (!fine.matches || !motionOK.matches) return;
+
+        var dot = document.querySelector('.cursor-dot');
+        var ring = document.querySelector('.cursor-ring');
+        if (!dot || !ring) return;
+
+        document.documentElement.classList.add('cursor-fx');
+
+        /* anything matching this list makes the reticle lock on */
+        var HOT = 'a, button, [role="button"], [data-bs-toggle], input, select, textarea, label, summary';
+
+        var tx = window.innerWidth / 2, ty = window.innerHeight / 2;
+        var rx = tx, ry = ty;
+        var shown = false;
+
+        /* compass needles on the portrait dials aim at the cursor */
+        var needles = [];
+        document.querySelectorAll('.circle-container .ring-base').forEach(function (svg) {
+          var g = svg.querySelector('.ring-needle');
+          if (g) needles.push({ svg: svg, g: g, a: 0 });
+        });
+
+        window.addEventListener('mousemove', function (e) {
+          tx = e.clientX; ty = e.clientY;
+          if (!shown) {
+            shown = true; rx = tx; ry = ty;
+            dot.classList.add('is-on'); ring.classList.add('is-on');
+          }
+        }, { passive: true });
+
+        window.addEventListener('mouseout', function (e) {
+          if (!e.relatedTarget) { /* pointer left the window */
+            shown = false;
+            dot.classList.remove('is-on'); ring.classList.remove('is-on');
+          }
+        });
+
+        document.addEventListener('mouseover', function (e) {
+          var hot = !!(e.target.closest && e.target.closest(HOT));
+          ring.classList.toggle('is-engaged', hot);
+        });
+
+        window.addEventListener('mousedown', function () { ring.classList.add('is-pressed'); });
+        window.addEventListener('mouseup',   function () { ring.classList.remove('is-pressed'); });
+
+        /* dot tracks instantly; ring eases toward it for the trailing feel */
+        (function loop() {
+          rx += (tx - rx) * 0.16;
+          ry += (ty - ry) * 0.16;
+          dot.style.transform  = 'translate3d(' + (tx - 3)  + 'px,' + (ty - 3)  + 'px,0)';
+          ring.style.transform = 'translate3d(' + (rx - 32) + 'px,' + (ry - 32) + 'px,0)';
+          needles.forEach(function (n) {
+            var r = n.svg.getBoundingClientRect();
+            if (!r.width) return; /* dial hidden (e.g. modal closed) */
+            var target = Math.atan2(ty - (r.top + r.height / 2), tx - (r.left + r.width / 2)) * 180 / Math.PI + 90;
+            var d = ((target - n.a + 540) % 360) - 180;
+            n.a += d * 0.12;
+            n.g.setAttribute('transform', 'rotate(' + n.a.toFixed(2) + ' 50 50)');
+          });
+          window.requestAnimationFrame(loop);
+        })();
+      })();
+
+      /* scroll reveal for cards, section headings, and the contact block */
+      (function () {
+        if (!('IntersectionObserver' in window)) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        var targets = [];
+        document.querySelectorAll('.blur-on-hover').forEach(function (card) {
+          targets.push(card.closest('[class*="col-"]') || card);
+        });
+        document.querySelectorAll('.section-heading, .bom-wrap').forEach(function (el) { targets.push(el); });
+        var contact = document.querySelector('#contact');
+        if (contact) targets.push(contact);
+
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-in');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+        targets.forEach(function (el, i) {
+          el.classList.add('reveal');
+          el.style.transitionDelay = (i % 3) * 80 + 'ms';
+          io.observe(el);
+        });
+      })();
+    </script>
 
     <script>
       document.addEventListener('DOMContentLoaded', () => {
@@ -1124,26 +1791,90 @@ We went to Gunsan(군산) with our car to compete on the track. Although the pro
     <br> <br>
     <hr class="title-spacer">
     <!-- Contact lines -->
-    <section id="contact">
-    <h6 class="text-center">how to contact me</h6>
-    <div class="contact-actions d-flex flex-wrap justify-content-center gap-3">
-      <a class="btn updates-btn" href="mailto:minkyu414@korea.ac.kr">
-        <i class="bi bi-envelope"></i><span>Email</span>
-      </a>
-      <a class="btn updates-btn" href="https://www.linkedin.com/in/ryan-chung-2a42a1262/" target="_blank" rel="noopener noreferrer">
-        <i class="bi bi-linkedin"></i><span>LinkedIn</span>
-      </a>
-      <a class="btn updates-btn" href="https://www.instagram.com/m_n.k_u/" target="_blank" rel="noopener noreferrer">
-        <i class="bi bi-instagram"></i><span>Instagram</span>
-      </a>
-    </div>
+    <section id="skills" class="pt-3">
+      <p class="display-6 section-heading">instruments &amp; tooling</p>
+      <div class="container">
+        <div class="bom-wrap">
+          <table class="bom-table">
+            <thead>
+              <tr><th>No.</th><th>Category</th><th>Instruments</th><th>Ref.</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="bom-no">01</td>
+                <td class="bom-cat">CAD</td>
+                <td>CATIA &#183; Siemens NX &#183; PTC Creo &#183; SolidWorks &#183; Fusion 360</td>
+                <td class="bom-ref">CSWA certified</td>
+              </tr>
+              <tr>
+                <td class="bom-no">02</td>
+                <td class="bom-cat">Electronics</td>
+                <td>PCB design (EasyEDA) &#183; soldering &#183; Arduino</td>
+                <td class="bom-ref">Formula HV / LV systems</td>
+              </tr>
+              <tr>
+                <td class="bom-no">03</td>
+                <td class="bom-cat">Fabrication</td>
+                <td>3D printing &#183; laser cutting &#183; welding &amp; power tools</td>
+                <td class="bom-ref">Eoulsure chassis &amp; parts</td>
+              </tr>
+              <tr>
+                <td class="bom-no">04</td>
+                <td class="bom-cat">Software</td>
+                <td>C++ &#183; MATLAB &#183; HTML / CSS &#183; Bootstrap</td>
+                <td class="bom-ref">Brachiating robot &#183; this site</td>
+              </tr>
+              <tr>
+                <td class="bom-no">05</td>
+                <td class="bom-cat">Languages</td>
+                <td>English&#8211;Korean translation &amp; interpretation</td>
+                <td class="bom-ref">IELTS 8.5 &#183; TOEIC 990</td>
+              </tr>
+              <tr>
+                <td class="bom-no">06</td>
+                <td class="bom-cat">Miscellaneous</td>
+                <td>Microsoft Excel &#183; Microsoft PowerPoint</td>
+                <td class="bom-ref">Powertrain calcs &#183; decks</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
-    <br>
-    <h6 class="text-center">
-      korean version coming soon, maybe.<br><br>
-      Last updated: July 30, 2026 <br>
-      Ryan Minkyu Chung © 2026 <br>
-    </h6>
+    <section id="contact">
+    <div class="container">
+      <div class="title-block">
+        <div class="tb-head">
+          <span class="tb-tag">Contact</span>
+          <h6 class="tb-title">how to contact me</h6>
+        </div>
+        <div class="contact-actions d-flex flex-wrap justify-content-center gap-3">
+          <a class="btn updates-btn" href="mailto:minkyu414@korea.ac.kr">
+            <i class="bi bi-envelope"></i><span>Email</span>
+          </a>
+          <a class="btn updates-btn" href="https://www.linkedin.com/in/ryan-chung-2a42a1262/" target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-linkedin"></i><span>LinkedIn</span>
+          </a>
+          <a class="btn updates-btn" href="https://github.com/mnkuu/mnku" target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-github"></i><span>GitHub</span>
+          </a>
+          <a class="btn updates-btn" href="https://drive.google.com/file/d/1fDgC25t8bHrCmSQHAYDw689XPwX015Bb/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-file-earmark-text"></i><span>CV</span>
+          </a>
+          <a class="btn updates-btn" href="https://www.instagram.com/m_n.k_u/" target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-instagram"></i><span>Instagram</span>
+          </a>
+        </div>
+        <div class="tb-grid">
+          <div class="tb-cell"><span class="tb-label">Drawn by</span><span class="tb-value">Ryan Minkyu Chung</span></div>
+          <div class="tb-cell"><span class="tb-label">Last revised</span><span class="tb-value">July 30, 2026</span></div>
+          <div class="tb-cell"><span class="tb-label">Sheet</span><span class="tb-value">Portfolio &#8212; 01 of 01</span></div>
+          <div class="tb-cell"><span class="tb-label">Note</span><span class="tb-value">Korean version coming soon, maybe.</span></div>
+        </div>
+        <p class="tb-copy">Ryan Minkyu Chung &#169; 2026</p>
+      </div>
+    </div>
     </section>
 
     <script>
@@ -1155,11 +1886,11 @@ We went to Gunsan(군산) with our car to compete on the track. Although the pro
           if(theme === 'dark'){
             root.setAttribute('data-bs-theme','dark');
             body.classList.add('dark-theme');
-            if(btn) btn.textContent = 'Light Theme';
+            if(btn){ btn.setAttribute('aria-label','Switch to light theme'); btn.title = 'Switch to light theme'; }
           } else {
             root.setAttribute('data-bs-theme','light');
             body.classList.remove('dark-theme');
-            if(btn) btn.textContent = 'Dark Theme';
+            if(btn){ btn.setAttribute('aria-label','Switch to dark theme'); btn.title = 'Switch to dark theme'; }
           }
 
           // Ensure modal close icons match theme (btn-close-white for dark backgrounds)
@@ -1182,6 +1913,7 @@ We went to Gunsan(군산) with our car to compete on the track. Although the pro
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="scripts/script.js"></script>
   </body>
 </html>
