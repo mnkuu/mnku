@@ -10,7 +10,14 @@
 
   gtag('config', 'G-VP3X74JS60');
 </script>
-    <title>Ryan Minkyu Chung</title>
+    <title>Ryan Minkyu Chung &#8212; Mechanical Engineering Portfolio</title>
+    <meta name="description" content="Portfolio of Ryan Minkyu Chung, mechanical engineering student at Korea University: robotic gripper research, compliant mechanisms, and Formula Student projects.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ryanmchung.com/">
+    <meta property="og:title" content="Ryan Minkyu Chung &#8212; Mechanical Engineering Portfolio">
+    <meta property="og:description" content="Robotic gripper research, compliant mechanisms, and Formula Student engineering projects.">
+    <meta property="og:image" content="https://ryanmchung.com/media/about_me_photo%202.0.jpg">
+    <meta name="twitter:card" content="summary_large_image">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -36,10 +43,11 @@
   --paper-c: #dfeafa;
   --grid-line: rgba(30, 74, 138, 0.055);
   --grid-strong: rgba(30, 74, 138, 0.10);
-  --accent: #1a56d6;
+  --accent: #e34d5e;
   --accent-contrast: #ffffff;
-  --accent-glow: rgba(26, 86, 214, 0.16);
-  --accent-2: #e8590c;            /* signal orange: dial index + micro accents */
+  --accent-glow: rgba(227, 77, 94, 0.16);
+  --accent-2: #e8590c;
+  --accent-3: #dc143c;            /* signal orange: dial index + micro accents */
   --tick: rgba(11, 29, 48, 0.55);
   --tick-faint: rgba(11, 29, 48, 0.2);
   --glass: rgba(255, 255, 255, 0.58);
@@ -61,10 +69,11 @@
   --paper-c: #0b1f40;
   --grid-line: rgba(122, 172, 255, 0.055);
   --grid-strong: rgba(122, 172, 255, 0.1);
-  --accent: #38bdf8;
-  --accent-contrast: #062338;
-  --accent-glow: rgba(56, 189, 248, 0.18);
+  --accent: #ff8393;
+  --accent-contrast: #3a060f;
+  --accent-glow: rgba(255, 131, 147, 0.2);
   --accent-2: #ff8a4d;
+  --accent-3: #ff4d6d;
   --tick: rgba(191, 223, 255, 0.6);
   --tick-faint: rgba(191, 223, 255, 0.22);
   --glass: rgba(13, 27, 46, 0.62);
@@ -107,6 +116,9 @@ body::before {
 }
 
 ::selection { background: var(--accent); color: var(--accent-contrast); }
+
+/* plain links follow the accent so no default blue remains */
+a { color: var(--accent); }
 
 a:focus-visible,
 button:focus-visible,
@@ -184,14 +196,15 @@ button:focus-visible,
 .blur-on-hover:hover img { filter: brightness(0.78); transform: scale(1.045); }
 .blur-on-hover:hover .overlay-text { padding-bottom: 1.35rem; }
 
+/* .fit-line: JS shrinks the font just enough to keep the text on one line */
+.overlay-text .fit-line { display: block; white-space: nowrap; overflow: hidden; }
+
 .blur-on-hover:hover,
 .blur-on-hover:focus-visible {
   transform: translateY(-6px);
   border-color: var(--accent);
   box-shadow: var(--card-shadow-hover);
 }
-
-.coming-soon { cursor: default; }
 
 /* Legacy tooltip styling retained for compatibility with older cards. */
 .tooltip-custom {
@@ -275,7 +288,7 @@ button:focus-visible,
 
 .ring-track { stroke: var(--tick-faint); transition: stroke 0.5s ease; }
 .ring-marks { stroke: var(--tick);       transition: stroke 0.5s ease; }
-.ring-index { fill: var(--accent-2); }
+.ring-index { fill: var(--accent-3); }
 
 .ring-text {
   animation: rotate 32s linear infinite;
@@ -292,10 +305,14 @@ button:focus-visible,
   fill: var(--ink);
   font-family: var(--font-mono);
   font-weight: 500;
-  font-size: 8.1px;
-  letter-spacing: 0.4px;
   transition: fill 0.5s ease;
 }
+
+/* per-ring sizes chosen so char count x 0.6em advance = 219.9 (the r=35
+   circumference): the mono grid then spaces every glyph, dots included,
+   perfectly evenly, with any rounding slack hidden in the seam space */
+.ct-hero  { font-size: 7.968px; }  /* 46 characters */
+.ct-modal { font-size: 7.635px; }  /* 48 characters */
 
 .btnSwitch:hover .circular-text { fill: var(--accent); }
 
@@ -478,8 +495,9 @@ html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
   max-width: 42rem;
   margin: 1rem auto 0;
   line-height: 1.3;
+  font-family: var(--font-display);
   font-size: 1.35rem;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--ink-soft);
 }
 
@@ -627,15 +645,6 @@ hr.title-spacer::after  { right: 0; }
   border-bottom: 1px solid var(--rule);
 }
 
-.tb-tag {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
 .tb-title {
   margin: 0;
   font-family: var(--font-display);
@@ -760,9 +769,9 @@ hr.title-spacer::after  { right: 0; }
 
 /* Dark theme dot styling */
 [data-bs-theme="dark"] #updatesModal .timeline-dot {
-  background: #38bdf8;
+  background: var(--accent);
   border-color: #0f172a;
-  box-shadow: 0 0 0 6px rgba(56,189,248,0.08);
+  box-shadow: 0 0 0 6px var(--accent-glow);
 }
 
 /* Date sits to the right of the dot */
@@ -981,6 +990,47 @@ hr.title-spacer::after  { right: 0; }
 }
 
 /* --------------------------------------------------------------------------
+   Publication line, hero interests, education line
+   -------------------------------------------------------------------------- */
+.pub-line {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  border: 1px dashed var(--rule);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  margin: 0.2rem auto 1.6rem;
+  max-width: 900px;
+  text-align: center;
+}
+
+.pub-label {
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-right: 0.6rem;
+}
+
+.hero-interests {
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  margin: 1rem 0 0.3rem;
+}
+
+.edu-line {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  border-left: 3px solid var(--accent);
+  padding: 0.45rem 0.8rem;
+  background: var(--glass);
+  border-radius: 0 8px 8px 0;
+}
+
+/* --------------------------------------------------------------------------
    Cursor reticle - follows the mouse, locks on over anything clickable.
    Only activates on mouse devices (never touch) and only when the visitor
    has not asked for reduced motion; JS adds .cursor-fx to <html> if so.
@@ -1013,7 +1063,7 @@ hr.title-spacer::after  { right: 0; }
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--accent-2);
+    background: var(--accent-3);
   }
 
   /* idle: a soft orange disc; over anything clickable the disc fades out
@@ -1021,7 +1071,7 @@ hr.title-spacer::after  { right: 0; }
   .cursor-ring {
     width: 64px;
     height: 64px;
-    color: var(--accent-2);
+    color: var(--accent-3);
     transition: opacity 250ms ease, color 200ms ease;
   }
 
@@ -1076,7 +1126,8 @@ hr.title-spacer::after  { right: 0; }
       <div class="collapse navbar-collapse" id="siteNav">
         <ul class="navbar-nav ms-auto align-items-md-center gap-md-2 me-md-2">
           <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="#research">Research</a></li>
+          <li class="nav-item"><a class="nav-link" href="#projects">Selected projects</a></li>
           <li class="nav-item"><a class="nav-link" href="#mini-projects">Mini projects</a></li>
           <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
@@ -1089,6 +1140,7 @@ hr.title-spacer::after  { right: 0; }
       <p class="hero-eyebrow">Mechanical Engineering Portfolio &#183; Seoul, KR</p>
       <h1 class="display-1">Ryan Minkyu Chung</h1>
       <p class="display-6">Mechanical Engineering student at Korea University, building thoughtful machines and systems.</p>
+      <p class="hero-interests">Research interests &#8212; Compliant Mechanisms &#183; Deployable Structures &#183; Robotic Manipulation</p>
 <div class="hero-actions d-flex justify-content-center flex-wrap gap-3 mt-1">
   <button type="button" class="btn updates-btn" data-bs-toggle="modal" data-bs-target="#updatesModal">
     <div class="btn-content">
@@ -1123,8 +1175,8 @@ hr.title-spacer::after  { right: 0; }
             <defs>
               <path id="heroRingPath" fill="none" d="M 50,50 m -35,0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0"/>
             </defs>
-            <text class="circular-text" textLength="220" lengthAdjust="spacing">
-              <textPath href="#heroRingPath" startOffset="0" textLength="220" lengthAdjust="spacing">RYAN MINKYU CHUNG &#183; CLICK TO LEARN ABOUT ME &#183; </textPath>
+            <text class="circular-text ct-hero">
+              <textPath href="#heroRingPath" startOffset="0">RYAN MINKYU CHUNG &#183; CLICK TO LEARN ABOUT ME &#183; </textPath>
             </text>
           </svg>
           <div class="image-container">
@@ -1163,8 +1215,8 @@ hr.title-spacer::after  { right: 0; }
                   <defs>
                     <path id="modalRingPath" fill="none" d="M 50,50 m -35,0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0"/>
                   </defs>
-                  <text class="circular-text" textLength="220" lengthAdjust="spacing">
-                    <textPath href="#modalRingPath" startOffset="0" textLength="220" lengthAdjust="spacing">RYAN MINKYU CHUNG &#183; MECH. ENGINEER &#183; TRAVELER &#183; </textPath>
+                  <text class="circular-text ct-modal">
+                    <textPath href="#modalRingPath" startOffset="0">RYAN MINKYU CHUNG &#183; MECH. ENGINEER &#183; TRAVELER &#183; </textPath>
                   </text>
                 </svg>
                 <div class="image-container">
@@ -1177,6 +1229,7 @@ hr.title-spacer::after  { right: 0; }
                 <br><br>This drive and determination led me to pursue a degree in Mechanical Engineering at Korea University, where I continue to expand my knowledge and skills in the field. My journey so far has been shaped by a curiosity for innovation and a desire to create technologies that make a meaningful impact on society.
                 <br><br>My hobbies are watching Formula 1 (I'm a Ferrari enthusiast), jogging (even though I'm not that good at it), and reading books regardless of genre. I also love traveling to new places and taking pictures with my Sony camera.
                 <br><br>This website is the amalgamation of all my projects and experiences since entering university. I hope you enjoy reading.
+                <br><br><span class="edu-line">B.S. Mechanical Engineering, Korea University &#8212; GPA 4.17/4.5 &#183; Expected Feb 2027 (7-semester early graduation)</span>
               </div>
             </div>
             <div class="modal-footer">
@@ -1185,7 +1238,7 @@ hr.title-spacer::after  { right: 0; }
         </div>
       </div>
     </div>
-      <a class="scroll-cue" href="#projects" aria-label="Scroll down to the projects section">
+      <a class="scroll-cue" href="#research" aria-label="Scroll down to the research section">
         <span class="scroll-cue-label">Scroll</span>
         <svg viewBox="0 0 16 44" focusable="false" aria-hidden="true">
           <line x1="8" y1="2" x2="8" y2="34"/>
@@ -1193,6 +1246,49 @@ hr.title-spacer::after  { right: 0; }
         </svg>
       </a>
     </header>
+
+    <section id="research" class="pt-3">
+    <div class="text-center">
+      <p class="display-6 section-heading">research</p>
+    </div>
+    <div class="container">
+      <div class="row justify-content-center">
+      <div class="col-lg-8 col-12 mb-4">
+        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalDG" data-location="MEKATEKA &#183; Independent research" data-date="Jan 2026 - Present" style="width: 100%;">
+        <img loading="lazy" decoding="async" src="media/AG_cover.jpg" class="rounded" alt="Deployable Gripper">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;"><span class="tag-row"><span class="tag">Robotics</span><span class="tag">Deployable Structures</span><span class="tag">CAD</span><span class="tag">3D Printing</span></span>Deployable Agri-Gripper</div>
+        </div>
+      </div>
+      </div>
+      <p class="pub-line"><span class="pub-label">Publication</span>R. M. Chung et al., &#8220;A Deployable Compliant Gripper that Overcomes Grasp Uncertainty&#8221; &#8212; manuscript in preparation, 2026.</p>
+      <div class="row justify-content-center">
+      <div class="col-lg-8 col-12 mb-4">
+        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalABLE" data-location="MEKATEKA &#183; Nationally funded project" data-date="Sep 2025 - Present" style="width: 100%;">
+        <img loading="lazy" decoding="async" src="media/ablelabs_cover.jpeg" class="rounded" alt="ABLELABS self-driven lab gripper">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">Robotics</span><span class="tag">Lab Automation</span><span class="tag">Gripper Design</span></span>ABLELABS Self-Driven Lab</div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalABLE" tabindex="-1" aria-labelledby="modalABLELabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalABLELabel">ABLELABS Self-Driven Lab</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Part of a nationally funded research project on self-driven laboratories, automating bio-engineering pipette experiments. My contribution is the design of a multi-functional gripper that can grasp sample vials and operate pipettes at the same time, letting a single end-effector run experiment steps that would normally require tool changes.
+            <br><br>
+            Documentation and results will be added here as the project progresses. <br>
+            Cover photo by gorodenkoff/Getty Images <br>
+          </div>
+        </div>
+      </div>
+    </div>
+    </section>
+
 
 
 <!-- Updates & News Modal -->
@@ -1220,7 +1316,7 @@ hr.title-spacer::after  { right: 0; }
             <div class="timeline-dot" aria-hidden="true"></div>
             <div class="timeline-entry">
               <div class="timeline-date">Feb 27, 2026</div>
-              <div class="timeline-text">I have been awarded a scholarship from the Korean Engineering Guarantee Insurance Foundation as part of their very first engineering undergraduate cohort.</div>
+              <div class="timeline-text">I was awarded a scholarship from the Korean Engineering Guarantee Insurance Foundation as part of their very first engineering undergraduate cohort.</div>
             </div>
           </div>
 
@@ -1260,17 +1356,11 @@ hr.title-spacer::after  { right: 0; }
     </div> 
     <!-- Row 1 -->
     <div class="container">
-      <div class="row">
+      <div class="row justify-content-center">
       <div class="col-md-6 col-12 mb-4">
-        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalDG" data-location="MEKATEKA" data-date="Jan 2026 - present" style="width: 100%;">
-        <img loading="lazy" decoding="async" src="media/AG_cover.jpg" class="rounded" alt="Deployable Gripper">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;"><span class="tag-row"><span class="tag">Robotics</span><span class="tag">CAD</span><span class="tag">3D Printing</span></span>Deployable Agri-Gripper</div>
-        </div>
-      </div>
-      <div class="col-md-6 col-12 mb-4">
-        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalHexa" data-location="Korea University" data-date="May 2026 - present" style="width: 100%;">
+        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalHexa" data-location="Korea University" data-date="May 2026 - Present" style="width: 100%;">
         <img loading="lazy" decoding="async" src="media/Hexa_cover.png" class="rounded" alt="Hexagonal Packaging">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;"><span class="tag-row"><span class="tag">CAD</span><span class="tag">Structures</span><span class="tag">Sustainability</span></span>Reuseable Hexagonal Packaging</div>
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;"><span class="tag-row"><span class="tag">CAD</span><span class="tag">Structures</span><span class="tag">Sustainability</span></span>Reusable Hexagonal Packaging</div>
         </div>
       </div>
       </div>
@@ -1285,7 +1375,7 @@ hr.title-spacer::after  { right: 0; }
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            COMING SOON! <br><br> This project is currently under development and will be updated soon. Stay tuned for more information on the Deployable Agri-Gripper project, including design details, research findings, and potential applications in agricultural robotics.
+            A deployable compliant gripper for produce harvesting, developed at the Mekateka Lab, Korea University. Three scissor linkages driven by a single linear actuator close the grasp from every direction at once, while silicone strips lining the grasp envelope provide damage-free contact. The geometry tolerates large positioning errors, relaxing the localization accuracy required from vision systems during automated harvesting. <br><br> The same scissor-linkage principles govern deployable aerospace structures &#8212; satellite booms, solar arrays, and folding antennas &#8212; a direction this work naturally extends toward. <br><br> Full design details, experiments, and results will be published here once the accompanying research letter is released &#8212; manuscript in preparation, 2026.
             <div class="row g-3 mt-2">
               <div class="col-md-6 text-center">
                 <img loading="lazy" decoding="async" src="media/AG_open.JPG" class="img-fluid rounded w-100" alt="open DG">
@@ -1303,11 +1393,11 @@ hr.title-spacer::after  { right: 0; }
       <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="modalHexaLabel">Reuseable Hexagonal Packaging</h5>
+            <h5 class="modal-title" id="modalHexaLabel">Reusable Hexagonal Packaging</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            COMING SOON! <br><br> This project is currently under development and will be updated soon. Stay tuned for more information on the Reuseable Hexagonal Packaging project, including design details, research findings, and potential transformable structure applications in sustainable packaging.
+            COMING SOON! <br><br> This project is currently under development and will be updated soon. Stay tuned for more information on the Reusable Hexagonal Packaging project, including design details, research findings, and potential transformable structure applications in sustainable packaging.
             <div class="row g-3 mt-2 justify-content-center">
               <div class="col-md-6 text-center">
                 <img loading="lazy" decoding="async" src="media/Hexa_unit.png" class="img-fluid rounded" alt="Hexagonal Packaging Unit" style="width: 150px; height: 290px;">
@@ -1325,7 +1415,7 @@ hr.title-spacer::after  { right: 0; }
     <div class="container">
       <div class="row">
       <div class="col-md-6 col-12 mb-4">
-        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalHearo" data-location="Korean Economic Daily Building" data-date="Mar 2024 - Jul 2024" style="width: 100%;">
+        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalHearo" data-location="Korea Economic Daily HQ" data-date="Mar 2024 - Jul 2024" style="width: 100%;">
         <img loading="lazy" decoding="async" src="media/hearo/hro_cover.JPEG" class="rounded" alt="Hearo">
         <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">Startup</span><span class="tag">CAD</span><span class="tag">Pitching</span></span>ROKAF National Startup Competition</div>
         </div>
@@ -1487,7 +1577,7 @@ hr.title-spacer::after  { right: 0; }
         <div class="col-md-6 col-12 mb-4">
           <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modal23EoulBB" data-location="Korea University" data-date="Dec 2022 - Sep 2023" style="width: 100%;">
             <img loading="lazy" decoding="async" src="media/23eoul bb/23bb_cover.JPEG" class="rounded" alt="23EoulBB">
-            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">Battery Systems</span><span class="tag">Formula Student</span></span>2023 E-Formula Racecar &#8212; Battery Box</div>
+            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">Battery Systems</span><span class="tag">Formula Student</span></span><span class="fit-line">2023 E-Formula Racecar &#8212; Battery Box</span></div>
           </div>
         </div>
         <div class="col-md-6 col-12 mb-4">
@@ -1574,9 +1664,9 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
     <div class="container">
       <div class="row">
               <div class="col-md-4 col-12 mb-4">
-        <div class="blur-on-hover coming-soon" data-location="Coming soon" data-date="In progress" style="width: 100%;">
-        <img loading="lazy" decoding="async" src="media/coming soon.jpeg" class="rounded" alt="coming soon">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;">Coming soon!</div>
+        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalESafe" data-location="Korea University" data-date="Sep 2025 - Feb 2026" style="width: 100%;">
+        <img loading="lazy" decoding="async" src="media/esafe_cover.png" class="rounded" alt="E-Safe Solutions IMSDC safety module">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">PCB Design</span><span class="tag">Functional Safety</span><span class="tag">Startup</span></span>E-Safe Solutions</div>
         </div>
       </div>
       <div class="col-md-4 col-12 mb-4">
@@ -1596,6 +1686,25 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
     </div>
 
     <!-- Modals for Row 1 -->
+    <div class="modal fade" id="modalESafe" tabindex="-1" aria-labelledby="modalESafeLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalESafeLabel">E-Safe Solutions &#8212; High-Voltage DC Safety Modules</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            E-Safe Solutions (이세이프솔루션즈) is a Korea University startup club founded by Eoulsure members who wanted to turn the high-voltage safety know-how from building E-Formula racecars &#8212; BMS, IMD, BSPD, and TSAL circuits &#8212; into a product: pre-verified high-voltage DC shutdown-circuit modules, sold together with electrical-safety consulting, so that small labs and hardware startups can pass electrical safety certification without designing every protection circuit from scratch.
+            <br><br>
+            After an idea pitching presenation, the team was awarded Korea University's startup funding to build a working prototype, and integrated its BMS, insulation-monitoring (IMD), and deadman-switch designs into the IMSDC (Integrated Monitor and Shutdown Circuitry) module. I joined in September 2025 with direct circuit-design experience from Formula racing, contributing to the safety modules and handling the team's partnerships.
+            <div class="text-center" style="margin-top: 10px;">
+  <img loading="lazy" decoding="async" src="media/esafe_slide.png" class="img-fluid rounded" alt="safety seminar" style="width: 500px; height: 280px;"> <br>
+  <i style="font-size: 12pt;">A slide we used in the pitching presentation.</i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="modal fade" id="modalWeb" tabindex="-1" aria-labelledby="modalWebLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
@@ -1727,8 +1836,8 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
 
         /* dot tracks instantly; ring eases toward it for the trailing feel */
         (function loop() {
-          rx += (tx - rx) * 0.16;
-          ry += (ty - ry) * 0.16;
+          rx += (tx - rx) * 0.35;
+          ry += (ty - ry) * 0.35;
           dot.style.transform  = 'translate3d(' + (tx - 3)  + 'px,' + (ty - 3)  + 'px,0)';
           ring.style.transform = 'translate3d(' + (rx - 32) + 'px,' + (ry - 32) + 'px,0)';
           needles.forEach(function (n) {
@@ -1753,7 +1862,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
           targets.push(card.closest('[class*="col-"]') || card);
         });
         document.querySelectorAll('.section-heading, .bom-wrap').forEach(function (el) { targets.push(el); });
-        var contact = document.querySelector('#contact');
+        var contact = document.querySelector('#contact .title-block');
         if (contact) targets.push(contact);
 
         var io = new IntersectionObserver(function (entries) {
@@ -1770,6 +1879,28 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
           el.style.transitionDelay = (i % 3) * 80 + 'ms';
           io.observe(el);
         });
+      })();
+
+      /* largest font size that keeps a .fit-line on a single line */
+      (function () {
+        var els = document.querySelectorAll('.fit-line');
+        if (!els.length) return;
+        function fit() {
+          els.forEach(function (el) {
+            el.style.fontSize = '';
+            var size = parseFloat(window.getComputedStyle(el).fontSize);
+            var guard = 60;
+            el.style.fontSize = size + 'px';
+            while (el.scrollWidth > el.clientWidth + 1 && size > 11 && guard-- > 0) {
+              size -= 0.5;
+              el.style.fontSize = size + 'px';
+            }
+          });
+        }
+        var t;
+        window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(fit, 120); });
+        if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fit); }
+        fit();
       })();
     </script>
 
@@ -1873,10 +2004,12 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
     </section>
 
     <section id="contact">
+    <div class="text-center">
+      <p class="display-6 section-heading">contact</p>
+    </div>
     <div class="container">
       <div class="title-block">
         <div class="tb-head">
-          <span class="tb-tag">Contact</span>
           <h6 class="tb-title">how to contact me</h6>
         </div>
         <div class="contact-actions d-flex flex-wrap justify-content-center gap-3">
@@ -1898,7 +2031,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
         </div>
         <div class="tb-grid">
           <div class="tb-cell"><span class="tb-label">Drawn by</span><span class="tb-value">Ryan Minkyu Chung</span></div>
-          <div class="tb-cell"><span class="tb-label">Last revised</span><span class="tb-value">July 30, 2026</span></div>
+          <div class="tb-cell"><span class="tb-label">Last revised</span><span class="tb-value">Aug 3, 2026</span></div>
           <div class="tb-cell"><span class="tb-label">Sheet</span><span class="tb-value">Portfolio &#8212; 01 of 01</span></div>
           <div class="tb-cell"><span class="tb-label">Note</span><span class="tb-value">Korean version coming soon, maybe.</span></div>
         </div>
