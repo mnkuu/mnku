@@ -338,7 +338,7 @@ button:focus-visible,
 }
 
 /* which part of the photo survives the circular crop: x% y% (tune to taste) */
-.about-me-content .image-container img { object-position: 50% 20%; }
+.about-me-content .image-container img { object-position: 60% 30%; }
 
 .about-me-text {
   flex: 1;
@@ -585,6 +585,9 @@ hr.title-spacer::after  { right: 0; }
 
 /* Keep fixed-size modal images from overflowing small screens */
 .modal-body img { max-width: 100%; height: auto !important; }
+
+/* ...except the circular dial photo, which must fill its circle (cover) */
+.modal-body .image-container img { height: 100% !important; }
 
 .modal-footer { border-top: 1px solid var(--rule); }
 
@@ -863,8 +866,7 @@ hr.title-spacer::after  { right: 0; }
 }
 
 .blur-on-hover:hover .tag-row,
-.blur-on-hover:focus-visible .tag-row,
-.blur-on-hover:focus-within .tag-row {
+.blur-on-hover:focus-visible .tag-row {
   opacity: 1;
   transform: none;
 }
@@ -1208,7 +1210,7 @@ hr.title-spacer::after  { right: 0; }
             <div class="timeline-item">
             <div class="timeline-dot" aria-hidden="true"></div>
             <div class="timeline-entry">
-              <div class="timeline-date">2026-06-19</div>
+              <div class="timeline-date">Jun 19, 2026</div>
               <div class="timeline-text">Finished my junior year with a cumulative GPA of 3.85/4.0. Currently conducting research on robotic end-effectors @ <a href="https://mekateka.com/" target="_blank" rel="noopener noreferrer">Mekateka</a>.</div>
             </div>
           </div>
@@ -1217,7 +1219,7 @@ hr.title-spacer::after  { right: 0; }
             <div class="timeline-item">
             <div class="timeline-dot" aria-hidden="true"></div>
             <div class="timeline-entry">
-              <div class="timeline-date">2026-02-27</div>
+              <div class="timeline-date">Feb 27, 2026</div>
               <div class="timeline-text">I have been awarded a scholarship from the Korean Engineering Guarantee Insurance Foundation as part of their very first engineering undergraduate cohort.</div>
             </div>
           </div>
@@ -1225,7 +1227,7 @@ hr.title-spacer::after  { right: 0; }
           <div class="timeline-item">
             <div class="timeline-dot" aria-hidden="true"></div>
             <div class="timeline-entry">
-              <div class="timeline-date">2025-10-07</div>
+              <div class="timeline-date">Oct 7, 2025</div>
               <div class="timeline-text">Officially discharged from the Republic of Korea Air Force as a Staff Sergeant.</div>
             </div>
           </div>
@@ -1233,7 +1235,7 @@ hr.title-spacer::after  { right: 0; }
             <div class="timeline-item">
             <div class="timeline-dot" aria-hidden="true"></div>
             <div class="timeline-entry">
-              <div class="timeline-date">2025-09-01</div>
+              <div class="timeline-date">Sep 1, 2025</div>
               <div class="timeline-text">Started an undergraduate research internship @ <a href="https://mekateka.com/" target="_blank" rel="noopener noreferrer">Mekateka Lab</a>, Korea University (Prof. Daniel Dahyun Lim)</div>
             </div>
             </div>
@@ -1241,7 +1243,7 @@ hr.title-spacer::after  { right: 0; }
           <div class="timeline-item">
             <div class="timeline-dot" aria-hidden="true"></div>
             <div class="timeline-entry">
-              <div class="timeline-date">2025-08-17</div>
+              <div class="timeline-date">Aug 17, 2025</div>
               <div class="timeline-text">Earned the Certified SOLIDWORKS Associate (CSWA) certification from Dassault Syst&#232;mes.</div>
             </div>
           </div>
@@ -1837,7 +1839,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
               <tr>
                 <td class="bom-no">02</td>
                 <td class="bom-cat">Electronics</td>
-                <td>PCB Design (EasyEDA) &#183; Arduino &#183; Soldering</td>
+                <td>PCB Design (EasyEDA) &#183; Soldering &#183; Arduino</td>
                 <td class="bom-ref">Formula HV / LV systems</td>
               </tr>
               <tr>
@@ -1849,20 +1851,20 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
               <tr>
                 <td class="bom-no">04</td>
                 <td class="bom-cat">Software</td>
-                <td>C++ &#183; MATLAB &#183; HTML / CSS  &#183; COMSOL</td>
+                <td>C++ &#183; MATLAB &#183; HTML / CSS &#183; Bootstrap</td>
                 <td class="bom-ref">Brachiating robot &#183; this site</td>
               </tr>
               <tr>
                 <td class="bom-no">05</td>
                 <td class="bom-cat">Languages</td>
-                <td>English&#8211;Korean Translation &amp; Interpretation &amp; Bilingual</td>
+                <td>English&#8211;Korean Translation &amp; Interpretation</td>
                 <td class="bom-ref">IELTS 8.5 &#183; TOEIC 990</td>
               </tr>
               <tr>
                 <td class="bom-no">06</td>
                 <td class="bom-cat">Miscellaneous</td>
                 <td>Microsoft Excel &#183; Microsoft PowerPoint</td>
-                <td class="bom-ref">Powertrain calcs &#183; MLO</td>
+                <td class="bom-ref">Powertrain calcs &#183; decks</td>
               </tr>
             </tbody>
           </table>
