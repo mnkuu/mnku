@@ -28,6 +28,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
 /* ==========================================================================
+   STYLESHEET MAP (in order)
+   1. Design tokens & base          9. Instruments & tooling (BOM table)
+   2. Nav, hero, section structure 10. Contact title block
+   3. Scroll cue                   11. Modals (detail sheets)
+   4. Portrait dial                12. Updates timeline
+   5. About-me modal layout        13. Scroll reveal
+   6. Buttons                      14. Cursor reticle
+   7. Project cards                15. Small screens & reduced motion
+   8. Card tags / pub / edu lines
+   ========================================================================== */
+
+/* ==========================================================================
    R.M.C portfolio - "engineering drawing sheet"
    Graph-paper ground, drafting-blue ink, mono annotations,
    instrument-dial portrait, title-block footer.
@@ -125,248 +137,6 @@ button:focus-visible,
 [role="button"]:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
-}
-
-/* --------------------------------------------------------------------------
-   Project cards
-   -------------------------------------------------------------------------- */
-.blur-on-hover {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  height: 320px !important;
-  border: 1px solid var(--rule);
-  border-radius: 16px;
-  background: #101820;
-  box-shadow: var(--card-shadow);
-  isolation: isolate;
-  transition: transform 280ms cubic-bezier(0.22,1,0.36,1), box-shadow 280ms ease, border-color 280ms ease;
-}
-
-.blur-on-hover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 500ms cubic-bezier(0.22,1,0.36,1), filter 0.3s ease;
-}
-
-.blur-on-hover .overlay-text {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  transform: none;
-  color: #fff;
-  font-family: var(--font-display) !important;
-  font-size: clamp(1.2rem, 2.3vw, 1.95rem) !important;
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: 0.01em;
-  text-align: left;
-  opacity: 1;
-  padding: 2.75rem 1.25rem 1.1rem;
-  background: linear-gradient(transparent, rgba(5, 11, 17, 0.92));
-  transition: padding 280ms ease;
-  z-index: 1;
-}
-
-/* Drawing-callout chips: location + revision dates in mono */
-.blur-on-hover::before,
-.blur-on-hover::after {
-  position: absolute;
-  left: 0.9rem;
-  z-index: 2;
-  max-width: calc(100% - 1.8rem);
-  padding: 0.3rem 0.6rem;
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  border-radius: 6px;
-  color: #fff;
-  background: rgba(6, 14, 20, 0.6);
-  backdrop-filter: blur(8px);
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.blur-on-hover::before { content: attr(data-location); top: 0.9rem; }
-.blur-on-hover::after  { content: attr(data-date);     top: 2.95rem; }
-
-.blur-on-hover:hover img { filter: brightness(0.78); transform: scale(1.045); }
-.blur-on-hover:hover .overlay-text { padding-bottom: 1.35rem; }
-
-/* .fit-line: JS shrinks the font just enough to keep the text on one line */
-.overlay-text .fit-line { display: block; white-space: nowrap; overflow: hidden; }
-
-.blur-on-hover:hover,
-.blur-on-hover:focus-visible {
-  transform: translateY(-6px);
-  border-color: var(--accent);
-  box-shadow: var(--card-shadow-hover);
-}
-
-/* Legacy tooltip styling retained for compatibility with older cards. */
-.tooltip-custom {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.75);
-  color: white;
-  padding: 5px 10px;
-  border-radius: 5px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  z-index: 1000;
-}
-
-/* Legacy dark-theme helpers (kept for the JS toggle's body class) */
-.dark-theme { color: var(--ink); transition: color 0.5s ease; }
-.dark-theme .footer-icon,
-.dark-theme h6 { color: var(--ink); transition: color 0.5s ease; }
-
-/* --------------------------------------------------------------------------
-   Buttons: instrument-panel labels
-   -------------------------------------------------------------------------- */
-.updates-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  color: var(--ink);
-  padding: 0.68rem 1.25rem;
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  transition: transform 260ms cubic-bezier(0.22,1,0.36,1), background 260ms ease, color 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
-  box-shadow: 0 10px 24px rgba(16, 42, 74, 0.14);
-  position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(12px);
-}
-
-.updates-btn:hover {
-  transform: translateY(-3px);
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-contrast);
-  box-shadow: 0 14px 28px var(--accent-glow);
-}
-
-.updates-btn .btn-content { display: inline-flex; align-items: center; }
-
-/* --------------------------------------------------------------------------
-   Portrait dial (hero button + about-me modal)
-   The ring is two stacked SVGs: a static tick bezel (.ring-base) and a
-   rotating name ring (.ring-text). Rotating the whole svg element keeps
-   the spin perfectly centered on every browser, including mobile Safari.
-   -------------------------------------------------------------------------- */
-.btnSwitch {
-  padding: 0 !important;
-  margin: 1.4rem auto 0 !important;
-  border: 0;
-  background: none;
-}
-
-.circle-container {
-  position: relative;
-  width: min(400px, 78vw);
-  height: min(400px, 78vw);
-  margin-inline: auto;
-}
-
-.circle-container svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.ring-track { stroke: var(--tick-faint); transition: stroke 0.5s ease; }
-.ring-marks { stroke: var(--tick);       transition: stroke 0.5s ease; }
-.ring-index { fill: var(--accent-3); }
-
-.ring-text {
-  animation: rotate 32s linear infinite;
-  transform-origin: 50% 50%;
-  will-change: transform;
-}
-
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-.circular-text {
-  fill: var(--ink);
-  font-family: var(--font-mono);
-  font-weight: 500;
-  transition: fill 0.5s ease;
-}
-
-/* per-ring sizes chosen so char count x 0.6em advance = 219.9 (the r=35
-   circumference): the mono grid then spaces every glyph, dots included,
-   perfectly evenly, with any rounding slack hidden in the seam space */
-.ct-hero  { font-size: 7.968px; }  /* 46 characters */
-.ct-modal { font-size: 7.635px; }  /* 48 characters */
-
-.btnSwitch:hover .circular-text { fill: var(--accent); }
-
-.image-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 62%;
-  height: 62%;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid var(--rule);
-  box-shadow: 0 10px 30px rgba(16, 42, 74, 0.18), 0 0 0 6px var(--glass);
-  transition: transform 320ms cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
-}
-
-.image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.btnSwitch:hover .image-container { transform: translate(-50%, -50%) scale(1.02); }
-
-/* --------------------------------------------------------------------------
-   About-me modal layout
-   -------------------------------------------------------------------------- */
-.about-me-content {
-  display: flex;
-  align-items: center;
-  gap: 1.4rem;
-  flex-direction: row;
-}
-
-.about-me-content .circle-container {
-  width: min(300px, 64vw);
-  height: min(300px, 64vw);
-  flex: 0 0 auto;
-}
-
-/* which part of the photo survives the circular crop: x% y% (tune to taste) */
-.about-me-content .image-container img { object-position: 60% 30%; }
-
-.about-me-text {
-  flex: 1;
-  font-family: var(--font-body);
-  font-size: 19px;
-  line-height: 1.55;
-  text-align: left;
-}
-
-@media (max-width: 900px) {
-  .about-me-content { flex-direction: column; align-items: center; }
 }
 
 /* --------------------------------------------------------------------------
@@ -535,6 +305,522 @@ hr.title-spacer::before { left: 0; }
 hr.title-spacer::after  { right: 0; }
 
 /* --------------------------------------------------------------------------
+   Hero extras: inline subtitle links and a dimension-arrow scroll cue
+   -------------------------------------------------------------------------- */
+.scroll-cue {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.2rem;
+  color: var(--ink);
+  opacity: 0.65;
+  text-decoration: none;
+  transition: opacity 200ms ease, color 200ms ease;
+}
+
+.scroll-cue:hover,
+.scroll-cue:focus-visible { opacity: 1; color: var(--accent); }
+
+.scroll-cue-label {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  padding-left: 0.34em;
+}
+
+.scroll-cue svg {
+  width: 14px;
+  height: 40px;
+  display: block;
+  animation: cueBob 2.2s ease-in-out infinite;
+}
+
+.scroll-cue line,
+.scroll-cue polyline {
+  stroke: currentColor;
+  stroke-width: 1.6;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes cueBob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(7px); }
+}
+
+/* --------------------------------------------------------------------------
+   Portrait dial (hero button + about-me modal)
+   The ring is two stacked SVGs: a static tick bezel (.ring-base) and a
+   rotating name ring (.ring-text). Rotating the whole svg element keeps
+   the spin perfectly centered on every browser, including mobile Safari.
+   -------------------------------------------------------------------------- */
+.btnSwitch {
+  padding: 0 !important;
+  margin: 1.4rem auto 0 !important;
+  border: 0;
+  background: none;
+}
+
+.circle-container {
+  position: relative;
+  width: min(400px, 78vw);
+  height: min(400px, 78vw);
+  margin-inline: auto;
+}
+
+.circle-container svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ring-track { stroke: var(--tick-faint); transition: stroke 0.5s ease; }
+.ring-marks { stroke: var(--tick);       transition: stroke 0.5s ease; }
+.ring-index { fill: var(--accent-3); }
+
+.ring-text {
+  animation: rotate 32s linear infinite;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.circular-text {
+  fill: var(--ink);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  transition: fill 0.5s ease;
+}
+
+/* per-ring sizes chosen so char count x 0.6em advance = 219.9 (the r=35
+   circumference): the mono grid then spaces every glyph, dots included,
+   perfectly evenly, with any rounding slack hidden in the seam space */
+.ct-hero  { font-size: 7.968px; }  /* 46 characters */
+.ct-modal { font-size: 7.635px; }  /* 48 characters */
+
+.btnSwitch:hover .circular-text { fill: var(--accent); }
+
+.image-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 62%;
+  height: 62%;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  box-shadow: 0 10px 30px rgba(16, 42, 74, 0.18), 0 0 0 6px var(--glass);
+  transition: transform 320ms cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.btnSwitch:hover .image-container { transform: translate(-50%, -50%) scale(1.02); }
+
+/* --------------------------------------------------------------------------
+   About-me modal layout
+   -------------------------------------------------------------------------- */
+.about-me-content {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  flex-direction: row;
+}
+
+.about-me-content .circle-container {
+  width: min(300px, 64vw);
+  height: min(300px, 64vw);
+  flex: 0 0 auto;
+}
+
+/* which part of the photo survives the circular crop: x% y% (tune to taste) */
+.about-me-content .image-container img { object-position: 60% 30%; }
+
+.about-me-text {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: 19px;
+  line-height: 1.55;
+  text-align: left;
+}
+
+@media (max-width: 900px) {
+  .about-me-content { flex-direction: column; align-items: center; }
+}
+
+/* --------------------------------------------------------------------------
+   Buttons: instrument-panel labels
+   -------------------------------------------------------------------------- */
+.updates-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  color: var(--ink);
+  padding: 0.68rem 1.25rem;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: transform 260ms cubic-bezier(0.22,1,0.36,1), background 260ms ease, color 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
+  box-shadow: 0 10px 24px rgba(16, 42, 74, 0.14);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+.updates-btn:hover {
+  transform: translateY(-3px);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+  box-shadow: 0 14px 28px var(--accent-glow);
+}
+
+.updates-btn .btn-content { display: inline-flex; align-items: center; }
+
+/* --------------------------------------------------------------------------
+   Project cards
+   -------------------------------------------------------------------------- */
+.blur-on-hover {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  height: 320px !important;
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  background: #101820;
+  box-shadow: var(--card-shadow);
+  isolation: isolate;
+  transition: transform 280ms cubic-bezier(0.22,1,0.36,1), box-shadow 280ms ease, border-color 280ms ease;
+}
+
+.blur-on-hover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 500ms cubic-bezier(0.22,1,0.36,1), filter 0.3s ease;
+}
+
+.blur-on-hover .overlay-text {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: none;
+  color: #fff;
+  font-family: var(--font-display) !important;
+  font-size: clamp(1.2rem, 2.3vw, 1.95rem) !important;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: 0.01em;
+  text-align: left;
+  opacity: 1;
+  padding: 2.75rem 1.25rem 1.1rem;
+  background: linear-gradient(transparent, rgba(5, 11, 17, 0.92));
+  transition: padding 280ms ease;
+  z-index: 1;
+}
+
+/* Drawing-callout chips: location + revision dates in mono */
+.blur-on-hover::before,
+.blur-on-hover::after {
+  position: absolute;
+  left: 0.9rem;
+  z-index: 2;
+  max-width: calc(100% - 1.8rem);
+  padding: 0.3rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 6px;
+  color: #fff;
+  background: rgba(6, 14, 20, 0.6);
+  backdrop-filter: blur(8px);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.blur-on-hover::before { content: attr(data-location); top: 0.9rem; }
+.blur-on-hover::after  { content: attr(data-date);     top: 2.95rem; }
+
+.blur-on-hover:hover img { filter: brightness(0.78); transform: scale(1.045); }
+.blur-on-hover:hover .overlay-text { padding-bottom: 1.35rem; }
+
+/* .fit-line: JS shrinks the font just enough to keep the text on one line */
+.overlay-text .fit-line { display: block; white-space: nowrap; overflow: hidden; }
+
+.blur-on-hover:hover,
+.blur-on-hover:focus-visible {
+  transform: translateY(-6px);
+  border-color: var(--accent);
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* Legacy tooltip styling retained for compatibility with older cards. */
+.tooltip-custom {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 1000;
+}
+
+/* Legacy dark-theme helpers (kept for the JS toggle's body class) */
+.dark-theme { color: var(--ink); transition: color 0.5s ease; }
+.dark-theme .footer-icon,
+.dark-theme h6 { color: var(--ink); transition: color 0.5s ease; }
+
+/* --------------------------------------------------------------------------
+   Project tech tags on card overlays
+   -------------------------------------------------------------------------- */
+.overlay-text .tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 240ms ease, transform 240ms ease;
+}
+
+.blur-on-hover:hover .tag-row,
+.blur-on-hover:focus-visible .tag-row {
+  opacity: 1;
+  transform: none;
+}
+
+.overlay-text .tag {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  padding: 0.28rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: rgba(6, 14, 20, 0.55);
+  backdrop-filter: blur(6px);
+}
+
+@media (max-width: 576px) {
+  .overlay-text .tag { font-size: 0.58rem; padding: 0.24rem 0.5rem; }
+}
+
+/* --------------------------------------------------------------------------
+   Publication line, hero interests, education line
+   -------------------------------------------------------------------------- */
+.pub-line {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  border: 1px dashed var(--rule);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  margin: 0.2rem auto 1.6rem;
+  max-width: 900px;
+  text-align: center;
+}
+
+.pub-label {
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-right: 0.6rem;
+}
+
+.hero-interests {
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  margin: 1rem 0 0.3rem;
+}
+
+.edu-line {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  border-left: 3px solid var(--accent);
+  padding: 0.45rem 0.8rem;
+  background: var(--glass);
+  border-radius: 0 8px 8px 0;
+}
+
+/* --------------------------------------------------------------------------
+   Instruments & tooling: skills laid out like a bill-of-materials table
+   -------------------------------------------------------------------------- */
+.bom-wrap {
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  overflow-x: auto;
+  margin-bottom: 3rem;
+}
+
+.bom-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.bom-table th {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  text-align: left;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.bom-table td {
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+.bom-table tbody tr:last-child td { border-bottom: 0; }
+
+.bom-table .bom-no {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.bom-table .bom-cat {
+  font-family: var(--font-display);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.bom-table .bom-ref {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+.bom-table tbody tr { transition: background 180ms ease; }
+.bom-table tbody tr:hover { background: var(--accent-glow); }
+
+@media (max-width: 576px) {
+  .bom-table { font-size: 0.9rem; }
+  .bom-table th, .bom-table td { padding: 0.7rem 0.8rem; }
+}
+
+/* --------------------------------------------------------------------------
+   Contact: drawing title block
+   -------------------------------------------------------------------------- */
+#contact { padding-bottom: 3rem; }
+
+.title-block {
+  max-width: 860px;
+  margin: 0 auto;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(16, 42, 74, 0.1);
+  transition: background 700ms cubic-bezier(0.22,1,0.36,1);
+}
+
+.tb-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.tb-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.title-block .contact-actions {
+  padding: 1.4rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.contact-actions .updates-btn { min-width: 8.5rem; }
+.contact-actions .bi { font-size: 1.05rem; }
+
+.tb-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+
+.tb-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.85rem 1.4rem;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.tb-cell:nth-child(2n) { border-right: 0; }
+.tb-cell:nth-last-child(-n+2) { border-bottom: 0; }
+
+.tb-label {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.tb-value { font-size: 0.95rem; font-weight: 500; }
+
+.tb-copy {
+  margin: 0;
+  padding: 0.8rem 1.4rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
    Modals - styled like detail sheets pulled from the drawing set
    -------------------------------------------------------------------------- */
 .modal-content,
@@ -620,107 +906,6 @@ hr.title-spacer::after  { right: 0; }
   .modal-body { font-size: 1rem; }
 }
 
-/* --------------------------------------------------------------------------
-   Contact: drawing title block
-   -------------------------------------------------------------------------- */
-#contact { padding-bottom: 3rem; }
-
-.title-block {
-  max-width: 860px;
-  margin: 0 auto;
-  border: 1px solid var(--rule);
-  border-radius: 14px;
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  overflow: hidden;
-  box-shadow: 0 12px 30px rgba(16, 42, 74, 0.1);
-  transition: background 700ms cubic-bezier(0.22,1,0.36,1);
-}
-
-.tb-head {
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
-  padding: 1rem 1.4rem;
-  border-bottom: 1px solid var(--rule);
-}
-
-.tb-title {
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.05rem;
-}
-
-.title-block .contact-actions {
-  padding: 1.4rem;
-  border-bottom: 1px solid var(--rule);
-}
-
-.contact-actions .updates-btn { min-width: 8.5rem; }
-.contact-actions .bi { font-size: 1.05rem; }
-
-.tb-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
-
-.tb-cell {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  padding: 0.85rem 1.4rem;
-  border-right: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-}
-
-.tb-cell:nth-child(2n) { border-right: 0; }
-.tb-cell:nth-last-child(-n+2) { border-bottom: 0; }
-
-.tb-label {
-  font-family: var(--font-mono);
-  font-size: 0.64rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-}
-
-.tb-value { font-size: 0.95rem; font-weight: 500; }
-
-.tb-copy {
-  margin: 0;
-  padding: 0.8rem 1.4rem;
-  border-top: 1px solid var(--rule);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  text-align: center;
-}
-
-/* --------------------------------------------------------------------------
-   Small screens
-   -------------------------------------------------------------------------- */
-@media (max-width: 576px) {
-  .site-nav { width: calc(100% - 1rem); margin-top: 0.5rem; border-radius: 16px; }
-  .site-nav .navbar-brand { font-size: 0.9rem; }
-  .site-nav .navbar-collapse { padding: 0.5rem 0.35rem; }
-  .hero { min-height: auto; padding: 3.5rem 1rem 1rem; }
-  .hero .display-1 { font-size: clamp(2.4rem, 13vw, 4rem); }
-  .hero .display-6 { font-size: 1.08rem; }
-  .hero-eyebrow { font-size: 0.62rem; letter-spacing: 0.22em; gap: 0.6rem; }
-  .hero-eyebrow::before, .hero-eyebrow::after { width: 22px; }
-  .blur-on-hover { height: 240px !important; }
-  .blur-on-hover::after { top: 2.8rem; }
-  .circle-container { width: min(320px, 86vw); height: min(320px, 86vw); }
-  .tb-grid { grid-template-columns: 1fr; }
-  .tb-cell { border-right: 0; }
-  .tb-cell:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
-  .tb-cell:last-child { border-bottom: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-}
 /* --------------------------------------------------------------------------
    Updates modal timeline (moved out of the modal body)
    -------------------------------------------------------------------------- */
@@ -814,162 +999,6 @@ hr.title-spacer::after  { right: 0; }
 }
 
 /* --------------------------------------------------------------------------
-   Hero extras: inline subtitle links and a dimension-arrow scroll cue
-   -------------------------------------------------------------------------- */
-.scroll-cue {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1.2rem;
-  color: var(--ink);
-  opacity: 0.65;
-  text-decoration: none;
-  transition: opacity 200ms ease, color 200ms ease;
-}
-
-.scroll-cue:hover,
-.scroll-cue:focus-visible { opacity: 1; color: var(--accent); }
-
-.scroll-cue-label {
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  font-weight: 500;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
-  padding-left: 0.34em;
-}
-
-.scroll-cue svg {
-  width: 14px;
-  height: 40px;
-  display: block;
-  animation: cueBob 2.2s ease-in-out infinite;
-}
-
-.scroll-cue line,
-.scroll-cue polyline {
-  stroke: currentColor;
-  stroke-width: 1.6;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-@keyframes cueBob {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(7px); }
-}
-
-/* --------------------------------------------------------------------------
-   Project tech tags on card overlays
-   -------------------------------------------------------------------------- */
-.overlay-text .tag-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-bottom: 0.5rem;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 240ms ease, transform 240ms ease;
-}
-
-.blur-on-hover:hover .tag-row,
-.blur-on-hover:focus-visible .tag-row {
-  opacity: 1;
-  transform: none;
-}
-
-.overlay-text .tag {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #fff;
-  padding: 0.28rem 0.55rem;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 999px;
-  background: rgba(6, 14, 20, 0.55);
-  backdrop-filter: blur(6px);
-}
-
-@media (max-width: 576px) {
-  .overlay-text .tag { font-size: 0.58rem; padding: 0.24rem 0.5rem; }
-}
-
-/* --------------------------------------------------------------------------
-   Instruments & tooling: skills laid out like a bill-of-materials table
-   -------------------------------------------------------------------------- */
-.bom-wrap {
-  border: 1px solid var(--rule);
-  border-radius: 14px;
-  background: var(--glass);
-  backdrop-filter: blur(10px);
-  overflow-x: auto;
-  margin-bottom: 3rem;
-}
-
-.bom-table {
-  width: 100%;
-  min-width: 640px;
-  border-collapse: collapse;
-  font-size: 0.95rem;
-  color: var(--ink);
-}
-
-.bom-table th {
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  opacity: 0.6;
-  text-align: left;
-  padding: 0.85rem 1.1rem;
-  border-bottom: 1px solid var(--rule);
-}
-
-.bom-table td {
-  padding: 0.85rem 1.1rem;
-  border-bottom: 1px solid var(--rule);
-  vertical-align: top;
-}
-
-.bom-table tbody tr:last-child td { border-bottom: 0; }
-
-.bom-table .bom-no {
-  font-family: var(--font-mono);
-  font-weight: 600;
-  color: var(--accent);
-  white-space: nowrap;
-}
-
-.bom-table .bom-cat {
-  font-family: var(--font-display);
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.bom-table .bom-ref {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  opacity: 0.75;
-  white-space: nowrap;
-}
-
-.bom-table tbody tr { transition: background 180ms ease; }
-.bom-table tbody tr:hover { background: var(--accent-glow); }
-
-@media (max-width: 576px) {
-  .bom-table { font-size: 0.9rem; }
-  .bom-table th, .bom-table td { padding: 0.7rem 0.8rem; }
-}
-
-/* --------------------------------------------------------------------------
    Scroll reveal: cards and headings drift in as they enter the viewport.
    The .reveal class is only ever added by JS, so everything stays visible
    if JS is unavailable; reduced-motion visitors get no movement at all.
@@ -989,52 +1018,7 @@ hr.title-spacer::after  { right: 0; }
   .reveal { opacity: 1; transform: none; }
 }
 
-/* --------------------------------------------------------------------------
-   Publication line, hero interests, education line
-   -------------------------------------------------------------------------- */
-.pub-line {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--ink-soft);
-  border: 1px dashed var(--rule);
-  border-radius: 12px;
-  padding: 0.8rem 1rem;
-  margin: 0.2rem auto 1.6rem;
-  max-width: 900px;
-  text-align: center;
-}
 
-.pub-label {
-  color: var(--accent);
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  margin-right: 0.6rem;
-}
-
-.hero-interests {
-  font-family: var(--font-mono);
-  font-size: 0.86rem;
-  letter-spacing: 0.08em;
-  color: var(--ink-soft);
-  margin: 1rem 0 0.3rem;
-}
-
-.edu-line {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  border-left: 3px solid var(--accent);
-  padding: 0.45rem 0.8rem;
-  background: var(--glass);
-  border-radius: 0 8px 8px 0;
-}
-
-/* --------------------------------------------------------------------------
-   Cursor reticle - follows the mouse, locks on over anything clickable.
-   Only activates on mouse devices (never touch) and only when the visitor
-   has not asked for reduced motion; JS adds .cursor-fx to <html> if so.
-   -------------------------------------------------------------------------- */
 .cursor-dot,
 .cursor-ring { display: none; }
 
@@ -1058,7 +1042,6 @@ hr.title-spacer::after  { right: 0; }
   .cursor-fx .cursor-dot.is-on,
   .cursor-fx .cursor-ring.is-on { opacity: 1; }
 
-  /* the precise point: a small orange dot glued to the real cursor position */
   .cursor-dot {
     width: 6px;
     height: 6px;
@@ -1066,8 +1049,7 @@ hr.title-spacer::after  { right: 0; }
     background: var(--accent-3);
   }
 
-  /* idle: a soft orange disc; over anything clickable the disc fades out
-     as the rotating 8-point cross fades in at full size */
+
   .cursor-ring {
     width: 64px;
     height: 64px;
@@ -1109,9 +1091,32 @@ hr.title-spacer::after  { right: 0; }
 
   .cursor-ring.is-engaged .cur-cross { opacity: 0.72; }
 }
+
+@media (max-width: 576px) {
+  .site-nav { width: calc(100% - 1rem); margin-top: 0.5rem; border-radius: 16px; }
+  .site-nav .navbar-brand { font-size: 0.9rem; }
+  .site-nav .navbar-collapse { padding: 0.5rem 0.35rem; }
+  .hero { min-height: auto; padding: 3.5rem 1rem 1rem; }
+  .hero .display-1 { font-size: clamp(2.4rem, 13vw, 4rem); }
+  .hero .display-6 { font-size: 1.08rem; }
+  .hero-eyebrow { font-size: 0.62rem; letter-spacing: 0.22em; gap: 0.6rem; }
+  .hero-eyebrow::before, .hero-eyebrow::after { width: 22px; }
+  .blur-on-hover { height: 240px !important; }
+  .blur-on-hover::after { top: 2.8rem; }
+  .circle-container { width: min(320px, 86vw); height: min(320px, 86vw); }
+  .tb-grid { grid-template-columns: 1fr; }
+  .tb-cell { border-right: 0; }
+  .tb-cell:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
+  .tb-cell:last-child { border-bottom: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
     </style>
   </head>
   <body>
+    <!-- ==================== NAVIGATION ==================== -->
     <nav class="navbar navbar-expand-md site-nav px-3" aria-label="Primary navigation">
       <a class="navbar-brand" href="#top">RMC</a>
       <div class="d-flex align-items-center gap-2 ms-auto order-md-last">
@@ -1135,7 +1140,7 @@ hr.title-spacer::after  { right: 0; }
       </div>
     </nav>
 
-    <!-- title section -->
+    <!-- ==================== HERO (title, actions, portrait dial, about modal) ==================== -->
     <header class="container text-center hero" id="top">
       <p class="hero-eyebrow">Mechanical Engineering Portfolio &#183; Seoul, KR</p>
       <h1 class="display-1">Ryan Minkyu Chung</h1>
@@ -1148,7 +1153,7 @@ hr.title-spacer::after  { right: 0; }
       <span>Updates & News</span>
     </div>
   </button>
-  <a class="btn updates-btn btn-outline-dark" href="https://drive.google.com/file/d/1fDgC25t8bHrCmSQHAYDw689XPwX015Bb/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
+  <a class="btn updates-btn btn-outline-dark" href="https://drive.google.com/file/d/1UFCkd6-Wg-D_o_JpnoWA55Vj2c7_u_g4/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
 </div>
     <div class="text-center" id="about">
       <button type="button" class="btn btnSwitch" data-bs-toggle="modal" data-bs-target="#aboutMeModal" aria-label="Learn more about me">
@@ -1224,12 +1229,13 @@ hr.title-spacer::after  { right: 0; }
                 </div>
               </div>
               <div class="about-me-text">
+                <span class="edu-line">B.S. Mechanical Engineering, Korea University &#8212; GPA 4.17/4.5 &#183; Expected Feb 2027 (7-semester early graduation)</span> <br><br>
                 I was born in Washington, D.C. in 2003, where I spent my childhood surrounded by Smithsonian Museums. My father would take me to explore museums on the weekends, and it was during these visits that I developed a deep passion for science and technology. The National Air and Space Museum, in particular, sparked my interest in robotics, aviation, basically all things that autonomously move.
                 <br><br>In 2014, my family moved to Seoul, South Korea, where I faced the challenge of adapting to a new culture and education system. However, I quickly found my footing, making friends with like-minded peers who shared my interests. Throughout my middle and high school years, I remained committed to nurturing my passion for technology.
                 <br><br>This drive and determination led me to pursue a degree in Mechanical Engineering at Korea University, where I continue to expand my knowledge and skills in the field. My journey so far has been shaped by a curiosity for innovation and a desire to create technologies that make a meaningful impact on society.
                 <br><br>My hobbies are watching Formula 1 (I'm a Ferrari enthusiast), jogging (even though I'm not that good at it), and reading books regardless of genre. I also love traveling to new places and taking pictures with my Sony camera.
                 <br><br>This website is the amalgamation of all my projects and experiences since entering university. I hope you enjoy reading.
-                <br><br><span class="edu-line">B.S. Mechanical Engineering, Korea University &#8212; GPA 4.17/4.5 &#183; Expected Feb 2027 (7-semester early graduation)</span>
+
               </div>
             </div>
             <div class="modal-footer">
@@ -1247,50 +1253,7 @@ hr.title-spacer::after  { right: 0; }
       </a>
     </header>
 
-    <section id="research" class="pt-3">
-    <div class="text-center">
-      <p class="display-6 section-heading">research</p>
-    </div>
-    <div class="container">
-      <div class="row justify-content-center">
-      <div class="col-lg-8 col-12 mb-4">
-        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalDG" data-location="MEKATEKA &#183; Independent research" data-date="Jan 2026 - Present" style="width: 100%;">
-        <img loading="lazy" decoding="async" src="media/AG_cover.jpg" class="rounded" alt="Deployable Gripper">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;"><span class="tag-row"><span class="tag">Robotics</span><span class="tag">Deployable Structures</span><span class="tag">CAD</span><span class="tag">3D Printing</span></span>Deployable Agri-Gripper</div>
-        </div>
-      </div>
-      </div>
-      <p class="pub-line"><span class="pub-label">Publication</span>R. M. Chung et al., &#8220;A Deployable Compliant Gripper that Overcomes Grasp Uncertainty&#8221; &#8212; manuscript in preparation, 2026.</p>
-      <div class="row justify-content-center">
-      <div class="col-lg-8 col-12 mb-4">
-        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalABLE" data-location="MEKATEKA &#183; Nationally funded project" data-date="June 2026 - Present" style="width: 100%;">
-        <img loading="lazy" decoding="async" src="media/ablelabs_cover.jpeg" class="rounded" alt="ABLELABS self-driven lab gripper">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">Robotics</span><span class="tag">Lab Automation</span><span class="tag">Gripper Design</span></span>ABLELABS Self-Driven Lab</div>
-        </div>
-      </div>
-      </div>
-    </div>
-
-    <div class="modal fade" id="modalABLE" tabindex="-1" aria-labelledby="modalABLELabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalABLELabel">ABLELABS Self-Driven Lab</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            Part of a nationally funded research project on self-driven laboratories, automating bio-engineering pipette experiments. My contribution is the design of a multi-functional gripper that can grasp sample vials and operate pipettes at the same time, letting a single end-effector run experiment steps that would normally require tool changes.
-            <br><br>
-            Documentation and results will be added here as the project progresses. <br>
-            Cover photo by gorodenkoff/Getty Images <br>
-          </div>
-        </div>
-      </div>
-    </div>
-    </section>
-
-
-
+    <!-- ==================== UPDATES & NEWS MODAL (opened from the hero button) ==================== -->
 <!-- Updates & News Modal -->
 <div class="modal fade" id="updatesModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -1349,7 +1312,51 @@ hr.title-spacer::after  { right: 0; }
     </div>
   </div>
 </div>
-    <!-- my projects -->
+
+    <!-- ==================== RESEARCH ==================== -->
+    <section id="research" class="pt-3">
+    <div class="text-center">
+      <p class="display-6 section-heading">research</p>
+    </div>
+    <div class="container">
+      <div class="row justify-content-center">
+      <div class="col-lg-8 col-12 mb-4">
+        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalDG" data-location="MEKATEKA &#183; Independent research" data-date="Jan 2026 - Present" style="width: 100%;">
+        <img loading="lazy" decoding="async" src="media/AG_cover.jpg" class="rounded" alt="Deployable Gripper">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;"><span class="tag-row"><span class="tag">Robotics</span><span class="tag">Deployable Structures</span><span class="tag">CAD</span><span class="tag">3D Printing</span></span>Deployable Agri-Gripper</div>
+        </div>
+      </div>
+      </div>
+      <p class="pub-line"><span class="pub-label">Publication</span>R. M. Chung et al., &#8220;A Deployable Compliant Gripper that Overcomes Grasp Uncertainty&#8221; &#8212; manuscript in preparation, 2026.</p>
+      <div class="row justify-content-center">
+      <div class="col-lg-8 col-12 mb-4">
+        <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalABLE" data-location="MEKATEKA &#183; Nationally funded project" data-date="Sep 2025 - Present" style="width: 100%;">
+        <img loading="lazy" decoding="async" src="media/ablelabs_cover.jpeg" class="rounded" alt="ABLELABS self-driven lab gripper">
+        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">Robotics</span><span class="tag">Lab Automation</span><span class="tag">Gripper Design</span></span>ABLELABS Self-Driven Lab</div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalABLE" tabindex="-1" aria-labelledby="modalABLELabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalABLELabel">ABLELABS Self-Driven Lab</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Part of a nationally funded research project on self-driven laboratories, automating bio-engineering pipette experiments. My contribution is the design of a multi-functional gripper that can grasp sample vials and operate pipettes at the same time, letting a single end-effector run experiment steps that would normally require tool changes.
+            <br><br>
+            Documentation and results will be added here as the project progresses. <br>
+            Cover photo by gorodenkoff/Getty Images <br>
+          </div>
+        </div>
+      </div>
+    </div>
+    </section>
+
+    <!-- ==================== SELECTED PROJECTS (cards + their modals) ==================== -->
     <section id="projects" class="pt-3">
     <div class="text-center">
       <p class="display-6 section-heading">selected projects</p>
@@ -1654,7 +1661,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
     </section>
     <hr class="title-spacer" style="width: 50%; margin: 0 auto;">
 
-    <!-- MINI PROJECTS-->
+    <!-- ==================== MINI PROJECTS (cards + their modals) ==================== -->
     <section id="mini-projects" class="pt-3">
     <div class="text-center">
       <p class="display-6 section-heading">mini projects</p>
@@ -1696,7 +1703,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
           <div class="modal-body">
             E-Safe Solutions (이세이프솔루션즈) is a Korea University startup club founded by Eoulsure members who wanted to turn the high-voltage safety know-how from building E-Formula racecars &#8212; BMS, IMD, BSPD, and TSAL circuits &#8212; into a product: pre-verified high-voltage DC shutdown-circuit modules, sold together with electrical-safety consulting, so that small labs and hardware startups can pass electrical safety certification without designing every protection circuit from scratch.
             <br><br>
-            After an idea pitching presenation, the team was awarded Korea University's startup funding to build a working prototype, and integrated its BMS, insulation-monitoring (IMD), and deadman-switch designs into the IMSDC (Integrated Monitor and Shutdown Circuitry) module. I joined in September 2025 with direct circuit-design experience from Formula racing, contributing to the safety modules and handling the team's partnerships.
+            After an idea pitching presentation, the team was awarded Korea University's startup funding to build a working prototype, and integrated its BMS, insulation-monitoring (IMD), and deadman-switch designs into the IMSDC (Integrated Monitor and Shutdown Circuitry) module. I joined in September 2025 with direct circuit-design experience from Formula racing, contributing to the safety modules and handling the team's partnerships.
             <div class="text-center" style="margin-top: 10px;">
   <img loading="lazy" decoding="async" src="media/esafe_slide.png" class="img-fluid rounded" alt="safety seminar" style="width: 500px; height: 280px;"> <br>
   <i style="font-size: 12pt;">A slide we used in the pitching presentation.</i></div>
@@ -1770,188 +1777,8 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
 
 
     </section>
-
-    <!-- cursor reticle (decorative; skipped on touch devices and for reduced motion) -->
-    <div class="cursor-dot" aria-hidden="true"></div>
-    <div class="cursor-ring" aria-hidden="true">
-      <svg viewBox="0 0 64 64" fill="none" focusable="false">
-        <circle class="cur-idle" cx="32" cy="32" r="30"/>
-        <g class="cur-cross">
-          <line x1="32" y1="11" x2="32" y2="53"/>
-          <line x1="11" y1="32" x2="53" y2="32"/>
-          <line x1="17.2" y1="17.2" x2="46.8" y2="46.8"/>
-          <line x1="17.2" y1="46.8" x2="46.8" y2="17.2"/>
-        </g>
-      </svg>
-    </div>
-
-    <script>
-      (function () {
-        var fine = window.matchMedia('(hover: hover) and (pointer: fine)');
-        var motionOK = window.matchMedia('(prefers-reduced-motion: no-preference)');
-        if (!fine.matches || !motionOK.matches) return;
-
-        var dot = document.querySelector('.cursor-dot');
-        var ring = document.querySelector('.cursor-ring');
-        if (!dot || !ring) return;
-
-        document.documentElement.classList.add('cursor-fx');
-
-        /* anything matching this list makes the reticle lock on */
-        var HOT = 'a, button, [role="button"], [data-bs-toggle], input, select, textarea, label, summary';
-
-        var tx = window.innerWidth / 2, ty = window.innerHeight / 2;
-        var rx = tx, ry = ty;
-        var shown = false;
-
-        /* compass needles on the portrait dials aim at the cursor */
-        var needles = [];
-        document.querySelectorAll('.circle-container .ring-base').forEach(function (svg) {
-          var g = svg.querySelector('.ring-needle');
-          if (g) needles.push({ svg: svg, g: g, a: 0 });
-        });
-
-        window.addEventListener('mousemove', function (e) {
-          tx = e.clientX; ty = e.clientY;
-          if (!shown) {
-            shown = true; rx = tx; ry = ty;
-            dot.classList.add('is-on'); ring.classList.add('is-on');
-          }
-        }, { passive: true });
-
-        window.addEventListener('mouseout', function (e) {
-          if (!e.relatedTarget) { /* pointer left the window */
-            shown = false;
-            dot.classList.remove('is-on'); ring.classList.remove('is-on');
-          }
-        });
-
-        document.addEventListener('mouseover', function (e) {
-          var hot = !!(e.target.closest && e.target.closest(HOT));
-          ring.classList.toggle('is-engaged', hot);
-        });
-
-        window.addEventListener('mousedown', function () { ring.classList.add('is-pressed'); });
-        window.addEventListener('mouseup',   function () { ring.classList.remove('is-pressed'); });
-
-        /* dot tracks instantly; ring eases toward it for the trailing feel */
-        (function loop() {
-          rx += (tx - rx) * 0.35;
-          ry += (ty - ry) * 0.35;
-          dot.style.transform  = 'translate3d(' + (tx - 3)  + 'px,' + (ty - 3)  + 'px,0)';
-          ring.style.transform = 'translate3d(' + (rx - 32) + 'px,' + (ry - 32) + 'px,0)';
-          needles.forEach(function (n) {
-            var r = n.svg.getBoundingClientRect();
-            if (!r.width) return; /* dial hidden (e.g. modal closed) */
-            var target = Math.atan2(ty - (r.top + r.height / 2), tx - (r.left + r.width / 2)) * 180 / Math.PI + 90;
-            var d = ((target - n.a + 540) % 360) - 180;
-            n.a += d * 0.12;
-            n.g.setAttribute('transform', 'rotate(' + n.a.toFixed(2) + ' 50 50)');
-          });
-          window.requestAnimationFrame(loop);
-        })();
-      })();
-
-      /* scroll reveal for cards, section headings, and the contact block */
-      (function () {
-        if (!('IntersectionObserver' in window)) return;
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-        var targets = [];
-        document.querySelectorAll('.blur-on-hover').forEach(function (card) {
-          targets.push(card.closest('[class*="col-"]') || card);
-        });
-        document.querySelectorAll('.section-heading, .bom-wrap').forEach(function (el) { targets.push(el); });
-        var contact = document.querySelector('#contact .title-block');
-        if (contact) targets.push(contact);
-
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('is-in');
-              io.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-
-        targets.forEach(function (el, i) {
-          el.classList.add('reveal');
-          el.style.transitionDelay = (i % 3) * 80 + 'ms';
-          io.observe(el);
-        });
-      })();
-
-      /* largest font size that keeps a .fit-line on a single line */
-      (function () {
-        var els = document.querySelectorAll('.fit-line');
-        if (!els.length) return;
-        function fit() {
-          els.forEach(function (el) {
-            el.style.fontSize = '';
-            var size = parseFloat(window.getComputedStyle(el).fontSize);
-            var guard = 60;
-            el.style.fontSize = size + 'px';
-            while (el.scrollWidth > el.clientWidth + 1 && size > 11 && guard-- > 0) {
-              size -= 0.5;
-              el.style.fontSize = size + 'px';
-            }
-          });
-        }
-        var t;
-        window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(fit, 120); });
-        if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fit); }
-        fit();
-      })();
-    </script>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.blur-on-hover[role="button"]').forEach(card => {
-          card.addEventListener('keydown', event => {
-            if (event.key === 'Enter' || event.key === ' ') {
-              event.preventDefault();
-              card.click();
-            }
-          });
-        });
-
-        const navLinks = [...document.querySelectorAll('.site-nav .nav-link')];
-        const navSections = navLinks
-          .map(link => ({ link, section: document.querySelector(link.getAttribute('href')) }))
-          .filter(item => item.section);
-        const setActiveLink = id => navLinks.forEach(link => {
-          const active = link.getAttribute('href') === `#${id}`;
-          link.classList.toggle('is-active', active);
-          if (active) link.setAttribute('aria-current', 'page');
-          else link.removeAttribute('aria-current');
-        });
-
-        const updateActiveLink = () => {
-          const pageHeight = document.documentElement.scrollHeight;
-          const atBottom = window.innerHeight + window.scrollY >= pageHeight - 4;
-
-          if (atBottom) {
-            setActiveLink('contact');
-            return;
-          }
-
-          const readingLine = window.scrollY + window.innerHeight * 0.35;
-          let activeSection = navSections[0]?.section;
-          navSections.forEach(({ section }) => {
-            if (section.offsetTop <= readingLine) activeSection = section;
-          });
-          if (activeSection) setActiveLink(activeSection.id);
-        };
-
-        updateActiveLink();
-        window.addEventListener('scroll', updateActiveLink, { passive: true });
-        window.addEventListener('resize', updateActiveLink);
-      });
-    </script>
-
-    <br> <br>
     <hr class="title-spacer">
-    <!-- Contact lines -->
+
     <section id="skills" class="pt-3">
       <p class="display-6 section-heading">instruments &amp; tooling</p>
       <div class="container">
@@ -2022,7 +1849,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
           <a class="btn updates-btn" href="https://github.com/mnkuu/mnku" target="_blank" rel="noopener noreferrer">
             <i class="bi bi-github"></i><span>GitHub</span>
           </a>
-          <a class="btn updates-btn" href="https://drive.google.com/file/d/1fDgC25t8bHrCmSQHAYDw689XPwX015Bb/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <a class="btn updates-btn" href="https://drive.google.com/file/d/1UFCkd6-Wg-D_o_JpnoWA55Vj2c7_u_g4/view?usp=sharing" target="_blank" rel="noopener noreferrer">
             <i class="bi bi-file-earmark-text"></i><span>CV</span>
           </a>
           <a class="btn updates-btn" href="https://www.instagram.com/m_n.k_u/" target="_blank" rel="noopener noreferrer">
@@ -2033,13 +1860,188 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
           <div class="tb-cell"><span class="tb-label">Drawn by</span><span class="tb-value">Ryan Minkyu Chung</span></div>
           <div class="tb-cell"><span class="tb-label">Last revised</span><span class="tb-value">Aug 3, 2026</span></div>
           <div class="tb-cell"><span class="tb-label">Sheet</span><span class="tb-value">Portfolio &#8212; 01 of 01</span></div>
-          <div class="tb-cell"><span class="tb-label">Note</span><span class="tb-value">Korean version coming soon, maybe.</span></div>
+          <div class="tb-cell"><span class="tb-label">Note</span><span class="tb-value">Korean version coming soon, maybe. <br> Thank you so much for reading.</span></div>
         </div>
         <p class="tb-copy">Ryan Minkyu Chung &#169; 2026</p>
       </div>
     </div>
     </section>
 
+    <div class="cursor-dot" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true">
+      <svg viewBox="0 0 64 64" fill="none" focusable="false">
+        <circle class="cur-idle" cx="32" cy="32" r="30"/>
+        <g class="cur-cross">
+          <line x1="32" y1="11" x2="32" y2="53"/>
+          <line x1="11" y1="32" x2="53" y2="32"/>
+          <line x1="17.2" y1="17.2" x2="46.8" y2="46.8"/>
+          <line x1="17.2" y1="46.8" x2="46.8" y2="17.2"/>
+        </g>
+      </svg>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts/script.js"></script>
+
+    <script>
+      (function () {
+        var fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+        var motionOK = window.matchMedia('(prefers-reduced-motion: no-preference)');
+        if (!fine.matches || !motionOK.matches) return;
+
+        var dot = document.querySelector('.cursor-dot');
+        var ring = document.querySelector('.cursor-ring');
+        if (!dot || !ring) return;
+
+        document.documentElement.classList.add('cursor-fx');
+
+        var HOT = 'a, button, [role="button"], [data-bs-toggle], input, select, textarea, label, summary';
+
+        var tx = window.innerWidth / 2, ty = window.innerHeight / 2;
+        var rx = tx, ry = ty;
+        var shown = false;
+
+        var needles = [];
+        document.querySelectorAll('.circle-container .ring-base').forEach(function (svg) {
+          var g = svg.querySelector('.ring-needle');
+          if (g) needles.push({ svg: svg, g: g, a: 0 });
+        });
+
+        window.addEventListener('mousemove', function (e) {
+          tx = e.clientX; ty = e.clientY;
+          if (!shown) {
+            shown = true; rx = tx; ry = ty;
+            dot.classList.add('is-on'); ring.classList.add('is-on');
+          }
+        }, { passive: true });
+
+        window.addEventListener('mouseout', function (e) {
+          if (!e.relatedTarget) { /* pointer left the window */
+            shown = false;
+            dot.classList.remove('is-on'); ring.classList.remove('is-on');
+          }
+        });
+
+        document.addEventListener('mouseover', function (e) {
+          var hot = !!(e.target.closest && e.target.closest(HOT));
+          ring.classList.toggle('is-engaged', hot);
+        });
+
+        window.addEventListener('mousedown', function () { ring.classList.add('is-pressed'); });
+        window.addEventListener('mouseup',   function () { ring.classList.remove('is-pressed'); });
+
+        (function loop() {
+          rx += (tx - rx) * 0.35;
+          ry += (ty - ry) * 0.35;
+          dot.style.transform  = 'translate3d(' + (tx - 3)  + 'px,' + (ty - 3)  + 'px,0)';
+          ring.style.transform = 'translate3d(' + (rx - 32) + 'px,' + (ry - 32) + 'px,0)';
+          needles.forEach(function (n) {
+            var r = n.svg.getBoundingClientRect();
+            if (!r.width) return;
+            var target = Math.atan2(ty - (r.top + r.height / 2), tx - (r.left + r.width / 2)) * 180 / Math.PI + 90;
+            var d = ((target - n.a + 540) % 360) - 180;
+            n.a += d * 0.12;
+            n.g.setAttribute('transform', 'rotate(' + n.a.toFixed(2) + ' 50 50)');
+          });
+          window.requestAnimationFrame(loop);
+        })();
+      })();
+
+      (function () {
+        if (!('IntersectionObserver' in window)) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        var targets = [];
+        document.querySelectorAll('.blur-on-hover').forEach(function (card) {
+          targets.push(card.closest('[class*="col-"]') || card);
+        });
+        document.querySelectorAll('.section-heading, .bom-wrap').forEach(function (el) { targets.push(el); });
+        var contact = document.querySelector('#contact .title-block');
+        if (contact) targets.push(contact);
+
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-in');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+        targets.forEach(function (el, i) {
+          el.classList.add('reveal');
+          el.style.transitionDelay = (i % 3) * 80 + 'ms';
+          io.observe(el);
+        });
+      })();
+
+
+      (function () {
+        var els = document.querySelectorAll('.fit-line');
+        if (!els.length) return;
+        function fit() {
+          els.forEach(function (el) {
+            el.style.fontSize = '';
+            var size = parseFloat(window.getComputedStyle(el).fontSize);
+            var guard = 60;
+            el.style.fontSize = size + 'px';
+            while (el.scrollWidth > el.clientWidth + 1 && size > 11 && guard-- > 0) {
+              size -= 0.5;
+              el.style.fontSize = size + 'px';
+            }
+          });
+        }
+        var t;
+        window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(fit, 120); });
+        if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fit); }
+        fit();
+      })();
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.blur-on-hover[role="button"]').forEach(card => {
+          card.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              card.click();
+            }
+          });
+        });
+
+        const navLinks = [...document.querySelectorAll('.site-nav .nav-link')];
+        const navSections = navLinks
+          .map(link => ({ link, section: document.querySelector(link.getAttribute('href')) }))
+          .filter(item => item.section);
+        const setActiveLink = id => navLinks.forEach(link => {
+          const active = link.getAttribute('href') === `#${id}`;
+          link.classList.toggle('is-active', active);
+          if (active) link.setAttribute('aria-current', 'page');
+          else link.removeAttribute('aria-current');
+        });
+
+        const updateActiveLink = () => {
+          const pageHeight = document.documentElement.scrollHeight;
+          const atBottom = window.innerHeight + window.scrollY >= pageHeight - 4;
+
+          if (atBottom) {
+            setActiveLink('contact');
+            return;
+          }
+
+          const readingLine = window.scrollY + window.innerHeight * 0.35;
+          let activeSection = navSections[0]?.section;
+          navSections.forEach(({ section }) => {
+            if (section.offsetTop <= readingLine) activeSection = section;
+          });
+          if (activeSection) setActiveLink(activeSection.id);
+        };
+
+        updateActiveLink();
+        window.addEventListener('scroll', updateActiveLink, { passive: true });
+        window.addEventListener('resize', updateActiveLink);
+      });
+    </script>
     <script>
       document.addEventListener('DOMContentLoaded', function(){
         const btn = document.getElementById('btnSwitch');
@@ -2056,7 +2058,6 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
             if(btn){ btn.setAttribute('aria-label','Switch to dark theme'); btn.title = 'Switch to dark theme'; }
           }
 
-          // Ensure modal close icons match theme (btn-close-white for dark backgrounds)
           const modalCloseBtns = document.querySelectorAll('.modal .btn-close');
           modalCloseBtns.forEach(el => {
             if(theme === 'dark') el.classList.add('btn-close-white');
@@ -2074,10 +2075,6 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
         });
       });
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script type="text/javascript" src="scripts/script.js"></script>
   </body>
 </html>
 
