@@ -36,7 +36,7 @@
    5. About-me modal layout        13. Scroll reveal
    6. Buttons                      14. Cursor reticle
    7. Project cards                15. Small screens & reduced motion
-   8. Card tags / pub / edu lines
+   8. Card tags / pub / edu lines   (+ Trajectory timeline before Contact)
    ========================================================================== */
 
 /* ==========================================================================
@@ -744,6 +744,91 @@ hr.title-spacer::after  { right: 0; }
 }
 
 /* --------------------------------------------------------------------------
+   Trajectory: on-page experience timeline with a self-drawing spine
+   -------------------------------------------------------------------------- */
+.xp-timeline {
+  position: relative;
+  max-width: 760px;
+  margin: 0.5rem auto 0;
+}
+
+.xp-timeline::before {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 6px;
+  bottom: 10px;
+  width: 2px;
+  background: var(--rule);
+}
+
+/* the spine draws in from the top when the timeline scrolls into view */
+.xp-timeline.reveal { opacity: 1; transform: none; transition: none; }
+.xp-timeline.reveal::before {
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 1100ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+}
+.xp-timeline.reveal.is-in::before { transform: scaleY(1); }
+
+.xp-item {
+  position: relative;
+  padding: 0 0 1.7rem 44px;
+}
+
+.xp-item:last-child { padding-bottom: 0.4rem; }
+
+.xp-dot {
+  position: absolute;
+  left: 8px;
+  top: 5px;
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  border-radius: 3px;
+  transform: rotate(45deg);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+/* projected (future) node: hollow, dashed - not yet drawn in ink */
+.xp-item.is-projected .xp-dot {
+  background: transparent;
+  border: 2px dashed var(--accent);
+  box-shadow: none;
+}
+
+.xp-date {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+
+.xp-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.06rem;
+  margin: 0 0 0.2rem;
+}
+
+.xp-text {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 62ch;
+  margin: 0;
+}
+
+@media (max-width: 576px) {
+  .xp-item { padding-left: 36px; }
+  .xp-timeline::before { left: 10px; }
+  .xp-dot { left: 5px; }
+}
+
+/* --------------------------------------------------------------------------
    Contact: drawing title block
    -------------------------------------------------------------------------- */
 #contact { padding-bottom: 3rem; }
@@ -1018,7 +1103,11 @@ hr.title-spacer::after  { right: 0; }
   .reveal { opacity: 1; transform: none; }
 }
 
-
+/* --------------------------------------------------------------------------
+   Cursor reticle - follows the mouse, locks on over anything clickable.
+   Only activates on mouse devices (never touch) and only when the visitor
+   has not asked for reduced motion; JS adds .cursor-fx to <html> if so.
+   -------------------------------------------------------------------------- */
 .cursor-dot,
 .cursor-ring { display: none; }
 
@@ -1042,6 +1131,7 @@ hr.title-spacer::after  { right: 0; }
   .cursor-fx .cursor-dot.is-on,
   .cursor-fx .cursor-ring.is-on { opacity: 1; }
 
+  /* the precise point: a small orange dot glued to the real cursor position */
   .cursor-dot {
     width: 6px;
     height: 6px;
@@ -1049,7 +1139,8 @@ hr.title-spacer::after  { right: 0; }
     background: var(--accent-3);
   }
 
-
+  /* idle: a soft orange disc; over anything clickable the disc fades out
+     as the rotating 8-point cross fades in at full size */
   .cursor-ring {
     width: 64px;
     height: 64px;
@@ -1091,7 +1182,9 @@ hr.title-spacer::after  { right: 0; }
 
   .cursor-ring.is-engaged .cur-cross { opacity: 0.72; }
 }
-
+/* --------------------------------------------------------------------------
+   Small screens
+   -------------------------------------------------------------------------- */
 @media (max-width: 576px) {
   .site-nav { width: calc(100% - 1rem); margin-top: 0.5rem; border-radius: 16px; }
   .site-nav .navbar-brand { font-size: 0.9rem; }
@@ -1779,6 +1872,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
     </section>
     <hr class="title-spacer">
 
+    <!-- ==================== INSTRUMENTS & TOOLING ==================== -->
     <section id="skills" class="pt-3">
       <p class="display-6 section-heading">instruments &amp; tooling</p>
       <div class="container">
@@ -1830,6 +1924,48 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
       </div>
     </section>
 
+    <!-- ==================== TRAJECTORY (experience timeline) ==================== -->
+    <section id="trajectory" class="pt-3">
+    <div class="text-center">
+      <p class="display-6 section-heading">trajectory</p>
+    </div>
+    <div class="container">
+      <div class="xp-timeline">
+        <div class="xp-item">
+          <div class="xp-dot" aria-hidden="true"></div>
+          <div class="xp-date">Mar 2022</div>
+          <h6 class="xp-title">Entered Korea University</h6>
+          <p class="xp-text">Began the B.S. program in Mechanical Engineering and joined Eoulsure, the university's Formula Student team.</p>
+        </div>
+        <div class="xp-item">
+          <div class="xp-dot" aria-hidden="true"></div>
+          <div class="xp-date">Mar 2022 &#8211; Dec 2023</div>
+          <h6 class="xp-title">Formula Racing Powertrain Engineer &#8212; Eoulsure</h6>
+          <p class="xp-text">Chassis fabrication on the 2022 car, then battery box, wiring, and HV / LV PCB design for the 2023 E-Formula racecar.</p>
+        </div>
+        <div class="xp-item">
+          <div class="xp-dot" aria-hidden="true"></div>
+          <div class="xp-date">Jan 2024 &#8211; Oct 2025</div>
+          <h6 class="xp-title">Korean&#8211;English Military Interpreter &#8212; ROK Air Force</h6>
+          <p class="xp-text">Mandatory service at Incheon International Airport; discharged as Staff Sergeant (E-5).</p>
+        </div>
+        <div class="xp-item">
+          <div class="xp-dot" aria-hidden="true"></div>
+          <div class="xp-date">Sep 2025 &#8211; Present</div>
+          <h6 class="xp-title">Undergraduate Research Intern &#8212; Mekateka Lab</h6>
+          <p class="xp-text">Data-driven Machine Design Lab at Korea University (Prof. Daniel Dahyun Lim); also joined E-Safe Solutions, a KU startup club.</p>
+        </div>
+        <div class="xp-item is-projected">
+          <div class="xp-dot" aria-hidden="true"></div>
+          <div class="xp-date">Feb 2027 &#183; Projected</div>
+          <h6 class="xp-title">B.S. Mechanical Engineering, Korea University</h6>
+          <p class="xp-text">Seven-semester early graduation &#8212; then graduate study in mechanical or aerospace engineering.</p>
+        </div>
+      </div>
+    </div>
+    </section>
+
+    <!-- ==================== CONTACT (drawing title block) ==================== -->
     <section id="contact">
     <div class="text-center">
       <p class="display-6 section-heading">contact</p>
@@ -1839,22 +1975,29 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
         <div class="tb-head">
           <h6 class="tb-title">how to contact me</h6>
         </div>
-        <div class="contact-actions d-flex flex-wrap justify-content-center gap-3">
-          <a class="btn updates-btn" href="mailto:minkyu414@korea.ac.kr">
-            <i class="bi bi-envelope"></i><span>Email</span>
-          </a>
-          <a class="btn updates-btn" href="https://www.linkedin.com/in/ryan-chung-2a42a1262/" target="_blank" rel="noopener noreferrer">
-            <i class="bi bi-linkedin"></i><span>LinkedIn</span>
-          </a>
-          <a class="btn updates-btn" href="https://github.com/mnkuu/mnku" target="_blank" rel="noopener noreferrer">
-            <i class="bi bi-github"></i><span>GitHub</span>
-          </a>
-          <a class="btn updates-btn" href="https://drive.google.com/file/d/1UFCkd6-Wg-D_o_JpnoWA55Vj2c7_u_g4/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-            <i class="bi bi-file-earmark-text"></i><span>CV</span>
-          </a>
-          <a class="btn updates-btn" href="https://www.instagram.com/m_n.k_u/" target="_blank" rel="noopener noreferrer">
-            <i class="bi bi-instagram"></i><span>Instagram</span>
-          </a>
+        <div class="contact-actions">
+          <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a class="btn updates-btn" href="https://drive.google.com/file/d/1UFCkd6-Wg-D_o_JpnoWA55Vj2c7_u_g4/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+              <i class="bi bi-file-earmark-text"></i><span>CV</span>
+            </a>
+            <a class="btn updates-btn" href="https://drive.google.com/file/d/1ZSqx018VJidFp9sAd_-wVntwg3lF6-kj/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+              <i class="bi bi-file-earmark-person"></i><span>Resume</span>
+            </a>
+          </div>
+          <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
+            <a class="btn updates-btn" href="mailto:minkyu414@korea.ac.kr">
+              <i class="bi bi-envelope"></i><span>Email</span>
+            </a>
+            <a class="btn updates-btn" href="https://www.linkedin.com/in/ryan-chung-2a42a1262/" target="_blank" rel="noopener noreferrer">
+              <i class="bi bi-linkedin"></i><span>LinkedIn</span>
+            </a>
+            <a class="btn updates-btn" href="https://github.com/mnkuu/mnku" target="_blank" rel="noopener noreferrer">
+              <i class="bi bi-github"></i><span>GitHub</span>
+            </a>
+            <a class="btn updates-btn" href="https://www.instagram.com/m_n.k_u/" target="_blank" rel="noopener noreferrer">
+              <i class="bi bi-instagram"></i><span>Instagram</span>
+            </a>
+          </div>
         </div>
         <div class="tb-grid">
           <div class="tb-cell"><span class="tb-label">Drawn by</span><span class="tb-value">Ryan Minkyu Chung</span></div>
@@ -1867,6 +2010,8 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
     </div>
     </section>
 
+    <!-- ==================== CURSOR RETICLE (decorative overlay) ==================== -->
+    <!-- cursor reticle (decorative; skipped on touch devices and for reduced motion) -->
     <div class="cursor-dot" aria-hidden="true"></div>
     <div class="cursor-ring" aria-hidden="true">
       <svg viewBox="0 0 64 64" fill="none" focusable="false">
@@ -1880,10 +2025,12 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
       </svg>
     </div>
 
+    <!-- ==================== VENDOR SCRIPTS ==================== -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="scripts/script.js"></script>
 
+    <!-- ==================== SITE SCRIPTS (cursor & reveal / card keyboard / theme) ==================== -->
     <script>
       (function () {
         var fine = window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -1896,12 +2043,14 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
 
         document.documentElement.classList.add('cursor-fx');
 
+        /* anything matching this list makes the reticle lock on */
         var HOT = 'a, button, [role="button"], [data-bs-toggle], input, select, textarea, label, summary';
 
         var tx = window.innerWidth / 2, ty = window.innerHeight / 2;
         var rx = tx, ry = ty;
         var shown = false;
 
+        /* compass needles on the portrait dials aim at the cursor */
         var needles = [];
         document.querySelectorAll('.circle-container .ring-base').forEach(function (svg) {
           var g = svg.querySelector('.ring-needle');
@@ -1931,6 +2080,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
         window.addEventListener('mousedown', function () { ring.classList.add('is-pressed'); });
         window.addEventListener('mouseup',   function () { ring.classList.remove('is-pressed'); });
 
+        /* dot tracks instantly; ring eases toward it for the trailing feel */
         (function loop() {
           rx += (tx - rx) * 0.35;
           ry += (ty - ry) * 0.35;
@@ -1938,7 +2088,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
           ring.style.transform = 'translate3d(' + (rx - 32) + 'px,' + (ry - 32) + 'px,0)';
           needles.forEach(function (n) {
             var r = n.svg.getBoundingClientRect();
-            if (!r.width) return;
+            if (!r.width) return; /* dial hidden (e.g. modal closed) */
             var target = Math.atan2(ty - (r.top + r.height / 2), tx - (r.left + r.width / 2)) * 180 / Math.PI + 90;
             var d = ((target - n.a + 540) % 360) - 180;
             n.a += d * 0.12;
@@ -1948,6 +2098,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
         })();
       })();
 
+      /* scroll reveal for cards, section headings, and the contact block */
       (function () {
         if (!('IntersectionObserver' in window)) return;
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -1956,7 +2107,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
         document.querySelectorAll('.blur-on-hover').forEach(function (card) {
           targets.push(card.closest('[class*="col-"]') || card);
         });
-        document.querySelectorAll('.section-heading, .bom-wrap').forEach(function (el) { targets.push(el); });
+        document.querySelectorAll('.section-heading, .bom-wrap, .xp-timeline, .xp-item').forEach(function (el) { targets.push(el); });
         var contact = document.querySelector('#contact .title-block');
         if (contact) targets.push(contact);
 
@@ -1976,7 +2127,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
         });
       })();
 
-
+      /* largest font size that keeps a .fit-line on a single line */
       (function () {
         var els = document.querySelectorAll('.fit-line');
         if (!els.length) return;
@@ -2058,6 +2209,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
             if(btn){ btn.setAttribute('aria-label','Switch to dark theme'); btn.title = 'Switch to dark theme'; }
           }
 
+          // Ensure modal close icons match theme (btn-close-white for dark backgrounds)
           const modalCloseBtns = document.querySelectorAll('.modal .btn-close');
           modalCloseBtns.forEach(el => {
             if(theme === 'dark') el.classList.add('btn-close-white');
