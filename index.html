@@ -58,7 +58,7 @@
   --accent: #e34d5e;
   --accent-contrast: #ffffff;
   --accent-glow: rgba(227, 77, 94, 0.16);
-  --accent-2: #e8590c;
+  --accent-2: #ff4d6d;
   --accent-3: #dc143c;            /* signal orange: dial index + micro accents */
   --tick: rgba(11, 29, 48, 0.55);
   --tick-faint: rgba(11, 29, 48, 0.2);
@@ -84,7 +84,7 @@
   --accent: #ff8393;
   --accent-contrast: #3a060f;
   --accent-glow: rgba(255, 131, 147, 0.2);
-  --accent-2: #ff8a4d;
+  --accent-2: #ff4d6d;
   --accent-3: #ff4d6d;
   --tick: rgba(191, 223, 255, 0.6);
   --tick-faint: rgba(191, 223, 255, 0.22);
@@ -822,6 +822,40 @@ hr.title-spacer::after  { right: 0; }
   margin: 0;
 }
 
+.xp-current-marker {
+  position: relative;
+  margin: 0 0 1.7rem 44px;
+  padding-left: 26px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--accent);
+}
+
+.xp-current-marker::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 24px;
+  height: 2px;
+  background: var(--accent);
+  transform: translateY(-50%);
+}
+
+.xp-current-marker::after {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 8px solid var(--accent);
+  transform: translateY(-50%);
+}
+
 @media (max-width: 576px) {
   .xp-item { padding-left: 36px; }
   .xp-timeline::before { left: 10px; }
@@ -1226,7 +1260,6 @@ hr.title-spacer::after  { right: 0; }
           <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
           <li class="nav-item"><a class="nav-link" href="#research">Research</a></li>
           <li class="nav-item"><a class="nav-link" href="#projects">Selected projects</a></li>
-          <li class="nav-item"><a class="nav-link" href="#mini-projects">Mini projects</a></li>
           <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
         </ul>
@@ -1444,6 +1477,47 @@ hr.title-spacer::after  { right: 0; }
             Documentation and results will be added here as the project progresses. <br>
             Cover photo by gorodenkoff/Getty Images <br>
           </div>
+        </div>
+      </div>
+    </div>
+    </section>
+    <!-- ==================== TRAJECTORY (experience timeline) ==================== -->
+    <section id="trajectory" class="pt-3">
+    <div class="text-center">
+      <p class="display-6 section-heading">research trajectory</p>
+    </div>
+    <div class="container">
+      <div class="xp-timeline">
+        <div class="xp-item is-projected">
+          <div class="xp-dot" aria-hidden="true"></div>
+          <div class="xp-date">Feb 2027 &#183; Projected</div>
+          <h6 class="xp-title">B.S. Mechanical Engineering, Korea University</h6>
+          <p class="xp-text">Seven-semester early graduation &#8212; prospective graduate student in mechanical/aerospace engineering.</p>
+        </div>
+        <div class="xp-current-marker" aria-hidden="true">We are here!</div>
+        <div class="xp-item">
+          <div class="xp-dot" aria-hidden="true"></div>
+          <div class="xp-date">Sep 2025 &#8211; Present</div>
+          <h6 class="xp-title">Undergraduate Research Intern &#8212; MEKATEKA Lab</h6>
+          <p class="xp-text">Data-driven Machine Design Lab at Korea University (Prof. Daniel Dahyun Lim).<br> Conducting independent research on deployable structures as well as nationally funded projects (Self-Driven Labs).</p>
+        </div>
+        <div class="xp-item">
+          <div class="xp-dot" aria-hidden="true"></div>
+          <div class="xp-date">Jan 2024 &#8211; Oct 2025</div>
+          <h6 class="xp-title">Korean&#8211;English Military Interpreter &#8212; ROK Air Force</h6>
+          <p class="xp-text">Mandatory service at Incheon International Airport.</p>
+        </div>
+        <div class="xp-item">
+          <div class="xp-dot" aria-hidden="true"></div>
+          <div class="xp-date">Mar 2022 &#8211; Dec 2023</div>
+          <h6 class="xp-title">Powertrain Engineer &#8212; Student E-Formula Racing</h6>
+          <p class="xp-text">Chassis fabrication on the 2022 car, then battery box, wiring, and HV / LV PCB design for the 2023 E-Formula racecar.</p>
+        </div>
+        <div class="xp-item">
+          <div class="xp-dot" aria-hidden="true"></div>
+          <div class="xp-date">Mar 2022</div>
+          <h6 class="xp-title">Korea University</h6>
+          <p class="xp-text">Began my journey in Mechanical Engineering</p>
         </div>
       </div>
     </div>
@@ -1924,46 +1998,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
       </div>
     </section>
 
-    <!-- ==================== TRAJECTORY (experience timeline) ==================== -->
-    <section id="trajectory" class="pt-3">
-    <div class="text-center">
-      <p class="display-6 section-heading">trajectory</p>
-    </div>
-    <div class="container">
-      <div class="xp-timeline">
-        <div class="xp-item">
-          <div class="xp-dot" aria-hidden="true"></div>
-          <div class="xp-date">Mar 2022</div>
-          <h6 class="xp-title">Entered Korea University</h6>
-          <p class="xp-text">Began the B.S. program in Mechanical Engineering and joined Eoulsure, the university's Formula Student team.</p>
-        </div>
-        <div class="xp-item">
-          <div class="xp-dot" aria-hidden="true"></div>
-          <div class="xp-date">Mar 2022 &#8211; Dec 2023</div>
-          <h6 class="xp-title">Formula Racing Powertrain Engineer &#8212; Eoulsure</h6>
-          <p class="xp-text">Chassis fabrication on the 2022 car, then battery box, wiring, and HV / LV PCB design for the 2023 E-Formula racecar.</p>
-        </div>
-        <div class="xp-item">
-          <div class="xp-dot" aria-hidden="true"></div>
-          <div class="xp-date">Jan 2024 &#8211; Oct 2025</div>
-          <h6 class="xp-title">Korean&#8211;English Military Interpreter &#8212; ROK Air Force</h6>
-          <p class="xp-text">Mandatory service at Incheon International Airport; discharged as Staff Sergeant (E-5).</p>
-        </div>
-        <div class="xp-item">
-          <div class="xp-dot" aria-hidden="true"></div>
-          <div class="xp-date">Sep 2025 &#8211; Present</div>
-          <h6 class="xp-title">Undergraduate Research Intern &#8212; Mekateka Lab</h6>
-          <p class="xp-text">Data-driven Machine Design Lab at Korea University (Prof. Daniel Dahyun Lim); also joined E-Safe Solutions, a KU startup club.</p>
-        </div>
-        <div class="xp-item is-projected">
-          <div class="xp-dot" aria-hidden="true"></div>
-          <div class="xp-date">Feb 2027 &#183; Projected</div>
-          <h6 class="xp-title">B.S. Mechanical Engineering, Korea University</h6>
-          <p class="xp-text">Seven-semester early graduation &#8212; then graduate study in mechanical or aerospace engineering.</p>
-        </div>
-      </div>
-    </div>
-    </section>
+
 
     <!-- ==================== CONTACT (drawing title block) ==================== -->
     <section id="contact">
@@ -2001,7 +2036,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
         </div>
         <div class="tb-grid">
           <div class="tb-cell"><span class="tb-label">Drawn by</span><span class="tb-value">Ryan Minkyu Chung</span></div>
-          <div class="tb-cell"><span class="tb-label">Last revised</span><span class="tb-value">Aug 3, 2026</span></div>
+          <div class="tb-cell"><span class="tb-label">Last revised</span><span class="tb-value">Aug 7, 2026</span></div>
           <div class="tb-cell"><span class="tb-label">Sheet</span><span class="tb-value">Portfolio &#8212; 01 of 01</span></div>
           <div class="tb-cell"><span class="tb-label">Note</span><span class="tb-value">Korean version coming soon, maybe. <br> Thank you so much for reading.</span></div>
         </div>
