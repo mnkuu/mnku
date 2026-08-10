@@ -269,6 +269,57 @@ html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
   text-wrap: balance;
 }
 
+/* Drafting frame around the name with a red index arrow orbiting it
+   counterclockwise - the same motion and 16s period as the dial needle */
+.name-frame {
+  position: relative;
+  display: inline-block;
+  padding: 1rem 2.2rem 1.2rem;
+}
+
+.name-frame .display-1 { margin: 0; }
+
+.name-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--rule);
+  border-radius: 28px;
+  pointer-events: none;
+}
+
+.name-orbit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 11px;
+  height: 8px;
+  background: var(--accent-3);
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  filter: drop-shadow(0 0 5px var(--accent-glow));
+  offset-path: inset(0 round 28px);
+  offset-rotate: reverse;
+  animation: orbit-ccw 16s linear infinite;
+}
+
+/* the inset() box path runs clockwise, so travelling 100% -> 0% is CCW;
+   offset-rotate: reverse keeps the arrowhead pointing along its travel */
+@keyframes orbit-ccw {
+  from { offset-distance: 100%; }
+  to   { offset-distance: 0%; }
+}
+
+/* browsers without motion-path shapes: keep the frame, skip the arrow */
+@supports not (offset-path: inset(0 round 8px)) {
+  .name-orbit { display: none; }
+}
+
+@media (max-width: 576px) {
+  .name-frame { padding: 0.85rem 1.2rem 1rem; }
+  .name-frame::before { border-radius: 22px; }
+  .name-orbit { offset-path: inset(0 round 22px); }
+}
+
 .hero .display-6 {
   max-width: 42rem;
   margin: 1rem auto 0;
@@ -394,6 +445,19 @@ hr.title-spacer::after  { right: 0; }
 .ring-marks { stroke: var(--tick);       transition: stroke 0.5s ease; }
 .ring-index { fill: var(--accent-3); }
 
+/* The index needle spins counterclockwise on its own - no cursor tracking,
+   so it also moves on touch devices, where the old aiming never fired */
+.ring-needle {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  animation: rotate-ccw 16s linear infinite;
+}
+
+@keyframes rotate-ccw {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
 .ring-text {
   animation: rotate 32s linear infinite;
   transform-origin: 50% 50%;
@@ -405,15 +469,15 @@ hr.title-spacer::after  { right: 0; }
   to   { transform: rotate(360deg); }
 }
 
-/* Ring text uses the title face; a small script measures each ring after
-   fonts load and rescales it so the loop exactly closes the r=35 circle
-   (circumference 219.91 units) regardless of the resolved font's metrics */
+/* Ring text uses the title face. The base size is deliberately small so the
+   loop can never overflow its path (overflow = clipped glyphs); a script then
+   grows each ring until the text just fills the r=35 circle, re-measuring
+   after every step so it converges on every engine, including mobile WebKit */
 .circular-text {
   fill: var(--ink);
   font-family: var(--font-sans);
-  font-size: 7.5px;
+  font-size: 7px;
   font-weight: 600;
-  letter-spacing: 0.08em;
   transition: fill 0.5s ease;
 }
 
@@ -808,11 +872,19 @@ hr.title-spacer::after  { right: 0; }
   box-shadow: 0 0 0 4px var(--accent-glow);
 }
 
-/* projected (future) node: hollow, dashed - not yet drawn in ink */
+/* Projected (future) node: hollow dashed diamond. The dash pattern is an
+   SVG mask, so it renders identically on every screen and pixel density
+   (CSS dashed borders redistribute their dashes per browser, size, and DPR) */
 .xp-item.is-projected .xp-dot {
-  background: transparent;
-  border: 2px dashed var(--accent);
+  background: var(--accent);
+  border: 0;
   box-shadow: none;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Crect x='1' y='1' width='10' height='10' rx='2' fill='none' stroke='%23fff' stroke-width='2' stroke-dasharray='2.6 2.6'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Crect x='1' y='1' width='10' height='10' rx='2' fill='none' stroke='%23fff' stroke-width='2' stroke-dasharray='2.6 2.6'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
 .xp-date {
@@ -1362,7 +1434,10 @@ html,
     <!-- ==================== HERO (title, actions, portrait dial, about modal) ==================== -->
     <header class="container text-center hero" id="top">
       <p class="hero-eyebrow">Mechanical Engineering Portfolio &#183; Seoul, KR</p>
-      <h1 class="display-1">Ryan Minkyu Chung</h1>
+      <div class="name-frame">
+        <h1 class="display-1">Ryan Minkyu Chung</h1>
+        <span class="name-orbit" aria-hidden="true"></span>
+      </div>
       <p class="display-6">Mechanical Engineering student at Korea University, building thoughtful machines and systems.</p>
       <p class="hero-interests">Research interests &#8212; Compliant Mechanisms &#183; Deployable Structures &#183; Robotic Manipulation</p>
 <div class="hero-actions d-flex justify-content-center flex-wrap gap-3 mt-1">
@@ -2182,13 +2257,6 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
         var rx = tx, ry = ty;
         var shown = false;
 
-        /* compass needles on the portrait dials aim at the cursor */
-        var needles = [];
-        document.querySelectorAll('.circle-container .ring-base').forEach(function (svg) {
-          var g = svg.querySelector('.ring-needle');
-          if (g) needles.push({ svg: svg, g: g, a: 0 });
-        });
-
         window.addEventListener('mousemove', function (e) {
           tx = e.clientX; ty = e.clientY;
           if (!shown) {
@@ -2218,14 +2286,6 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
           ry += (ty - ry) * 0.35;
           dot.style.transform  = 'translate3d(' + (tx - 3)  + 'px,' + (ty - 3)  + 'px,0)';
           ring.style.transform = 'translate3d(' + (rx - 32) + 'px,' + (ry - 32) + 'px,0)';
-          needles.forEach(function (n) {
-            var r = n.svg.getBoundingClientRect();
-            if (!r.width) return; /* dial hidden (e.g. modal closed) */
-            var target = Math.atan2(ty - (r.top + r.height / 2), tx - (r.left + r.width / 2)) * 180 / Math.PI + 90;
-            var d = ((target - n.a + 540) % 360) - 180;
-            n.a += d * 0.12;
-            n.g.setAttribute('transform', 'rotate(' + n.a.toFixed(2) + ' 50 50)');
-          });
           window.requestAnimationFrame(loop);
         })();
       })();
@@ -2281,22 +2341,31 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
         fit();
       })();
 
-      /* scale each circular ring text so its loop closes exactly, in any font */
+      /* Scale each ring so its text fills the circle without ever clipping.
+         Iterative: re-measures after every adjustment and aims just under the
+         true circumference (219.91), so engines whose text measurement differs
+         slightly from their rendering (mobile WebKit) can only err into the
+         invisible seam space, never into dropped glyphs. */
       (function () {
-        var C = 219.91; /* 2 * pi * 35: circumference of the ring text path */
+        var TARGET = 218.6; /* 2 * pi * 35 minus safety slack */
         function fitRings() {
           document.querySelectorAll('.circular-text').forEach(function (t) {
             try {
               t.style.fontSize = '';
-              var len = t.getComputedTextLength();
-              if (!len) return; /* not rendered yet (e.g. its modal is closed) */
-              var size = parseFloat(window.getComputedStyle(t).fontSize) * (C / len);
-              t.style.fontSize = size.toFixed(3) + 'px';
+              var size = parseFloat(window.getComputedStyle(t).fontSize) || 7;
+              for (var i = 0; i < 4; i++) {
+                var len = t.getComputedTextLength();
+                if (!len) return; /* not rendered yet (e.g. its modal is closed) */
+                if (Math.abs(len - TARGET) < 0.3) break;
+                size *= TARGET / len;
+                t.style.fontSize = size.toFixed(3) + 'px';
+              }
             } catch (e) {}
           });
         }
         if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fitRings); }
         document.addEventListener('shown.bs.modal', fitRings);
+        window.addEventListener('pageshow', fitRings);
         fitRings();
       })();
     </script>
