@@ -21,6 +21,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#e3ecf7">
     <script>
       /* Set the theme before first paint so dark-mode visitors never see a light flash */
       (function () {
@@ -28,15 +29,14 @@
           var t = localStorage.getItem('site-theme');
           if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
           document.documentElement.setAttribute('data-bs-theme', t);
+          var m = document.querySelector('meta[name="theme-color"]');
+          if (m) m.setAttribute('content', t === 'dark' ? '#050d1a' : '#e3ecf7');
         } catch (e) {}
       })();
     </script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="icon" type="image/png" href="media/favicon-32x32.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
 /* ==========================================================================
    STYLESHEET MAP (in order)
@@ -78,9 +78,9 @@
   --modal-bg: #ffffff;
   --card-shadow: 0 14px 30px rgba(16, 42, 74, 0.14);
   --card-shadow-hover: 0 22px 40px rgba(16, 42, 74, 0.22);
-  --font-display: 'Chakra Petch', 'Outfit', sans-serif;
-  --font-body: 'Outfit', sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Two families only: SF Pro for titles and body, SF Mono for captions and labels */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Cascadia Mono", "Roboto Mono", monospace;
 }
 
 [data-bs-theme="dark"] {
@@ -107,7 +107,10 @@
 }
 
 body {
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
   color: var(--ink);
   overflow-x: hidden;
   overflow-y: scroll;
@@ -259,26 +262,30 @@ html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
 }
 
 .hero .display-1 {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.022em;
   line-height: 1.02;
+  text-wrap: balance;
 }
 
 .hero .display-6 {
   max-width: 42rem;
   margin: 1rem auto 0;
   line-height: 1.3;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: 1.35rem;
   font-weight: 500;
+  letter-spacing: -0.01em;
   color: var(--ink-soft);
+  text-wrap: balance;
 }
 
 .section-heading {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 
 #skills .section-heading { text-align: center; }
@@ -398,18 +405,17 @@ hr.title-spacer::after  { right: 0; }
   to   { transform: rotate(360deg); }
 }
 
+/* Ring text uses the title face; a small script measures each ring after
+   fonts load and rescales it so the loop exactly closes the r=35 circle
+   (circumference 219.91 units) regardless of the resolved font's metrics */
 .circular-text {
   fill: var(--ink);
-  font-family: var(--font-mono);
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-size: 7.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   transition: fill 0.5s ease;
 }
-
-/* per-ring sizes chosen so char count x 0.6em advance = 219.9 (the r=35
-   circumference): the mono grid then spaces every glyph, dots included,
-   perfectly evenly, with any rounding slack hidden in the seam space */
-.ct-hero  { font-size: 7.968px; }  /* 46 characters */
-.ct-modal { font-size: 7.635px; }  /* 48 characters */
 
 .btnSwitch:hover .circular-text { fill: var(--accent); }
 
@@ -435,6 +441,38 @@ hr.title-spacer::after  { right: 0; }
 
 .btnSwitch:hover .image-container { transform: translate(-50%, -50%) scale(1.02); }
 
+.btnSwitch:hover .ring-marks,
+.btnSwitch:focus-visible .ring-marks { stroke: var(--accent); }
+
+/* Always-visible affordance under the dial; the whole dial is one button */
+.dial-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.9rem;
+  padding: 0.42rem 0.95rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 10px 22px var(--accent-glow);
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease;
+}
+
+.dial-badge .bi { font-size: 0.85em; }
+
+.btnSwitch:hover .dial-badge,
+.btnSwitch:focus-visible .dial-badge {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px var(--accent-glow);
+}
+
+.btnSwitch:active .dial-badge { transform: translateY(0) scale(0.97); }
+
 /* --------------------------------------------------------------------------
    About-me modal layout
    -------------------------------------------------------------------------- */
@@ -456,7 +494,7 @@ hr.title-spacer::after  { right: 0; }
 
 .about-me-text {
   flex: 1;
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-size: 1.1875rem;
   line-height: 1.55;
   text-align: left;
@@ -532,11 +570,11 @@ hr.title-spacer::after  { right: 0; }
   left: 0;
   transform: none;
   color: #fff;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: clamp(1.2rem, 2.3vw, 1.95rem);
   font-weight: 700;
   line-height: 1.08;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.01em;
   text-align: left;
   opacity: 1;
   padding: 2.75rem 1.25rem 1.1rem;
@@ -552,21 +590,20 @@ hr.title-spacer::after  { right: 0; }
   left: 0.9rem;
   z-index: 2;
   max-width: calc(100% - 1.8rem);
-  padding: 0.3rem 0.6rem;
+  padding: 0.32rem 0.75rem;
   border: 1px solid rgba(255, 255, 255, 0.32);
-  border-radius: 6px;
+  border-radius: 999px;
   color: #fff;
   background: rgba(6, 14, 20, 0.6);
   backdrop-filter: blur(8px);
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 .blur-on-hover::before { content: attr(data-location); top: 0.9rem; }
-.blur-on-hover::after  { content: attr(data-date);     top: 2.95rem; }
+.blur-on-hover::after  { content: attr(data-date);     top: 3rem; }
 
 .blur-on-hover:hover img { filter: brightness(0.78); transform: scale(1.045); }
 .blur-on-hover:hover .overlay-text { padding-bottom: 1.35rem; }
@@ -581,24 +618,6 @@ hr.title-spacer::after  { right: 0; }
   box-shadow: var(--card-shadow-hover);
 }
 
-/* Legacy tooltip styling retained for compatibility with older cards. */
-.tooltip-custom {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.75);
-  color: white;
-  padding: 5px 10px;
-  border-radius: 5px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  z-index: 1000;
-}
-
-/* Legacy dark-theme helpers (kept for the JS toggle's body class) */
-.dark-theme { color: var(--ink); transition: color 0.5s ease; }
-.dark-theme .footer-icon,
-.dark-theme h6 { color: var(--ink); transition: color 0.5s ease; }
-
 /* --------------------------------------------------------------------------
    Project tech tags on card overlays
    -------------------------------------------------------------------------- */
@@ -607,26 +626,16 @@ hr.title-spacer::after  { right: 0; }
   flex-wrap: wrap;
   gap: 0.35rem;
   margin-bottom: 0.5rem;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 240ms ease, transform 240ms ease;
-}
-
-.blur-on-hover:hover .tag-row,
-.blur-on-hover:focus-visible .tag-row {
-  opacity: 1;
-  transform: none;
 }
 
 .overlay-text .tag {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  font-weight: 500;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
   line-height: 1;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.01em;
   color: #fff;
-  padding: 0.28rem 0.55rem;
+  padding: 0.3rem 0.68rem;
   border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 999px;
   background: rgba(6, 14, 20, 0.55);
@@ -634,25 +643,28 @@ hr.title-spacer::after  { right: 0; }
 }
 
 @media (max-width: 576px) {
-  .overlay-text .tag { font-size: 0.58rem; padding: 0.24rem 0.5rem; }
+  .overlay-text .tag { font-size: 0.66rem; padding: 0.26rem 0.6rem; }
 }
 
 /* --------------------------------------------------------------------------
    Publication line, hero interests, education line
    -------------------------------------------------------------------------- */
 .pub-line {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--ink-soft);
+  font-family: var(--font-sans);
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: var(--ink);
   border: 1px dashed var(--rule);
   border-radius: 12px;
-  padding: 0.8rem 1rem;
+  padding: 0.85rem 1.4rem;
   margin: 0.2rem auto 1.6rem;
   max-width: 900px;
   text-align: center;
 }
 
 .pub-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
   color: var(--accent);
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -727,7 +739,7 @@ hr.title-spacer::after  { right: 0; }
 }
 
 .bom-table .bom-cat {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-weight: 600;
   white-space: nowrap;
 }
@@ -814,7 +826,7 @@ hr.title-spacer::after  { right: 0; }
 }
 
 .xp-title {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-weight: 600;
   font-size: 1.06rem;
   margin: 0 0 0.2rem;
@@ -832,7 +844,7 @@ hr.title-spacer::after  { right: 0; }
   position: relative;
   margin: 0 0 1.7rem 44px;
   padding-left: 26px;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 0.95rem;
   color: var(--accent);
@@ -896,7 +908,7 @@ hr.title-spacer::after  { right: 0; }
 
 .tb-title {
   margin: 0;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-weight: 600;
   font-size: 1.05rem;
 }
@@ -968,10 +980,10 @@ hr.title-spacer::after  { right: 0; }
 }
 
 .modal-title {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-weight: 600;
   font-size: 1.35rem;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.01em;
   display: flex;
   align-items: center;
 }
@@ -1005,7 +1017,7 @@ hr.title-spacer::after  { right: 0; }
 }
 
 .modal-body {
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-size: 1.0625rem;
   line-height: 1.7;
   padding: 1.25rem 1.4rem 1.5rem;
@@ -1033,101 +1045,61 @@ hr.title-spacer::after  { right: 0; }
 }
 
 /* --------------------------------------------------------------------------
-   Updates modal timeline (moved out of the modal body)
+   Updates modal timeline - same spine geometry as the on-page trajectory:
+   spine on the far left, dots on the spine, all text clear to the right
    -------------------------------------------------------------------------- */
-/* Light theme: Keep modal white */
-#updatesModal .modal-content,
-#updatesModal .news-modal { 
-  background: #ffffff; 
-  color: #000000; 
-  transition: background 700ms cubic-bezier(0.22,1,0.36,1), color 500ms ease-in-out;
-}
+#updatesModal .timeline { position: relative; }
 
-/* Dark theme */
-[data-bs-theme="dark"] #updatesModal .modal-content,
-[data-bs-theme="dark"] #updatesModal .news-modal {
-  background: #0f172a;
-  color: #e0f2fe;
-}
-
-/* Reserve left gutter for timeline line and dots */
-#updatesModal .timeline { position: relative; padding-left: 56px; }
-
-/* Vertical line running under the dots (aligned with the dot centers) */
 #updatesModal .timeline::before {
   content: "";
   position: absolute;
-  left: 81px;
-  top: 10px;
-  bottom: 12px;
+  left: 13px;
+  top: 8px;
+  bottom: 10px;
   width: 2px;
   background: var(--rule);
 }
 
-/* Each timeline item stays in normal flow; dot is absolutely positioned inside it */
-#updatesModal .timeline-item { position: relative; margin-bottom: 18px; }
+#updatesModal .timeline-item {
+  position: relative;
+  padding-left: 44px;
+  margin-bottom: 1.25rem;
+}
 
-/* Position the dot so it overlaps/centers on the vertical line */
+#updatesModal .timeline-item:last-child { margin-bottom: 0.25rem; }
+
 #updatesModal .timeline-dot {
   position: absolute;
-  left: 26px;
-  transform: translateX(-50%) rotate(45deg);
-  top: 8px;
+  left: 14px;
+  top: 5px;
   width: 14px;
   height: 14px;
+  transform: translateX(-50%) rotate(45deg);
   border-radius: 3px;
   background: var(--accent);
-  box-shadow: 0 0 0 6px var(--accent-glow);
-  border: 2px solid #ffffff;
+  border: 2px solid var(--modal-bg);
+  box-shadow: 0 0 0 4px var(--accent-glow);
   z-index: 2;
   box-sizing: border-box;
-  transition: background 500ms ease-in-out, border-color 500ms ease-in-out, box-shadow 500ms ease-in-out;
 }
 
-/* Dark theme dot styling */
-[data-bs-theme="dark"] #updatesModal .timeline-dot {
-  background: var(--accent);
-  border-color: #0f172a;
-  box-shadow: 0 0 0 6px var(--accent-glow);
-}
+#updatesModal .timeline-entry { font-size: 0.98rem; word-break: break-word; }
 
-/* Date sits to the right of the dot */
-#updatesModal .timeline-entry { 
-  margin-left: 0; 
-  padding-left: 12px; 
-  font-size: 0.98rem; 
-  word-break: break-word; 
-}
-
-#updatesModal .timeline-date { 
-  display: inline-block; 
-  font-weight: 700; 
-  color: var(--accent);
-  margin: 0 8px 6px 36px;
-  transition: color 500ms ease-in-out;
-}
-
-/* Dark theme date styling */
-[data-bs-theme="dark"] #updatesModal .timeline-date {
+#updatesModal .timeline-date {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--accent);
 }
 
-/* Link styling */
-#updatesModal .timeline-text a {
-  color: var(--accent);
-  transition: color 500ms ease-in-out;
-}
-
-[data-bs-theme="dark"] #updatesModal .timeline-text a {
-  color: var(--accent);
-}
-
-/* Smaller screens: tighten the gutter and scale dots */
-@media (max-width:576px){
-  #updatesModal .timeline { padding-left: 44px; }
-  #updatesModal .timeline::before { left: 65px; }
-  #updatesModal .timeline-dot { left: 22px; width: 12px; height: 12px; top: 6px; }
-  #updatesModal .timeline-date { margin-left: 32px; }
+@media (max-width: 576px) {
+  #updatesModal .timeline-item { padding-left: 36px; }
+  #updatesModal .timeline::before { left: 10px; }
+  #updatesModal .timeline-dot { left: 11px; width: 12px; height: 12px; top: 5px; }
 }
 
 /* --------------------------------------------------------------------------
@@ -1230,6 +1202,30 @@ hr.title-spacer::after  { right: 0; }
   .cursor-ring.is-engaged .cur-cross { opacity: 0.72; }
 }
 /* --------------------------------------------------------------------------
+   Scrollbars: thin ink thumb on a transparent track, themed with the sheet.
+   Modern browsers use scrollbar-width/color; Safari uses the -webkit rules.
+   -------------------------------------------------------------------------- */
+html,
+.modal-body,
+.bom-wrap {
+  scrollbar-width: thin;
+  scrollbar-color: var(--tick-faint) transparent;
+}
+
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-corner { background: transparent; }
+
+::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+  background-color: var(--tick-faint);
+}
+
+::-webkit-scrollbar-thumb:hover { background-color: var(--tick); }
+
+/* --------------------------------------------------------------------------
    Press feedback: controls respond the instant they are touched.
    Press-in is fast (~100ms); release returns at the element's normal pace.
    -------------------------------------------------------------------------- */
@@ -1325,7 +1321,7 @@ hr.title-spacer::after  { right: 0; }
   .hero-eyebrow { font-size: 0.62rem; letter-spacing: 0.22em; gap: 0.6rem; }
   .hero-eyebrow::before, .hero-eyebrow::after { width: 22px; }
   .blur-on-hover { height: 240px !important; }
-  .blur-on-hover::after { top: 2.8rem; }
+  .blur-on-hover::after { top: 2.95rem; }
   .circle-container { width: min(320px, 86vw); height: min(320px, 86vw); }
   .tb-grid { grid-template-columns: 1fr; }
   .tb-cell { border-right: 0; }
@@ -1408,14 +1404,13 @@ hr.title-spacer::after  { right: 0; }
             <defs>
               <path id="heroRingPath" fill="none" d="M 50,50 m -35,0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0"/>
             </defs>
-            <text class="circular-text ct-hero">
-              <textPath href="#heroRingPath" startOffset="0">RYAN MINKYU CHUNG &#183; CLICK TO LEARN ABOUT ME &#183; </textPath>
-            </text>
+            <text class="circular-text" xml:space="preserve"><textPath href="#heroRingPath" startOffset="0">RYAN MINKYU CHUNG &#183; CLICK TO LEARN ABOUT ME &#183; </textPath></text>
           </svg>
           <div class="image-container">
             <img fetchpriority="high" decoding="async" src="media/about_me_photo 2.0.jpg" alt="Ryan Minkyu Chung portrait">
           </div>
         </div>
+        <span class="dial-badge"><span>About me</span><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span>
       </button>
       <div class="modal fade" id="aboutMeModal" tabindex="-1" aria-labelledby="aboutMeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
@@ -1448,9 +1443,7 @@ hr.title-spacer::after  { right: 0; }
                   <defs>
                     <path id="modalRingPath" fill="none" d="M 50,50 m -35,0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0"/>
                   </defs>
-                  <text class="circular-text ct-modal">
-                    <textPath href="#modalRingPath" startOffset="0">RYAN MINKYU CHUNG &#183; MECH. ENGINEER &#183; TRAVELER &#183; </textPath>
-                  </text>
+                  <text class="circular-text" xml:space="preserve"><textPath href="#modalRingPath" startOffset="0">RYAN MINKYU CHUNG &#183; MECH. ENGINEER &#183; TRAVELER &#183; </textPath></text>
                 </svg>
                 <div class="image-container">
                   <img loading="lazy" decoding="async" src="media/inner about me photo.jpg" alt="Ryan Minkyu Chung portrait">
@@ -1539,6 +1532,8 @@ hr.title-spacer::after  { right: 0; }
   </div>
 </div>
 
+    <hr class="title-spacer">
+
     <!-- ==================== RESEARCH ==================== -->
     <section id="research" class="pt-3">
     <div class="text-center">
@@ -1581,6 +1576,8 @@ hr.title-spacer::after  { right: 0; }
       </div>
     </div>
     </section>
+    <hr class="title-spacer">
+
     <!-- ==================== TRAJECTORY (experience timeline) ==================== -->
     <section id="trajectory" class="pt-3">
     <div class="text-center">
@@ -1622,6 +1619,8 @@ hr.title-spacer::after  { right: 0; }
       </div>
     </div>
     </section>
+
+    <hr class="title-spacer">
 
     <!-- ==================== SELECTED PROJECTS (cards + their modals) ==================== -->
     <section id="projects" class="pt-3">
@@ -1923,8 +1922,6 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
       </div>
     </div>
 
-    <div id="tooltip" class="tooltip-custom"></div>
-
     </section>
     <hr class="title-spacer">
 
@@ -2100,6 +2097,8 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
 
 
 
+    <hr class="title-spacer">
+
     <!-- ==================== CONTACT (drawing title block) ==================== -->
     <section id="contact">
     <div class="text-center">
@@ -2162,8 +2161,6 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
 
     <!-- ==================== VENDOR SCRIPTS ==================== -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script type="text/javascript" src="scripts/script.js"></script>
 
     <!-- ==================== SITE SCRIPTS (cursor & reveal / card keyboard / theme) ==================== -->
     <script>
@@ -2283,6 +2280,25 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
         if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fit); }
         fit();
       })();
+
+      /* scale each circular ring text so its loop closes exactly, in any font */
+      (function () {
+        var C = 219.91; /* 2 * pi * 35: circumference of the ring text path */
+        function fitRings() {
+          document.querySelectorAll('.circular-text').forEach(function (t) {
+            try {
+              t.style.fontSize = '';
+              var len = t.getComputedTextLength();
+              if (!len) return; /* not rendered yet (e.g. its modal is closed) */
+              var size = parseFloat(window.getComputedStyle(t).fontSize) * (C / len);
+              t.style.fontSize = size.toFixed(3) + 'px';
+            } catch (e) {}
+          });
+        }
+        if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fitRings); }
+        document.addEventListener('shown.bs.modal', fitRings);
+        fitRings();
+      })();
     </script>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
@@ -2332,17 +2348,17 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
       document.addEventListener('DOMContentLoaded', function(){
         const btn = document.getElementById('btnSwitch');
         const root = document.documentElement;
-        const body = document.body;
         function applyTheme(theme){
           if(theme === 'dark'){
             root.setAttribute('data-bs-theme','dark');
-            body.classList.add('dark-theme');
             if(btn){ btn.setAttribute('aria-label','Switch to light theme'); btn.title = 'Switch to light theme'; }
           } else {
             root.setAttribute('data-bs-theme','light');
-            body.classList.remove('dark-theme');
             if(btn){ btn.setAttribute('aria-label','Switch to dark theme'); btn.title = 'Switch to dark theme'; }
           }
+
+          const themeMeta = document.querySelector('meta[name="theme-color"]');
+          if(themeMeta) themeMeta.setAttribute('content', theme === 'dark' ? '#050d1a' : '#e3ecf7');
 
           // Ensure modal close icons match theme (btn-close-white for dark backgrounds)
           const modalCloseBtns = document.querySelectorAll('.modal .btn-close');
