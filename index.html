@@ -20,6 +20,17 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <script>
+      /* Set the theme before first paint so dark-mode visitors never see a light flash */
+      (function () {
+        try {
+          var t = localStorage.getItem('site-theme');
+          if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-bs-theme', t);
+        } catch (e) {}
+      })();
+    </script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="icon" type="image/png" href="media/favicon-32x32.png">
@@ -27,6 +38,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+/* ==========================================================================
+   STYLESHEET MAP (in order)
+   1. Design tokens & base          9. Instruments & tooling (BOM table)
+   2. Nav, hero, section structure 10. Contact title block
+   3. Scroll cue                   11. Modals (detail sheets)
+   4. Portrait dial                12. Updates timeline
+   5. About-me modal layout        13. Scroll reveal
+   6. Buttons                      14. Cursor reticle
+   7. Project cards                15. Small screens & reduced motion
+   8. Card tags / pub / edu lines   (+ Trajectory timeline before Contact)
+   ========================================================================== */
 
 /* ==========================================================================
    R.M.C portfolio - "engineering drawing sheet"
@@ -90,8 +112,6 @@ body {
   overflow-x: hidden;
   overflow-y: scroll;
   background: linear-gradient(135deg, var(--paper-a), var(--paper-b), var(--paper-c));
-  background-size: 200% 200%;
-  animation: gradientAnimation 16s ease infinite;
   transition: background 700ms cubic-bezier(0.22,1,0.36,1), color 500ms ease-in-out;
 }
 
@@ -108,12 +128,6 @@ body::before {
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 140px 140px, 140px 140px, 28px 28px, 28px 28px;
-}
-
-@keyframes gradientAnimation {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 
 ::selection { background: var(--accent); color: var(--accent-contrast); }
@@ -142,7 +156,8 @@ html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
   border: 1px solid var(--rule);
   border-radius: 999px;
   background: var(--glass);
-  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
   box-shadow: 0 8px 25px rgba(16, 42, 74, 0.1);
 }
 
@@ -181,14 +196,14 @@ html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: 1px solid var(--rule);
   border-radius: 999px;
   background: transparent;
   color: var(--ink);
-  transition: color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+  transition: color 200ms ease, border-color 200ms ease, box-shadow 200ms ease, transform 120ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .theme-toggle:hover,
@@ -442,7 +457,7 @@ hr.title-spacer::after  { right: 0; }
 .about-me-text {
   flex: 1;
   font-family: var(--font-body);
-  font-size: 19px;
+  font-size: 1.1875rem;
   line-height: 1.55;
   text-align: left;
 }
@@ -473,6 +488,7 @@ hr.title-spacer::after  { right: 0; }
   box-shadow: 0 10px 24px rgba(16, 42, 74, 0.14);
   position: relative;
   overflow: hidden;
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 }
 
@@ -516,8 +532,8 @@ hr.title-spacer::after  { right: 0; }
   left: 0;
   transform: none;
   color: #fff;
-  font-family: var(--font-display) !important;
-  font-size: clamp(1.2rem, 2.3vw, 1.95rem) !important;
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.3vw, 1.95rem);
   font-weight: 700;
   line-height: 1.08;
   letter-spacing: 0.01em;
@@ -669,6 +685,7 @@ hr.title-spacer::after  { right: 0; }
   border: 1px solid var(--rule);
   border-radius: 14px;
   background: var(--glass);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   overflow-x: auto;
   margin-bottom: 3rem;
@@ -862,6 +879,7 @@ hr.title-spacer::after  { right: 0; }
   border: 1px solid var(--rule);
   border-radius: 14px;
   background: var(--glass);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   overflow: hidden;
   box-shadow: 0 12px 30px rgba(16, 42, 74, 0.1);
@@ -1035,9 +1053,15 @@ hr.title-spacer::after  { right: 0; }
 /* Reserve left gutter for timeline line and dots */
 #updatesModal .timeline { position: relative; padding-left: 56px; }
 
-/* Vertical line running under the dots */
+/* Vertical line running under the dots (aligned with the dot centers) */
 #updatesModal .timeline::before {
-  display: none !important;
+  content: "";
+  position: absolute;
+  left: 81px;
+  top: 10px;
+  bottom: 12px;
+  width: 2px;
+  background: var(--rule);
 }
 
 /* Each timeline item stays in normal flow; dot is absolutely positioned inside it */
@@ -1101,7 +1125,7 @@ hr.title-spacer::after  { right: 0; }
 /* Smaller screens: tighten the gutter and scale dots */
 @media (max-width:576px){
   #updatesModal .timeline { padding-left: 44px; }
-  #updatesModal .timeline::before { left: 22px; }
+  #updatesModal .timeline::before { left: 65px; }
   #updatesModal .timeline-dot { left: 22px; width: 12px; height: 12px; top: 6px; }
   #updatesModal .timeline-date { margin-left: 32px; }
 }
@@ -1113,8 +1137,8 @@ hr.title-spacer::after  { right: 0; }
    -------------------------------------------------------------------------- */
 .reveal {
   opacity: 0;
-  transform: translateY(26px);
-  transition: opacity 650ms ease, transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(16px);
+  transition: opacity 500ms ease, transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .reveal.is-in {
@@ -1206,6 +1230,89 @@ hr.title-spacer::after  { right: 0; }
   .cursor-ring.is-engaged .cur-cross { opacity: 0.72; }
 }
 /* --------------------------------------------------------------------------
+   Press feedback: controls respond the instant they are touched.
+   Press-in is fast (~100ms); release returns at the element's normal pace.
+   -------------------------------------------------------------------------- */
+.site-nav .nav-link:active { transform: scale(0.95); transition-duration: 80ms; }
+.theme-toggle:active { transform: scale(0.92); }
+.updates-btn:active { transform: translateY(-1px) scale(0.97); transition-duration: 90ms; }
+.blur-on-hover:active { transform: translateY(-2px) scale(0.985); transition-duration: 100ms; }
+.btnSwitch:active .image-container { transform: translate(-50%, -50%) scale(0.985); transition-duration: 120ms; }
+.modal .btn-close:active { transform: scale(0.9); }
+.scroll-cue:active { opacity: 1; }
+
+/* --------------------------------------------------------------------------
+   Modals materialize near where they rest: small rise + scale, entering and
+   leaving along the same path (instead of dropping in from far above).
+   -------------------------------------------------------------------------- */
+.modal.fade .modal-dialog {
+  transform: translateY(16px) scale(0.97);
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.modal.show .modal-dialog { transform: none; }
+
+/* --------------------------------------------------------------------------
+   Figure captions: one mono drafting-note style shared by every modal
+   -------------------------------------------------------------------------- */
+.fig-caption {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}
+
+/* --------------------------------------------------------------------------
+   Skip link: hidden until focused, first tab stop on the page
+   -------------------------------------------------------------------------- */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  z-index: 2000;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: top 200ms ease;
+}
+
+.skip-link:focus-visible { top: 1rem; }
+
+/* --------------------------------------------------------------------------
+   System preferences: frost the glass under reduced transparency,
+   strengthen rules and secondary text under increased contrast
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --glass: rgba(255, 255, 255, 0.96);
+    --glass-border: rgba(11, 29, 48, 0.16);
+  }
+  [data-bs-theme="dark"] {
+    --glass: rgba(10, 20, 36, 0.97);
+    --glass-border: rgba(151, 196, 255, 0.28);
+  }
+  .site-nav, .updates-btn, .bom-wrap, .title-block, .edu-line,
+  .blur-on-hover::before, .blur-on-hover::after, .overlay-text .tag {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root { --rule: rgba(11, 29, 48, 0.45); --ink-soft: #2c4763; }
+  [data-bs-theme="dark"] { --rule: rgba(151, 196, 255, 0.5); --ink-soft: #b7cfec; }
+}
+
+/* --------------------------------------------------------------------------
    Small screens
    -------------------------------------------------------------------------- */
 @media (max-width: 576px) {
@@ -1232,6 +1339,7 @@ hr.title-spacer::after  { right: 0; }
     </style>
   </head>
   <body>
+    <a class="skip-link" href="#top">Skip to content</a>
     <!-- ==================== NAVIGATION ==================== -->
     <nav class="navbar navbar-expand-md site-nav px-3" aria-label="Primary navigation">
       <a class="navbar-brand" href="#top">RMC</a>
@@ -1268,7 +1376,12 @@ hr.title-spacer::after  { right: 0; }
       <span>Updates & News</span>
     </div>
   </button>
-  <a class="btn updates-btn btn-outline-dark" href="https://drive.google.com/file/d/1UFCkd6-Wg-D_o_JpnoWA55Vj2c7_u_g4/view?usp=sharing" target="_blank" rel="noopener noreferrer">View CV</a>
+  <a class="btn updates-btn" href="https://drive.google.com/file/d/1UFCkd6-Wg-D_o_JpnoWA55Vj2c7_u_g4/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+    <div class="btn-content">
+      <i class="bi bi-file-earmark-text me-2"></i>
+      <span>View CV</span>
+    </div>
+  </a>
 </div>
     <div class="text-center" id="about">
       <button type="button" class="btn btnSwitch" data-bs-toggle="modal" data-bs-target="#aboutMeModal" aria-label="Learn more about me">
@@ -1353,8 +1466,6 @@ hr.title-spacer::after  { right: 0; }
 
               </div>
             </div>
-            <div class="modal-footer">
-            </div>
           </div>
         </div>
       </div>
@@ -1410,7 +1521,7 @@ hr.title-spacer::after  { right: 0; }
             <div class="timeline-dot" aria-hidden="true"></div>
             <div class="timeline-entry">
               <div class="timeline-date">Sep 1, 2025</div>
-              <div class="timeline-text">Started an undergraduate research internship @ <a href="https://mekateka.com/" target="_blank" rel="noopener noreferrer">Mekateka Lab</a>, Korea University (Prof. Daniel Dahyun Lim)</div>
+              <div class="timeline-text">Started an undergraduate research internship @ <a href="https://mekateka.com/" target="_blank" rel="noopener noreferrer">Mekateka Lab</a>, Korea University (Prof. Dahyun Daniel Lim)</div>
             </div>
             </div>
 
@@ -1431,14 +1542,14 @@ hr.title-spacer::after  { right: 0; }
     <!-- ==================== RESEARCH ==================== -->
     <section id="research" class="pt-3">
     <div class="text-center">
-      <p class="display-6 section-heading">research</p>
+      <h2 class="display-6 section-heading">research</h2>
     </div>
     <div class="container">
       <div class="row justify-content-center">
       <div class="col-lg-8 col-12 mb-4">
         <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalDG" data-location="MEKATEKA &#183; Independent research" data-date="Jan 2026 - Present" style="width: 100%;">
         <img loading="lazy" decoding="async" src="media/AG_cover.jpg" class="rounded" alt="Deployable Gripper">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;"><span class="tag-row"><span class="tag">Robotics</span><span class="tag">Deployable Structures</span><span class="tag">CAD</span><span class="tag">3D Printing</span></span>Deployable Agri-Gripper</div>
+        <div class="overlay-text"><span class="tag-row"><span class="tag">Robotics</span><span class="tag">Deployable Structures</span><span class="tag">CAD</span><span class="tag">3D Printing</span></span>Deployable Agri-Gripper</div>
         </div>
       </div>
       </div>
@@ -1447,7 +1558,7 @@ hr.title-spacer::after  { right: 0; }
       <div class="col-lg-8 col-12 mb-4">
         <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalABLE" data-location="MEKATEKA &#183; Nationally funded project" data-date="Sep 2025 - Present" style="width: 100%;">
         <img loading="lazy" decoding="async" src="media/ablelabs_cover.jpeg" class="rounded" alt="ABLELABS self-driven lab gripper">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">Robotics</span><span class="tag">Lab Automation</span><span class="tag">Gripper Design</span></span>ABLELABS Self-Driven Lab</div>
+        <div class="overlay-text"><span class="tag-row"><span class="tag">Robotics</span><span class="tag">Lab Automation</span><span class="tag">Gripper Design</span></span>ABLELABS Self-Driven Lab</div>
         </div>
       </div>
       </div>
@@ -1473,7 +1584,7 @@ hr.title-spacer::after  { right: 0; }
     <!-- ==================== TRAJECTORY (experience timeline) ==================== -->
     <section id="trajectory" class="pt-3">
     <div class="text-center">
-      <p class="display-6 section-heading">research trajectory</p>
+      <h2 class="display-6 section-heading">research trajectory</h2>
     </div>
     <div class="container">
       <div class="xp-timeline">
@@ -1488,7 +1599,7 @@ hr.title-spacer::after  { right: 0; }
           <div class="xp-dot" aria-hidden="true"></div>
           <div class="xp-date">Sep 2025 &#8211; Present</div>
           <h6 class="xp-title">Undergraduate Research Intern &#8212; MEKATEKA Lab</h6>
-          <p class="xp-text">Data-driven Machine Design Lab at Korea University (Prof. Daniel Dahyun Lim).<br> Conducting independent research on deployable structures as well as nationally funded projects (Self-Driven Labs).</p>
+          <p class="xp-text">Data-driven Machine Design Lab at Korea University (Prof. Dahyun Daniel Lim).<br> Conducting independent research on deployable structures as well as nationally funded projects (Self-Driven Labs).</p>
         </div>
         <div class="xp-item">
           <div class="xp-dot" aria-hidden="true"></div>
@@ -1515,7 +1626,7 @@ hr.title-spacer::after  { right: 0; }
     <!-- ==================== SELECTED PROJECTS (cards + their modals) ==================== -->
     <section id="projects" class="pt-3">
     <div class="text-center">
-      <p class="display-6 section-heading">selected projects</p>
+      <h2 class="display-6 section-heading">selected projects</h2>
     </div> 
     <!-- Row 1 -->
     <div class="container">
@@ -1523,7 +1634,7 @@ hr.title-spacer::after  { right: 0; }
       <div class="col-md-6 col-12 mb-4">
         <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalHexa" data-location="Korea University" data-date="May 2026 - Present" style="width: 100%;">
         <img loading="lazy" decoding="async" src="media/Hexa_cover.png" class="rounded" alt="Hexagonal Packaging">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;"><span class="tag-row"><span class="tag">CAD</span><span class="tag">Structures</span><span class="tag">Sustainability</span></span>Reusable Hexagonal Packaging</div>
+        <div class="overlay-text"><span class="tag-row"><span class="tag">CAD</span><span class="tag">Structures</span><span class="tag">Sustainability</span></span>Reusable Hexagonal Packaging</div>
         </div>
       </div>
       </div>
@@ -1580,13 +1691,13 @@ hr.title-spacer::after  { right: 0; }
       <div class="col-md-6 col-12 mb-4">
         <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalHearo" data-location="Korea Economic Daily HQ" data-date="Mar 2024 - Jul 2024" style="width: 100%;">
         <img loading="lazy" decoding="async" src="media/hearo/hro_cover.JPEG" class="rounded" alt="Hearo">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">Startup</span><span class="tag">CAD</span><span class="tag">Pitching</span></span>ROKAF National Startup Competition</div>
+        <div class="overlay-text"><span class="tag-row"><span class="tag">Startup</span><span class="tag">CAD</span><span class="tag">Pitching</span></span>ROKAF National Startup Competition</div>
         </div>
       </div>
       <div class="col-md-6 col-12 mb-4">
         <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalMLO" data-location="Incheon International Airport" data-date="Jan 2024 - Oct 2025" style="width: 100%;">
         <img loading="lazy" decoding="async" src="media/mlo/mlo_cover.JPEG" class="rounded" alt="MLO">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;"><span class="tag-row"><span class="tag">Interpretation</span><span class="tag">Protocol</span></span>Military Liaison Office</div>
+        <div class="overlay-text"><span class="tag-row"><span class="tag">Interpretation</span><span class="tag">Protocol</span></span>Military Liaison Office</div>
         </div>
       </div>
       </div>
@@ -1605,17 +1716,17 @@ hr.title-spacer::after  { right: 0; }
             Despite limited access to the internet and materials, and working only during our evening free time, we focused on the core aspects of product development: AI implementation, manufacturing planning, and business strategy. This project provided entrepreneurial experience, highlighting the importance of conceptual design and sustainable business models. By focusing on the potential of Hearo and the practicalities of its production, we demonstrated the ability to innovate and address real-world challenges, even within the constraints of military service. <br>
             <div class="text-center" style="margin-top: 10px;">
               <img loading="lazy" decoding="async" src="media/hearo/hro_cad.png" class="img-fluid rounded" alt="Hearo prototype" style="width: 500px; height: 350px;"> <br>
-              <i style="font-size: 12pt;">A CAD model of the bracelet, made under limited conditions</i></div><br>
+              <i class="fig-caption">A CAD model of the bracelet, made under limited conditions</i></div><br>
             We wrote a business plan and presented our project to a panel of judges, receiving positive feedback on our innovative approach and potential for future development. We were placed in the top 13 teams and were invited to the award ceremony at "The Korea Economic Daily (한국경제신문사)" headquarters in Seoul. <br><br>
 <div class="container">
   <div class="row">
     <div class="col-md-6 text-start" style="margin-top: 10px;">
         <img loading="lazy" decoding="async" src="media/hearo/hro_news.png" class="img-fluid rounded" alt="media hearo" style="width: 100%; height: 500px;"> <br>
-                <i style="font-size: 12pt;">A screenshot of South Korea's online news on the day of the ceremony.</i></div>
+                <i class="fig-caption">A screenshot of South Korea's online news on the day of the ceremony.</i></div>
               
     <div class="col-md-6 text-end" style="margin-top: 10px;">
         <img loading="lazy" decoding="async" src="media/hearo/hro_award.JPEG" class="img-fluid rounded" alt="award ceremony" style="width: 400px; height: 500px;"> <br>
-                <i style="font-size: 12pt;">We placed in 10th out of 441 teams and were awarded 장려상. That's me when I was a PFC (일등병).</i></div>
+                <i class="fig-caption">We placed in 10th out of 441 teams and were awarded 장려상. That's me when I was a PFC (일등병).</i></div>
      </div>
   </div>
 
@@ -1639,7 +1750,7 @@ hr.title-spacer::after  { right: 0; }
             </p>
             <div class="text-center" style="margin-top: 10px;">
               <img loading="lazy" decoding="async" src="media/mlo/mlo_sunset.jpg" class="img-fluid rounded" alt="Military Liaison Office" style="width: 500px; height: 350px;"> <br>
-              <i style="font-size: 12pt;">The beautiful sunset of ICN Airport</i></div>
+              <i class="fig-caption">The beautiful sunset of ICN Airport</i></div>
             </div>
           </div>
         </div>
@@ -1651,13 +1762,13 @@ hr.title-spacer::after  { right: 0; }
         <div class="col-md-6 col-12 mb-4">
           <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalJGS" data-location="Korea University" data-date="Jul 2023 - Dec 2023" style="width: 100%;">
             <img loading="lazy" decoding="async" src="media/brachiation/br_cover.png" class="rounded" alt="JGS">
-            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">C++</span><span class="tag">Mechanism Design</span></span>Two-handed Brachiating Robot</div>
+            <div class="overlay-text"><span class="tag-row"><span class="tag">C++</span><span class="tag">Mechanism Design</span></span>Two-handed Brachiating Robot</div>
           </div>
         </div>
         <div class="col-md-6 col-12 mb-4">
           <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modal23EoulPCB" data-location="Korea University" data-date="Dec 2022 - Sep 2023" style="width: 100%;">
             <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_cover.png" class="rounded" alt="23EoulPCB">
-            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;"><span class="tag-row"><span class="tag">PCB Design</span><span class="tag">Soldering</span><span class="tag">Formula Student</span></span>2023 E-Formula Racecar &#8212; PCB</div>
+            <div class="overlay-text"><span class="tag-row"><span class="tag">PCB Design</span><span class="tag">Soldering</span><span class="tag">Formula Student</span></span>2023 E-Formula Racecar &#8212; PCB</div>
           </div>
         </div>
       </div>
@@ -1677,21 +1788,21 @@ hr.title-spacer::after  { right: 0; }
             My team and I decided to make the body and grippers out of lightweight acrylic and Arduino with servo motors for the powertrain mechanism. I designed the powertrain and gearbox so that a minimum amount of motors and gears were used to reduce weight and prevent gear slip. Using Excel, my team and I made a simple program that visualized each motor's angular displacement and grip strength.<br><br>
             <div class="text-center" style="margin-top: 10px;">
               <img loading="lazy" decoding="async" src="media/brachiation/br_excel.png" class="img-fluid rounded" alt="powertrain" style="width: 800px; height: 400px;"> <br>
-              <i style="font-size: 12pt;">Powertrain calculations visualized in Excel.</i></div><br>
+              <i class="fig-caption">Powertrain calculations visualized in Excel.</i></div><br>
             With my knowledge of C++ and Arduino, I used a motor controller to control each motor's precise movement for each phase of brachiation. I also designed and arranged the circuitry as symmetrically as possible so that there was no unnecessary shear force while the robot progressed.<br>
             <div class="text-center" style="margin-top: 10px;">
                <img loading="lazy" decoding="async" src="media/brachiation/br_code.png" class="img-fluid rounded" alt="cplusplus code" style="width: 400px; height: 550px;"> <br>
-               <i style="font-size: 12pt;">Servo motor C++ code</i></div><br>
+               <i class="fig-caption">Servo motor C++ code</i></div><br>
             After four months of brainstorming and building, our team was able to get the shortest crossing time out of all of the competing teams.<br><br>
             <div class="container">
               <div class="row">
               <div class="col-md-6 text-start" style="margin-top: 10px;">
                 <img loading="lazy" decoding="async" src="media/brachiation/br_gif.gif" class="img-fluid rounded" alt="moving mechanism" style="width: 100%; height: auto;"> <br>
-                <i style="font-size: 12pt;">Brachiation test drive.</i></div>
+                <i class="fig-caption">Brachiation test drive.</i></div>
               
               <div class="col-md-6 text-end" style="margin-top: 10px;">
                 <img loading="lazy" decoding="async" src="media/brachiation/br_award.JPEG" class="img-fluid rounded" alt="Brachiating robot award ceremony" style="width: 100%; height: auto;"> <br>
-                <i style="font-size: 12pt;">Final product and award (최우수상, 1st place)</i></div>
+                <i class="fig-caption">Final product and award (최우수상, 1st place)</i></div>
               </div>
             </div>
           </div>
@@ -1710,24 +1821,24 @@ hr.title-spacer::after  { right: 0; }
             As part of Eoulsure (어울수레), Korea University's Formula Student racing team, I spent the 2023 season on our E-Formula racecar's electrical systems. For the electrical safety examination, my teammate (YDS) and I designed and fabricated custom PCB panels, most notably the RTDS (Ready to Drive Sound) circuit. This involved meticulous component selection and layout to ensure reliable signal processing from the brake sensor and activation button, making a loud audible alarm. The panels were then carefully assembled and tested, contributing directly to the vehicle's successful safety inspection. <br><br>
             <div class="text-center" style="margin-top: 10px;">
               <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_parts.jpg" class="img-fluid rounded" alt="w/parts" style="width: 400px; height: 500px;"> <br>
-              <i style="font-size: 12pt;">PCB panels with their corresponding parts</i></div><br>
+              <i class="fig-caption">PCB panels with their corresponding parts</i></div><br>
             <div class="text-center" style="margin-top: 10px;">
               <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_tsalpcb.jpg" class="img-fluid rounded" alt="TSAL" style="width: 600px; height: 300px;"> <br>
-              <i style="font-size: 12pt;">TSAL panel</i></div><br>
+              <i class="fig-caption">TSAL panel</i></div><br>
             The photo above is the PCB for the TSAL (Tractive System Active Light) circuit. The TSAL circuit is a safety feature that indicates when the car is ready to drive. The circuit is connected to the motor controller and the battery management system. When the car is ready to drive, the TSAL circuit lights up and the driver can start the car. <br><br>
             <div class="text-center" style="margin-top: 10px;">
               <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_tsal.JPEG" class="img-fluid rounded" alt="TSAL in action" style="width: 400px; height: 500px;"> <br>
-              <i style="font-size: 12pt;">TSAL light in action</i></div><br>
+              <i class="fig-caption">TSAL light in action</i></div><br>
             We also developed countless other PCBs through trial and error, often failing to meet the safety regulations, going back to square one. Although we tried our best and made it to the KSAE competition, undergraduates building an electric car without the help of electrical engineers and professional guidance had its limitations and we failed to pass the safety inspection. However, it was rewarding to see our hard work pay off when our successors passed the electrical safety examination in 2024. <br><br>
             <div class="text-center" style="margin-top: 10px;">
               <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_sodler.JPEG" class="img-fluid rounded" alt="soldering" style="width: 400px; height: 500px;">
               <div>
-              <i style="font-size: 12pt;">Soldering skills increased exponentially.</i>
+              <i class="fig-caption">Soldering skills increased exponentially.</i>
               </div>
             </div><br>
               <div class="text-center" style="margin-top: 10px;">
                 <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_finalrungif.gif" class="img-fluid rounded" alt="2024 run" style="width: 100%; height: auto;">
-                <i style="font-size: 12pt;">Our car finally running in 2024 (30-second clip).</i></div><br>
+                <i class="fig-caption">Our car finally running in 2024 (30-second clip).</i></div><br>
             I learned a valuable lesson where even the smallest of components requires countless hours of attention and feedback to achieve its final role in the grand scheme of the machine. This lesson has stuck to me and continued to grow as I learned more and more about the production of a race car. And the joy of finally watching your thought move from idea to paper and then from paper to reality feels like nothing else in this world.
           </div>
         </div>
@@ -1740,13 +1851,13 @@ hr.title-spacer::after  { right: 0; }
         <div class="col-md-6 col-12 mb-4">
           <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modal23EoulBB" data-location="Korea University" data-date="Dec 2022 - Sep 2023" style="width: 100%;">
             <img loading="lazy" decoding="async" src="media/23eoul bb/23bb_cover.JPEG" class="rounded" alt="23EoulBB">
-            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">Battery Systems</span><span class="tag">Formula Student</span></span><span class="fit-line">2023 E-Formula Racecar &#8212; Battery Box</span></div>
+            <div class="overlay-text"><span class="tag-row"><span class="tag">Battery Systems</span><span class="tag">Formula Student</span></span><span class="fit-line">2023 E-Formula Racecar &#8212; Battery Box</span></div>
           </div>
         </div>
         <div class="col-md-6 col-12 mb-4">
           <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modal22Eoul" data-location="Korea University" data-date="Mar 2022 - Sep 2022" style="width: 100%;">
             <img loading="lazy" decoding="async" src="media/eoul22/22_cover.JPEG" class="rounded" alt="22Eoul">
-            <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 60px;"><span class="tag-row"><span class="tag">Fabrication</span><span class="tag">Formula Student</span></span>2022 E-Formula Racecar</div>
+            <div class="overlay-text"><span class="tag-row"><span class="tag">Fabrication</span><span class="tag">Formula Student</span></span>2022 E-Formula Racecar</div>
           </div>
         </div>
       </div>
@@ -1765,10 +1876,10 @@ hr.title-spacer::after  { right: 0; }
             After carefully dissecting last year's (2022) racecar and dedicating countless hours to study sessions over winter break, the challenge of designing our 2023 vehicle began. Eager to learn a thing or two outside the boundaries of our school's standard M.E. curriculum, I chose to join the powertrain team. This team's critical responsibility lay in the intricate task of delivering power to the motor via a sophisticated battery system, and implementing vital safety mechanisms throughout the entire vehicle. This opportunity allowed me to dive into the world of high and low voltage electrical systems, battery management, and crucial safety protocols, equipping me with invaluable skills beyond traditional mechanical engineering knowledge.<br><br>
             <div class="text-center" style="margin-top: 10px;">
               <img loading="lazy" decoding="async" src="media/23eoul bb/23bb_dissect.jpg" class="img-fluid rounded" alt="dissecting BB" style="width: 400px; height: 500px;"> <br>
-              <i style="font-size: 12pt;">Our team dissecting the previous year's battery box.</i><br>
+              <i class="fig-caption">Our team dissecting the previous year's battery box.</i><br>
             Regarding the battery box, I actively participated in its construction, utilizing CATIA to optimize component placement for efficient space utilization and thermal management. To enhance durability and protect sensitive circuitry from vibrations, I designed and 3D-printed custom holsters for various components within the box. This approach ensured that the battery system remained secure and functional under the demanding conditions of the race.<br><br>
             <img loading="lazy" decoding="async" src="media/23eoul bb/23bb_motorgif.gif" class="img-fluid rounded" alt="motor gif" style="width: auto; height: auto;"> <br>
-            <i style="font-size: 12pt;">Test driving the main motor.</i><br>
+            <i class="fig-caption">Test driving the main motor.</i><br>
           </div>
           </div>
         </div>
@@ -1788,21 +1899,21 @@ We competed in the E-Formula division where the car runs on lithium batteries an
 At the start of the semester, freshmen like me were not used to heavy-duty tools like grinders, welders, and drills, so we were first taught how to use each tool along with its safety precautions. 
 <div class="text-center" style="margin-top: 10px;">
   <img loading="lazy" decoding="async" src="media/eoul22/22_safe.jpg" class="img-fluid rounded" alt="safety seminar" style="width: 500px; height: 400px;"> <br>
-  <i style="font-size: 12pt;">Me (in the blue hoodie) learning how to weld.</i></div>
+  <i class="fig-caption">Me (in the blue hoodie) learning how to weld.</i></div>
 Summer break was when the actual building began, sophomores and juniors did the design process while we freshmen were stuck out in the garage under the scorching sun, cutting pipes and pieces of metal.<br>
 <div class="text-center" style="margin-top: 10px;">
   <img loading="lazy" decoding="async" src="media/eoul22/22_grinder.jpg" class="img-fluid rounded" alt="grinder" style="width: 300px; height: 400px;"> <br>
-  <i style="font-size: 12pt;">Grinder sparks often burn a hole in your shirt, so you need to be careful.</i></div>
+  <i class="fig-caption">Grinder sparks often burn a hole in your shirt, so you need to be careful.</i></div>
 We went to Gunsan (군산) with our car to compete on the track. Although the process was hard (dealing with the heat was even harder), I felt fulfilled seeing my contribution in the final product. By observing over their shoulders, I learned a lot from my upperclassmen; I was glad I had chosen engineering as my career. 
 <div class="container">
   <div class="row">
     <div class="col-md-3 text-start" style="margin-top: 10px;">
         <img loading="lazy" decoding="async" src="media/eoul22/22_baja.jpg" class="img-fluid rounded" alt="bajaeoul" style="width: 300px; height: 400px;"> <br>
-                <i style="font-size: 12pt;">Racecars are cool.</i></div>
+                <i class="fig-caption">Racecars are cool.</i></div>
     
     <div class="col-md-6 text-center" style="margin-top: 10px;">
         <img loading="lazy" decoding="async" src="media/eoul22/22_garage.jpg" class="img-fluid rounded" alt="garage" style="width: 100%; height: 300px;"> <br>
-                <i style="font-size: 12pt;">In order to meet the deadline, overnight construction is inevitable.</i></div>
+                <i class="fig-caption">In order to meet the deadline, overnight construction is inevitable.</i></div>
               
      </div>
   </div>
@@ -1815,12 +1926,12 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
     <div id="tooltip" class="tooltip-custom"></div>
 
     </section>
-    <hr class="title-spacer" style="width: 50%; margin: 0 auto;">
+    <hr class="title-spacer">
 
     <!-- ==================== MINI PROJECTS (cards + their modals) ==================== -->
     <section id="mini-projects" class="pt-3">
     <div class="text-center">
-      <p class="display-6 section-heading">mini projects</p>
+      <h2 class="display-6 section-heading">mini projects</h2>
     </div> 
     <br>
     <!--Row 1-->
@@ -1829,19 +1940,19 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
               <div class="col-md-4 col-12 mb-4">
         <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalESafe" data-location="Korea University" data-date="Sep 2025 - Feb 2026" style="width: 100%;">
         <img loading="lazy" decoding="async" src="media/esafe_cover.png" class="rounded" alt="E-Safe Solutions IMSDC safety module">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">PCB Design</span><span class="tag">Functional Safety</span><span class="tag">Startup</span></span>E-Safe Solutions</div>
+        <div class="overlay-text"><span class="tag-row"><span class="tag">PCB Design</span><span class="tag">Functional Safety</span><span class="tag">Startup</span></span>E-Safe Solutions</div>
         </div>
       </div>
       <div class="col-md-4 col-12 mb-4">
         <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalWeb" data-location="Personal project" data-date="Feb 2025 - Mar 2025" style="width: 100%;">
         <img loading="lazy" decoding="async" src="media/mini projects/my website/web_cover.png" class="rounded" alt="Website">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span></span>Making my own Website</div>
+        <div class="overlay-text"><span class="tag-row"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span></span>Making my own Website</div>
         </div>
       </div>
       <div class="col-md-4 col-12 mb-4">
         <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modaleoulmini" data-location="Korea University" data-date="Mar 2023 - Dec 2023" style="width: 100%;">
         <img loading="lazy" decoding="async" src="media/mini projects/eoulmini_cover.jpg" class="rounded" alt="coming soon">
-        <div class="overlay-text" style="font-family: 'Outfit', sans-serif; font-size: 43px;"><span class="tag-row"><span class="tag">CATIA</span><span class="tag">SolidWorks</span><span class="tag">Teaching</span></span>E-Formula Team Seminars</div>
+        <div class="overlay-text"><span class="tag-row"><span class="tag">CATIA</span><span class="tag">SolidWorks</span><span class="tag">Teaching</span></span>E-Formula Team Seminars</div>
         </div>
       </div>
 
@@ -1862,7 +1973,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
             After an idea pitching presentation, the team was awarded Korea University's startup funding to build a working prototype, and integrated its BMS, insulation-monitoring (IMD), and deadman-switch designs into the IMSDC (Integrated Monitor and Shutdown Circuitry) module. I joined in September 2025 with direct circuit-design experience from Formula racing, contributing to the safety modules and handling the team's partnerships.
             <div class="text-center" style="margin-top: 10px;">
   <img loading="lazy" decoding="async" src="media/esafe_slide.png" class="img-fluid rounded" alt="safety seminar" style="width: 500px; height: 280px;"> <br>
-  <i style="font-size: 12pt;">A slide we used in the pitching presentation.</i></div>
+  <i class="fig-caption">A slide we used in the pitching presentation.</i></div>
           </div>
         </div>
       </div>
@@ -1883,7 +1994,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
           <br> <br> P.S. I'm still learning so please mind the bugs!!
           <div class="text-center" style="margin-top: 10px;">
             <img loading="lazy" decoding="async" src="media/mini projects/my website/web_early.jpg" class="img-fluid rounded" alt="early stages" style="width: 700px; height: 400px;"> <br>
-            <i style="font-size: 12pt;">Learning HTML the hard way: the early stages of my website.</i></div>
+            <i class="fig-caption">Learning HTML the hard way: the early stages of my website.</i></div>
         </div>
       </div>
       </div>
@@ -1909,19 +2020,19 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
               <div class="row">
                 <div class="col-md-6 text-center" style="margin-top: 10px;">
                   <img loading="lazy" decoding="async" src="media/mini projects/eoulmini_cadseminar.jpg" class="img-fluid rounded" alt="Cad seminar" style="width: 80%; height: auto;"> <br>
-                   <i style="font-size: 12pt;">CAD seminar with freshmen</i>
+                   <i class="fig-caption">CAD seminar with freshmen</i>
                 </div>
 
                 <div class="col-md-6 text-center" style="margin-top: 10px;">
                   <img loading="lazy" decoding="async" src="media/mini projects/eoulmini_powertools.png" class="img-fluid rounded" alt="powertoolsem" style="width: 80%; height: auto;"> <br>
-                   <i style="font-size: 12pt;">Teaching how to use the drill with my back against the camera.</i>
+                   <i class="fig-caption">Teaching how to use the drill with my back against the camera.</i>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-6 text-center" style="margin-top: 10px;">
                    <img loading="lazy" decoding="async" src="media/mini projects/eoulmini_seminar.png" class="img-fluid rounded" alt="LVslides" style="width: 80%; height: auto;"> <br>
-                  <i style="font-size: 12pt;">The slides I used to teach circuit basics and my personal experiences.</i>
+                  <i class="fig-caption">The slides I used to teach circuit basics and my personal experiences.</i>
                 </div>
               </div>
             </div>
@@ -1937,7 +2048,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
 
     <!-- ==================== INSTRUMENTS & TOOLING ==================== -->
     <section id="skills" class="pt-3">
-      <p class="display-6 section-heading">instruments &amp; tooling</p>
+      <h2 class="display-6 section-heading">skills &amp; instruments</h2>
       <div class="container">
         <div class="bom-wrap">
           <table class="bom-table">
@@ -1992,7 +2103,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
     <!-- ==================== CONTACT (drawing title block) ==================== -->
     <section id="contact">
     <div class="text-center">
-      <p class="display-6 section-heading">contact</p>
+      <h2 class="display-6 section-heading">contact</h2>
     </div>
     <div class="container">
       <div class="title-block">
@@ -2025,7 +2136,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
         </div>
         <div class="tb-grid">
           <div class="tb-cell"><span class="tb-label">Drawn by</span><span class="tb-value">Ryan Minkyu Chung</span></div>
-          <div class="tb-cell"><span class="tb-label">Last revised</span><span class="tb-value">Aug 7, 2026</span></div>
+          <div class="tb-cell"><span class="tb-label">Last revised</span><span class="tb-value">Aug 10, 2026</span></div>
           <div class="tb-cell"><span class="tb-label">Sheet</span><span class="tb-value">Portfolio &#8212; 01 of 01</span></div>
           <div class="tb-cell"><span class="tb-label">Note</span><span class="tb-value">Korean version coming soon, maybe. <br> Thank you so much for reading.</span></div>
         </div>
@@ -2241,8 +2352,8 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
           });
         }
         const stored = localStorage.getItem('site-theme');
-        if(stored) applyTheme(stored);
-        else applyTheme('light');
+        const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        applyTheme(stored || (systemDark ? 'dark' : 'light'));
 
         if(btn) btn.addEventListener('click', function(){
           const next = root.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
@@ -2253,23 +2364,3 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
     </script>
   </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
