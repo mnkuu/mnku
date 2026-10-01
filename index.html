@@ -1,15 +1,16 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VP3X74JS60"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VP3X74JS60');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VP3X74JS60"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VP3X74JS60');
+    </script>
     <title>Ryan Minkyu Chung &#8212; Mechanical Engineering Portfolio</title>
     <meta name="description" content="Portfolio of Ryan Minkyu Chung, mechanical engineering student at Korea University: robotic gripper research, compliant mechanisms, and Formula Student projects.">
     <meta property="og:type" content="website">
@@ -18,20 +19,21 @@
     <meta property="og:description" content="Robotic gripper research, compliant mechanisms, and Formula Student engineering projects.">
     <meta property="og:image" content="https://ryanmchung.com/media/about_me_photo%202.0.jpg">
     <meta name="twitter:card" content="summary_large_image">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <meta name="theme-color" content="#e3ecf7">
     <script>
-      /* Set the theme before first paint so dark-mode visitors never see a light flash */
+      /* Set the theme before first paint so dark-mode visitors never see a light
+         flash: the saved choice, else the system setting. Storage can be blocked
+         (private windows), so it is only ever read and written inside try. */
       (function () {
-        try {
-          var t = localStorage.getItem('site-theme');
-          if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-          document.documentElement.setAttribute('data-bs-theme', t);
-          var m = document.querySelector('meta[name="theme-color"]');
-          if (m) m.setAttribute('content', t === 'dark' ? '#050d1a' : '#e3ecf7');
-        } catch (e) {}
+        var t = null;
+        try { t = localStorage.getItem('site-theme'); } catch (e) {}
+        if (t !== 'dark' && t !== 'light') {
+          t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-bs-theme', t);
+        var m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.setAttribute('content', t === 'dark' ? '#050d1a' : '#e3ecf7');
       })();
     </script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -46,16 +48,16 @@
    4. Portrait dial                12. Updates timeline
    5. About-me modal layout        13. Scroll reveal
    6. Buttons                      14. Custom cursor
-   7. Project cards                15. Small screens & reduced motion
-   8. Card tags / pub / edu lines   (+ Trajectory timeline before Contact)
+   7. Project cards                15. Ink field (ASCII background)
+   8. Card tags / pub / edu lines  16. Small screens & reduced motion
+      (+ Trajectory timeline before Contact)
    ========================================================================== */
 
 /* ==========================================================================
    R.M.C portfolio - "engineering drawing sheet"
-   Graph-paper ground, drafting-blue ink, mono annotations,
-   instrument-dial portrait, title-block footer.
+   Dot-matrix ground with a live ASCII layer, drafting-blue ink, mono
+   annotations, instrument-dial portrait, title-block footer.
    ========================================================================== */
-
 
 :root {
   --ink: #0b1d30;
@@ -64,13 +66,15 @@
   --paper-a: #e3ecf7;
   --paper-b: #eef3fb;
   --paper-c: #dfeafa;
-  --grid-line: rgba(30, 74, 138, 0.055);
-  --grid-strong: rgba(30, 74, 138, 0.10);
+  --dot: rgba(30, 74, 138, 0.26);  /* the dot-matrix ground */
   --accent: #e34d5e;
   --accent-contrast: #ffffff;
   --accent-glow: rgba(227, 77, 94, 0.16);
   --accent-2: #ff4d6d;
   --accent-3: #dc143c;            /* signal red: custom cursor */
+  --field-cold: #1e4a8a;          /* ink field: cooled glyphs, the dots' drafting blue */
+  --field-hot: var(--accent-3);   /* ink field: hot glyphs match the cursor dot */
+  --field-strength: 1;            /* ink field: opacity multiplier */
   --tick: rgba(11, 29, 48, 0.55);
   --tick-faint: rgba(11, 29, 48, 0.2);
   --glass: rgba(255, 255, 255, 0.58);
@@ -90,13 +94,14 @@
   --paper-a: #050d1a;
   --paper-b: #0b1c31;
   --paper-c: #0b1f40;
-  --grid-line: rgba(122, 172, 255, 0.055);
-  --grid-strong: rgba(122, 172, 255, 0.1);
+  --dot: rgba(122, 172, 255, 0.2);
   --accent: #ff4d6d;
   --accent-contrast: #3a060f;
   --accent-glow: rgba(255, 131, 147, 0.2);
   --accent-2: #ff4d6d;
   --accent-3: #ff4d6d;
+  --field-cold: #7aacff;
+  --field-strength: 1.45;         /* light-on-dark glyphs need more opacity to read the same */
   --tick: rgba(191, 223, 255, 0.6);
   --tick-faint: rgba(191, 223, 255, 0.22);
   --glass: rgba(13, 27, 46, 0.62);
@@ -115,22 +120,21 @@ body {
   overflow-x: hidden;
   overflow-y: scroll;
   background: linear-gradient(135deg, var(--paper-a), var(--paper-b), var(--paper-c));
-  transition: background 700ms cubic-bezier(0.22,1,0.36,1), color 500ms ease-in-out;
+  transition: color 500ms ease-in-out;
 }
 
-/* Graph-paper grid pinned behind everything */
+/* Dot-matrix ground pinned behind everything: one faint dot every 28px, each
+   on an ink-field cell, so the ASCII wake rises out of the dots and settles
+   back into them */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-image:
-    linear-gradient(var(--grid-strong) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px),
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 140px 140px, 140px 140px, 28px 28px, 28px 28px;
+  background-image: radial-gradient(circle at center, var(--dot) 0 1px, transparent 1.6px);
+  background-size: 28px 28px;
+  background-position: -7px -7px;
 }
 
 ::selection { background: var(--accent); color: var(--accent-contrast); }
@@ -151,6 +155,7 @@ button:focus-visible,
 html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
 
 .site-nav {
+  --bs-navbar-nav-link-padding-x: 0.85rem;   /* expanded menu */
   position: sticky;
   top: 0;
   z-index: 1030;
@@ -172,6 +177,8 @@ html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
   color: var(--ink);
 }
 
+.site-nav .navbar-nav { --bs-nav-link-padding-x: 0.85rem; }   /* collapsed menu */
+
 .site-nav .nav-link {
   border-radius: 999px;
   color: var(--ink);
@@ -180,7 +187,6 @@ html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
   font-size: 0.78rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding-inline: 0.85rem !important;
   transition: background 220ms ease, color 220ms ease, transform 220ms ease;
 }
 
@@ -305,6 +311,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
 }
 
 .section-heading {
+  margin-bottom: 2rem;            /* the same gap under every section title */
   font-family: var(--font-sans);
   font-weight: 700;
   letter-spacing: -0.015em;
@@ -314,6 +321,10 @@ html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
 #skills .section-heading { text-align: center; }
 
 /* Dividers drawn as dimension lines with perpendicular end ticks */
+/* sections without a card row end 1.5rem above their divider, like the card rows' mb-4 */
+#trajectory,
+#skills { padding-bottom: 1.5rem; }
+
 hr.title-spacer {
   position: relative;
   border: 0;
@@ -393,13 +404,14 @@ hr.title-spacer::after  { right: 0; }
    the spin perfectly centered on every browser, including mobile Safari.
    -------------------------------------------------------------------------- */
 .btnSwitch {
-  padding: 0 !important;
-  margin: 1.4rem auto 0 !important;
+  padding: 0;
+  margin: 1.4rem auto 0;
   border: 0;
   background: none;
 }
 
 .circle-container {
+  display: block;                 /* also used as a <span> inside the hero button */
   position: relative;
   width: min(400px, 78vw);
   height: min(400px, 78vw);
@@ -497,17 +509,22 @@ hr.title-spacer::after  { right: 0; }
 
 /* --------------------------------------------------------------------------
    About-me modal layout
+   Wide (1200px+, 1140px modal): the 300px dial sits beside the text.
+   Below that the modal is 800px or narrower, too tight for both side by
+   side, so the dial becomes a small avatar the text wraps around (centred
+   above the text on phones). When the modal opens it first shows the dial
+   large, then shrinks it into place; tapping the avatar enlarges it again
+   (script: "About-me avatar").
    -------------------------------------------------------------------------- */
 .about-me-content {
   display: flex;
   align-items: center;
   gap: 1.4rem;
-  flex-direction: row;
 }
 
 .about-me-content .circle-container {
-  width: min(300px, 64vw);
-  height: min(300px, 64vw);
+  width: 300px;
+  height: 300px;
   flex: 0 0 auto;
 }
 
@@ -522,8 +539,43 @@ hr.title-spacer::after  { right: 0; }
   text-align: left;
 }
 
-@media (max-width: 900px) {
-  .about-me-content { flex-direction: column; align-items: center; }
+.about-me-text p { margin: 0 0 1.55em; }
+.about-me-text p:last-child { margin-bottom: 0; }
+
+@media (max-width: 1199.98px) {
+  .about-me-content { display: block; }
+  .about-me-content::after { content: ""; display: block; clear: both; }
+
+  .about-me-content .circle-container {
+    float: left;
+    z-index: 2;
+    width: 156px;
+    height: 156px;
+    margin: 0 1rem 0.5rem 0;
+    shape-outside: circle(50%) border-box;
+    shape-margin: 1rem;
+    cursor: zoom-in;
+    transition: transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .about-me-text { transition: opacity 420ms ease 200ms; }
+
+  /* the degree badge becomes a block that sits beside the avatar instead of
+     dropping below it (an inline-block wider than the gap would) */
+  .about-me-content .edu-line { display: flow-root; }
+
+  /* while the dial is shown large, the text steps back */
+  .about-me-content.is-big .circle-container { cursor: zoom-out; }
+  .about-me-content.is-big .about-me-text { opacity: 0.06; transition-delay: 0ms; }
+}
+
+@media (max-width: 575.98px) {
+  .about-me-content .circle-container {
+    float: none;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 1.25rem;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -558,8 +610,6 @@ hr.title-spacer::after  { right: 0; }
   box-shadow: 0 14px 28px var(--accent-glow);
 }
 
-.updates-btn .btn-content { display: inline-flex; align-items: center; }
-
 /* --------------------------------------------------------------------------
    Project cards
    -------------------------------------------------------------------------- */
@@ -567,7 +617,7 @@ hr.title-spacer::after  { right: 0; }
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  height: 320px !important;
+  height: 320px;
   border: 1px solid var(--rule);
   border-radius: 16px;
   background: #101820;
@@ -626,9 +676,6 @@ hr.title-spacer::after  { right: 0; }
 .blur-on-hover:hover img { filter: brightness(0.78); transform: scale(1.045); }
 .blur-on-hover:hover .overlay-text { padding-bottom: 1.35rem; }
 
-/* .fit-line: JS shrinks the font just enough to keep the text on one line */
-.overlay-text .fit-line { display: block; white-space: nowrap; overflow: hidden; }
-
 .blur-on-hover:hover,
 .blur-on-hover:focus-visible {
   transform: translateY(-6px);
@@ -672,13 +719,80 @@ hr.title-spacer::after  { right: 0; }
   font-size: 0.98rem;
   font-weight: 500;
   color: var(--ink);
-  border: 1px dashed var(--rule);
+  border: 1px dashed var(--accent);
   border-radius: 12px;
   padding: 0.85rem 1.4rem;
-  margin: 0.2rem auto 1.6rem;
-  max-width: 900px;
+  margin: 0;
+  background: var(--glass);
   text-align: center;
 }
+
+/* Leader from a research card down to the paper it produced: a node where
+   it leaves the card, a callout label in the gap, an arrowhead into the box.
+   The two segments draw in when the card scrolls into view. */
+.pub-link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 4.6rem;
+  padding-bottom: 7px;
+}
+
+.pub-link::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+  transform: rotate(45deg);
+}
+
+.pub-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  margin-left: -5px;
+  border: 5px solid transparent;
+  border-top: 7px solid var(--accent);
+  border-bottom: 0;
+}
+
+.pub-seg {
+  flex: 1;
+  width: 2px;
+  background: var(--accent);
+  transform-origin: top;
+}
+
+.pub-link-label {
+  margin: 0.35rem 0;
+  padding: 0.24rem 0.75rem;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--accent);
+}
+
+.reveal .pub-seg { transform: scaleY(0); transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1) 260ms; }
+.reveal .pub-seg:last-child { transition-delay: 620ms; }
+.reveal .pub-link-label,
+.reveal .pub-link::after { opacity: 0; transition: opacity 300ms ease 520ms; }
+.reveal .pub-link::after { transition-delay: 900ms; }
+.reveal.is-in .pub-seg { transform: none; }
+.reveal.is-in .pub-link-label,
+.reveal.is-in .pub-link::after { opacity: 1; }
 
 .pub-label {
   font-family: var(--font-mono);
@@ -745,7 +859,6 @@ hr.title-spacer::after  { right: 0; }
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   overflow-x: auto;
-  margin-bottom: 3rem;
 }
 
 .bom-table {
@@ -812,7 +925,7 @@ hr.title-spacer::after  { right: 0; }
 .xp-timeline {
   position: relative;
   max-width: 760px;
-  margin: 0.5rem auto 0;
+  margin: 0 auto;
 }
 
 .xp-timeline::before {
@@ -1076,13 +1189,22 @@ hr.title-spacer::after  { right: 0; }
   padding: 1.25rem 1.4rem 1.5rem;
 }
 
-.modal-body.about-me-content { overflow-y: auto; }
+/* Detail-sheet bodies: paragraphs, figures and figure rows share one rhythm,
+   a blank line (1.7em at line-height 1.7) between blocks */
+.modal-body > p,
+.modal-body > .sheet-fig,
+.modal-body > .sheet-figs { margin: 0 0 1.7em; }
 
-/* Keep fixed-size modal images from overflowing small screens */
-.modal-body img { max-width: 100%; height: auto !important; }
+.modal-body > p:last-child,
+.modal-body > .sheet-fig:last-child,
+.modal-body > .sheet-figs:last-child { margin-bottom: 0; }
 
-/* ...except the circular dial photo, which must fill its circle (cover) */
-.modal-body .image-container img { height: 100% !important; }
+/* a figure: image centred, at most the sheet's width, caption below.
+   A width="" on the img sets its size; w-100 fills the column. */
+.sheet-fig { text-align: center; }
+.sheet-figs { --bs-gutter-y: 1.5rem; }      /* room between a caption and the next row's image */
+.sheet-figs > .sheet-fig { margin: 0; }
+.sheet-fig img { display: block; max-width: 100%; height: auto; margin-inline: auto; }
 
 @media (max-width: 576px) {
   .modal-content,
@@ -1251,6 +1373,29 @@ hr.title-spacer::after  { right: 0; }
     50%      { transform: scale(1.1); }
   }
 }
+
+/* --------------------------------------------------------------------------
+   Ink field - an ASCII layer on the dot-matrix ground. A canvas (added by JS
+   only when motion is allowed) sits above the dots and below all content.
+   Its cells are 14px, half the dot pitch, so every dot sits on a cell and
+   the glyphs rise out of the dots. The red dot heats the cells it passes;
+   they cool from scrambled glyphs in signal red, through flow strokes
+   pointing along the motion, to dots in drafting blue. Presses send a
+   ripple, and the paper pings softly on its own. Colors come from
+   --field-hot and --field-cold.
+   -------------------------------------------------------------------------- */
+.ink-field {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+@media print {
+  .ink-field { display: none; }
+}
 /* --------------------------------------------------------------------------
    Scrollbars: thin ink thumb on a transparent track, themed with the sheet.
    Modern browsers use scrollbar-width/color; Safari uses the -webkit rules.
@@ -1302,10 +1447,8 @@ html,
    Figure captions: one mono drafting-note style shared by every modal
    -------------------------------------------------------------------------- */
 .fig-caption {
-  display: inline-block;
-  margin-top: 0.5rem;
+  margin-top: 0.6rem;
   font-family: var(--font-mono);
-  font-style: normal;
   font-size: 0.78rem;
   letter-spacing: 0.04em;
   color: var(--ink-soft);
@@ -1370,7 +1513,7 @@ html,
   .hero .display-6 { font-size: 1.08rem; }
   .hero-eyebrow { font-size: 0.62rem; letter-spacing: 0.22em; gap: 0.6rem; }
   .hero-eyebrow::before, .hero-eyebrow::after { width: 22px; }
-  .blur-on-hover { height: 240px !important; }
+  .blur-on-hover { height: 240px; }
   .blur-on-hover::after { top: 2.95rem; }
   .circle-container { width: min(320px, 86vw); height: min(320px, 86vw); }
   .tb-grid { grid-template-columns: 1fr; }
@@ -1402,8 +1545,7 @@ html,
         <ul class="navbar-nav ms-auto align-items-md-center gap-md-2 me-md-2">
           <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
           <li class="nav-item"><a class="nav-link" href="#research">Research</a></li>
-          <li class="nav-item"><a class="nav-link" href="#projects">Selected projects</a></li>
-          <li class="nav-item"><a class="nav-link" href="#mini-projects">Mini projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
           <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
         </ul>
@@ -1418,23 +1560,17 @@ html,
       </div>
       <p class="display-6">Mechanical Engineering student at Korea University, building thoughtful machines and systems.</p>
       <p class="hero-interests">Research interests &#8212; Compliant Mechanisms &#183; Deployable Structures &#183; Robotic Manipulation</p>
-<div class="hero-actions d-flex justify-content-center flex-wrap gap-3 mt-1">
-  <button type="button" class="btn updates-btn" data-bs-toggle="modal" data-bs-target="#updatesModal">
-    <div class="btn-content">
-      <i class="bi bi-newspaper me-2"></i>
-      <span>Updates & News</span>
-    </div>
-  </button>
-  <a class="btn updates-btn" href="https://drive.google.com/file/d/1kmKSGBgtTaMU30lCcMTLOEAhII6G31_6/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-    <div class="btn-content">
-      <i class="bi bi-file-earmark-text me-2"></i>
-      <span>View CV</span>
-    </div>
-  </a>
-</div>
+      <div class="hero-actions d-flex justify-content-center flex-wrap gap-3 mt-1">
+        <button type="button" class="btn updates-btn" data-bs-toggle="modal" data-bs-target="#updatesModal">
+          <i class="bi bi-newspaper" aria-hidden="true"></i><span>Updates &amp; News</span>
+        </button>
+        <a class="btn updates-btn" href="https://drive.google.com/file/d/10vLA8FY-3JZ6Z8m2BfI-63t9HxaBBECA/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+          <i class="bi bi-file-earmark-text" aria-hidden="true"></i><span>View CV</span>
+        </a>
+      </div>
     <div class="text-center" id="about">
       <button type="button" class="btn btnSwitch" data-bs-toggle="modal" data-bs-target="#aboutMeModal" aria-label="Learn more about me">
-        <div class="circle-container">
+        <span class="circle-container">
           <svg class="ring-base" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
             <circle class="ring-track" cx="50" cy="50" r="47.4" fill="none" stroke-width="1.1" stroke-dasharray="0.55 4.41"/>
             <g class="ring-marks" stroke-width="0.8">
@@ -1458,10 +1594,10 @@ html,
             </defs>
             <text class="circular-text" xml:space="preserve"><textPath href="#heroRingPath" startOffset="0">RYAN MINKYU CHUNG &#183; CLICK TO LEARN ABOUT ME &#183; </textPath></text>
           </svg>
-          <div class="image-container">
+          <span class="image-container">
             <img fetchpriority="high" decoding="async" src="media/about_me_photo 2.0.jpg" alt="Ryan Minkyu Chung portrait">
-          </div>
-        </div>
+          </span>
+        </span>
         <span class="dial-badge"><span>About me</span><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span>
       </button>
       <div class="modal fade" id="aboutMeModal" tabindex="-1" aria-labelledby="aboutMeModalLabel" aria-hidden="true">
@@ -1501,13 +1637,12 @@ html,
                 </div>
               </div>
               <div class="about-me-text">
-                <span class="edu-line">B.S. Mechanical Engineering, Korea University &#8212; GPA 4.17/4.5 &#183; Expected Feb 2027 (7-semester early graduation)</span> <br><br>
-                I was born in Washington, D.C. in 2003, where I spent my childhood surrounded by Smithsonian Museums. My father would take me to explore museums on the weekends, and it was during these visits that I developed a deep passion for science and technology. The National Air and Space Museum, in particular, sparked my interest in robotics, aviation, basically all things that autonomously move.
-                <br><br>In 2014, my family moved to Seoul, South Korea, where I faced the challenge of adapting to a new culture and education system. However, I quickly found my footing, making friends with like-minded peers who shared my interests. Throughout my middle and high school years, I remained committed to nurturing my passion for technology.
-                <br><br>This drive and determination led me to pursue a degree in Mechanical Engineering at Korea University, where I continue to expand my knowledge and skills in the field. My journey so far has been shaped by a curiosity for innovation and a desire to create technologies that make a meaningful impact on society.
-                <br><br>My hobbies are watching Formula 1 (I'm a Ferrari enthusiast), jogging (even though I'm not that good at it), and reading books regardless of genre. I also love traveling to new places and taking pictures with my Sony camera.
-                <br><br>This website is the amalgamation of all my projects and experiences since entering university. I hope you enjoy reading.
-
+                <p><span class="edu-line">B.S. Mechanical Engineering, Korea University &#8212; GPA 4.17/4.5 &#183; Expected Feb 2027 (7-semester early graduation)</span></p>
+                <p>I was born in Washington, D.C. in 2003, where I spent my childhood surrounded by Smithsonian Museums. My father would take me to explore museums on the weekends, and it was during these visits that I developed a deep passion for science and technology. The National Air and Space Museum, in particular, sparked my interest in robotics, aviation, basically all things that autonomously move.</p>
+                <p>In 2014, my family moved to Seoul, South Korea, where I faced the challenge of adapting to a new culture and education system. However, I quickly found my footing, making friends with like-minded peers who shared my interests. Throughout my middle and high school years, I remained committed to nurturing my passion for technology.</p>
+                <p>This drive and determination led me to pursue a degree in Mechanical Engineering at Korea University, where I continue to expand my knowledge and skills in the field. My journey so far has been shaped by a curiosity for innovation and a desire to create technologies that make a meaningful impact on society.</p>
+                <p>My hobbies are watching Formula 1 (I'm a Ferrari enthusiast), jogging (even though I'm not that good at it), and reading books regardless of genre. I also love traveling to new places and taking pictures with my Sony camera.</p>
+                <p>This website is the amalgamation of all my projects and experiences since entering university. I hope you enjoy reading.</p>
               </div>
             </div>
           </div>
@@ -1524,63 +1659,62 @@ html,
     </header>
 
     <!-- ==================== UPDATES & NEWS MODAL (opened from the hero button) ==================== -->
-<div class="modal fade" id="updatesModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content news-modal">
-      <div class="modal-header">
-        <h5 class="modal-title"><i class="bi bi-megaphone me-2"></i>Latest Updates</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-
-        <div class="timeline">
-
-            <div class="timeline-item">
-            <div class="timeline-dot" aria-hidden="true"></div>
-            <div class="timeline-entry">
-              <div class="timeline-date">Jun 19, 2026</div>
-              <div class="timeline-text">Finished my junior year with a cumulative GPA of 3.85/4.0. Currently conducting research on robotic end-effectors @ <a href="https://mekateka.com/" target="_blank" rel="noopener noreferrer">Mekateka</a>.</div>
+    <div class="modal fade" id="updatesModal" tabindex="-1" aria-labelledby="updatesModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content news-modal">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updatesModalLabel"><i class="bi bi-megaphone me-2" aria-hidden="true"></i>Latest Updates</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot" aria-hidden="true"></div>
+                <div class="timeline-entry">
+                  <div class="timeline-date">Oct 1, 2026</div>
+                  <div class="timeline-text">My research paper was accepted to the Annual KSME Conference 2026. I will give an oral presentation at Jeju ICC on November 11, 2026.</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot" aria-hidden="true"></div>
+                <div class="timeline-entry">
+                  <div class="timeline-date">Jun 19, 2026</div>
+                  <div class="timeline-text">Finished my junior year with a cumulative GPA of 3.85/4.0. Currently conducting research on robotic end-effectors @ <a href="https://mekateka.com/" target="_blank" rel="noopener noreferrer">Mekateka</a>.</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot" aria-hidden="true"></div>
+                <div class="timeline-entry">
+                  <div class="timeline-date">Feb 27, 2026</div>
+                  <div class="timeline-text">I was awarded a scholarship from the Korean Engineering Guarantee Insurance Foundation as part of their very first engineering undergraduate cohort.</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot" aria-hidden="true"></div>
+                <div class="timeline-entry">
+                  <div class="timeline-date">Oct 7, 2025</div>
+                  <div class="timeline-text">Officially discharged from the Republic of Korea Air Force as a Staff Sergeant.</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot" aria-hidden="true"></div>
+                <div class="timeline-entry">
+                  <div class="timeline-date">Sep 1, 2025</div>
+                  <div class="timeline-text">Started an undergraduate research internship @ <a href="https://mekateka.com/" target="_blank" rel="noopener noreferrer">Mekateka Lab</a>, Korea University (Prof. Dahyun Daniel Lim)</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot" aria-hidden="true"></div>
+                <div class="timeline-entry">
+                  <div class="timeline-date">Aug 17, 2025</div>
+                  <div class="timeline-text">Earned the Certified SOLIDWORKS Associate (CSWA) certification from Dassault Syst&#232;mes.</div>
+                </div>
+              </div>
             </div>
           </div>
-          
-
-            <div class="timeline-item">
-            <div class="timeline-dot" aria-hidden="true"></div>
-            <div class="timeline-entry">
-              <div class="timeline-date">Feb 27, 2026</div>
-              <div class="timeline-text">I was awarded a scholarship from the Korean Engineering Guarantee Insurance Foundation as part of their very first engineering undergraduate cohort.</div>
-            </div>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-dot" aria-hidden="true"></div>
-            <div class="timeline-entry">
-              <div class="timeline-date">Oct 7, 2025</div>
-              <div class="timeline-text">Officially discharged from the Republic of Korea Air Force as a Staff Sergeant.</div>
-            </div>
-          </div>
-
-            <div class="timeline-item">
-            <div class="timeline-dot" aria-hidden="true"></div>
-            <div class="timeline-entry">
-              <div class="timeline-date">Sep 1, 2025</div>
-              <div class="timeline-text">Started an undergraduate research internship @ <a href="https://mekateka.com/" target="_blank" rel="noopener noreferrer">Mekateka Lab</a>, Korea University (Prof. Dahyun Daniel Lim)</div>
-            </div>
-            </div>
-
-          <div class="timeline-item">
-            <div class="timeline-dot" aria-hidden="true"></div>
-            <div class="timeline-entry">
-              <div class="timeline-date">Aug 17, 2025</div>
-              <div class="timeline-text">Earned the Certified SOLIDWORKS Associate (CSWA) certification from Dassault Syst&#232;mes.</div>
-            </div>
-          </div>
-
         </div>
       </div>
     </div>
-  </div>
-</div>
 
     <hr class="title-spacer">
 
@@ -1596,10 +1730,15 @@ html,
         <img loading="lazy" decoding="async" src="media/AG_cover.jpg" class="rounded" alt="Deployable Gripper">
         <div class="overlay-text"><span class="tag-row"><span class="tag">Robotics</span><span class="tag">Deployable Structures</span><span class="tag">CAD</span><span class="tag">3D Printing</span></span>Deployable Agri-Gripper</div>
         </div>
+        <div class="pub-link">
+          <span class="pub-seg" aria-hidden="true"></span>
+          <span class="pub-link-label">Resulted in a preprint</span>
+          <span class="pub-seg" aria-hidden="true"></span>
+        </div>
+        <p class="pub-line"><span class="pub-label">Publication</span>R. M. Chung et al., &#8220;A parametrically scalable compliant gripper for fruit harvesting: Mold-free additive manufacturing with reduced material and process waste&#8221; &#8212; IJ-PEMGT, UNDER REVIEW, 2026.
+          <a class="pub-btn" href="https://drive.google.com/file/d/1-P-cxjxBw9ptroi5lK6ZzIkiCHFYMHXt/view?usp=sharing" target="_blank" rel="noopener noreferrer"><i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>Preprint</a></p>
       </div>
       </div>
-      <p class="pub-line"><span class="pub-label">Publication</span>R. M. Chung et al., &#8220;A parametrically scalable compliant gripper for fruit harvesting: Mold-free additive manufacturing with reduced material and process waste&#8221; &#8212; IJ-PEMGT, UNDER REVIEW, 2026.
-        <a class="pub-btn" href="https://drive.google.com/file/d/1-P-cxjxBw9ptroi5lK6ZzIkiCHFYMHXt/view?usp=sharing" target="_blank" rel="noopener noreferrer"><i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>Preprint</a></p>
       <div class="row justify-content-center">
       <div class="col-lg-8 col-12 mb-4">
         <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modalABLE" data-location="MEKATEKA &#183; Nationally funded project" data-date="Jun 2026 - Present">
@@ -1619,14 +1758,16 @@ html,
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            A deployable compliant gripper for produce harvesting, developed at the Mekateka Lab, Korea University. Three scissor linkages driven by a single linear actuator close the grasp from every direction at once, while silicone strips lining the grasp envelope provide damage-free contact. The geometry tolerates large positioning errors, relaxing the localization accuracy required from vision systems during automated harvesting. <br><br> The same scissor-linkage principles govern deployable aerospace structures &#8212; satellite booms, solar arrays, and folding antennas &#8212; a direction this work naturally extends toward. <br><br> Full design details, experiments, and results will be published here once the accompanying research letter is released &#8212; manuscript in preparation, 2026.
-            <div class="row g-3 mt-2">
-              <div class="col-md-6 text-center">
-                <img loading="lazy" decoding="async" src="media/AG_open.JPG" class="img-fluid rounded w-100" alt="open DG">
-              </div>
-              <div class="col-md-6 text-center">
-                <img loading="lazy" decoding="async" src="media/AG_closed.JPG" class="img-fluid rounded w-100" alt="closed DG">
-              </div>
+            <p>A deployable compliant gripper for produce harvesting, developed at the Mekateka Lab, Korea University. Three scissor linkages driven by a single linear actuator close the grasp from every direction at once, while silicone strips lining the grasp envelope provide damage-free contact. The geometry tolerates large positioning errors, relaxing the localization accuracy required from vision systems during automated harvesting.</p>
+            <p>The same scissor-linkage principles govern deployable aerospace structures &#8212; satellite booms, solar arrays, and folding antennas &#8212; a direction this work naturally extends toward.</p>
+            <p>Full design details, experiments, and results will be published here once the accompanying research letter is released &#8212; manuscript in preparation, 2026.</p>
+            <div class="row g-3 justify-content-center sheet-figs">
+              <figure class="col-md-6 sheet-fig">
+                <img loading="lazy" decoding="async" src="media/AG_open.JPG" class="rounded w-100" alt="open DG">
+              </figure>
+              <figure class="col-md-6 sheet-fig">
+                <img loading="lazy" decoding="async" src="media/AG_closed.JPG" class="rounded w-100" alt="closed DG">
+              </figure>
             </div>
           </div>
         </div>
@@ -1641,10 +1782,8 @@ html,
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            Part of a nationally funded research project on self-driven laboratories, automating bio-engineering pipette experiments. My contribution is the design of a multi-functional gripper that can grasp sample vials and operate pipettes at the same time, letting a single end-effector run experiment steps that would normally require tool changes.
-            <br><br>
-            Documentation and results will be added here as the project progresses. <br>
-            Cover photo by gorodenkoff/Getty Images <br>
+            <p>Part of a nationally funded research project on self-driven laboratories, automating bio-engineering pipette experiments. My contribution is the design of a multi-functional gripper that can grasp sample vials and operate pipettes at the same time, letting a single end-effector run experiment steps that would normally require tool changes.</p>
+            <p>Documentation and results will be added here as the project progresses.<br> Cover photo by gorodenkoff/Getty Images</p>
           </div>
         </div>
       </div>
@@ -1700,7 +1839,7 @@ html,
     <section id="projects" class="pt-3">
     <div class="text-center">
       <h2 class="display-6 section-heading">selected projects</h2>
-    </div> 
+    </div>
     <!-- Row 1 -->
     <div class="container">
       <div class="row">
@@ -1728,24 +1867,23 @@ html,
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            Hearo is a conceptual wearable device, a bracelet designed to aid the deaf and hard of hearing, developed for the Republic of Korea Air Force (ROKAF) National Startup Competition (공군창업경진대회). Unlike typical projects focused on physical prototypes, Hearo emphasized a realistic manufacturing plan and profit model due to resource limitations faced by our team of active-duty airmen. Utilizing an Arduino Nano BLE Sense with an integrated microphone, we implemented a custom sound recognition AI to identify specific sounds, like the wearer's name. Upon recognition, Hearo vibrates and indicates the direction of the sound source, addressing our personal need for clear communication during noisy activities like shooting practice. We explored various government policies and subsidies to support future development. <br><br>
-            Despite limited access to the internet and materials, and working only during our evening free time, we focused on the core aspects of product development: AI implementation, manufacturing planning, and business strategy. This project provided entrepreneurial experience, highlighting the importance of conceptual design and sustainable business models. By focusing on the potential of Hearo and the practicalities of its production, we demonstrated the ability to innovate and address real-world challenges, even within the constraints of military service. <br>
-            <div class="text-center" style="margin-top: 10px;">
-              <img loading="lazy" decoding="async" src="media/hearo/hro_cad.png" class="img-fluid rounded" alt="Hearo prototype" style="width: 500px;"> <br>
-              <i class="fig-caption">A CAD model of the bracelet, made under limited conditions</i></div><br>
-            We wrote a business plan and presented our project to a panel of judges, receiving positive feedback on our innovative approach and potential for future development. We were placed in the top 13 teams and were invited to the award ceremony at "The Korea Economic Daily (한국경제신문사)" headquarters in Seoul. <br><br>
-<div class="container">
-  <div class="row">
-    <div class="col-md-6 text-start" style="margin-top: 10px;">
-        <img loading="lazy" decoding="async" src="media/hearo/hro_news.png" class="img-fluid rounded" alt="media hearo" style="width: 100%;"> <br>
-                <i class="fig-caption">A screenshot of South Korea's online news on the day of the ceremony.</i></div>
-              
-    <div class="col-md-6 text-end" style="margin-top: 10px;">
-        <img loading="lazy" decoding="async" src="media/hearo/hro_award.JPEG" class="img-fluid rounded" alt="award ceremony" style="width: 400px;"> <br>
-                <i class="fig-caption">We placed in 10th out of 441 teams and were awarded 장려상. That's me when I was a PFC (일등병).</i></div>
-     </div>
-  </div>
-
+            <p>Hearo is a conceptual wearable device, a bracelet designed to aid the deaf and hard of hearing, developed for the Republic of Korea Air Force (ROKAF) National Startup Competition (공군창업경진대회). Unlike typical projects focused on physical prototypes, Hearo emphasized a realistic manufacturing plan and profit model due to resource limitations faced by our team of active-duty airmen. Utilizing an Arduino Nano BLE Sense with an integrated microphone, we implemented a custom sound recognition AI to identify specific sounds, like the wearer's name. Upon recognition, Hearo vibrates and indicates the direction of the sound source, addressing our personal need for clear communication during noisy activities like shooting practice. We explored various government policies and subsidies to support future development.</p>
+            <p>Despite limited access to the internet and materials, and working only during our evening free time, we focused on the core aspects of product development: AI implementation, manufacturing planning, and business strategy. This project provided entrepreneurial experience, highlighting the importance of conceptual design and sustainable business models. By focusing on the potential of Hearo and the practicalities of its production, we demonstrated the ability to innovate and address real-world challenges, even within the constraints of military service.</p>
+            <figure class="sheet-fig">
+              <img loading="lazy" decoding="async" src="media/hearo/hro_cad.png" class="rounded" alt="Hearo prototype" width="500">
+              <figcaption class="fig-caption">A CAD model of the bracelet, made under limited conditions</figcaption>
+            </figure>
+            <p>We wrote a business plan and presented our project to a panel of judges, receiving positive feedback on our innovative approach and potential for future development. We were placed in the top 13 teams and were invited to the award ceremony at "The Korea Economic Daily (한국경제신문사)" headquarters in Seoul.</p>
+            <div class="row g-3 justify-content-center sheet-figs">
+              <figure class="col-md-6 sheet-fig">
+                <img loading="lazy" decoding="async" src="media/hearo/hro_news.png" class="rounded w-100" alt="media hearo">
+                <figcaption class="fig-caption">A screenshot of South Korea's online news on the day of the ceremony.</figcaption>
+              </figure>
+              <figure class="col-md-6 sheet-fig">
+                <img loading="lazy" decoding="async" src="media/hearo/hro_award.JPEG" class="rounded" alt="award ceremony" width="400">
+                <figcaption class="fig-caption">We placed in 10th out of 441 teams and were awarded 장려상. That's me when I was a PFC (일등병).</figcaption>
+              </figure>
+            </div>
           </div>
         </div>
       </div>
@@ -1759,14 +1897,14 @@ html,
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
             <div class="modal-body">
-            <p>
-              For my Korean military service, I decided to put my English skills to good use. I applied for the Korean-English military interpreter (어학병) enlistment program for the Republic of Korea Air Force.<br>
-              <br> After a translation and interpretation test as well as a series of interviews, I was officially recruited as an airman starting January of 2024. After basic training, I was stationed at one of the biggest international airports on the globe, Incheon International Airport (ICN).
-              <br><br> My main role was to assist the Chief of Military Protocol when high-ranking foreign military officials required English translation aid and protocol. I also conducted protocol for Korean officials on their way to and from their business trips. Spending my time here, I experienced international diplomacy firsthand and had the honor of making countless precious memories talking to diplomats coming to Korea from across the world. <br><br>P.S. Spending about a year and a half inside an airport, it feels like you're Tom Hanks from the movie 'The Terminal' (2004).<br>
-            </p>
-            <div class="text-center" style="margin-top: 10px;">
-              <img loading="lazy" decoding="async" src="media/mlo/mlo_sunset.jpg" class="img-fluid rounded" alt="Military Liaison Office" style="width: 500px;"> <br>
-              <i class="fig-caption">The beautiful sunset of ICN Airport</i></div>
+              <p>For my Korean military service, I decided to put my English skills to good use. I applied for the Korean-English military interpreter (어학병) enlistment program for the Republic of Korea Air Force.</p>
+              <p>After a translation and interpretation test as well as a series of interviews, I was officially recruited as an airman starting January of 2024. After basic training, I was stationed at one of the biggest international airports on the globe, Incheon International Airport (ICN).</p>
+              <p>My main role was to assist the Chief of Military Protocol when high-ranking foreign military officials required English translation aid and protocol. I also conducted protocol for Korean officials on their way to and from their business trips. Spending my time here, I experienced international diplomacy firsthand and had the honor of making countless precious memories talking to diplomats coming to Korea from across the world.</p>
+              <p>P.S. Spending about a year and a half inside an airport, it feels like you're Tom Hanks from the movie 'The Terminal' (2004).</p>
+              <figure class="sheet-fig">
+                <img loading="lazy" decoding="async" src="media/mlo/mlo_sunset.jpg" class="rounded" alt="Military Liaison Office" width="500">
+                <figcaption class="fig-caption">The beautiful sunset of ICN Airport</figcaption>
+              </figure>
             </div>
           </div>
         </div>
@@ -1799,27 +1937,28 @@ html,
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            For my MECH300 class, my team and I were assigned to design and build a robot that could cross a jungle gym with sporadically missing bars. It was my first time building a machine without any guidance, so I immediately knew it was going to be a challenging task. <br><br>
-            Brachiation is a form of transportation for apes; think of Tarzan swinging from branch to branch, one arm after the other. Thinking that this was the most efficient way of traversing a jungle gym, I came up with a moving mechanism and persuaded my fellow teammates.<br><br>
-            My team and I decided to make the body and grippers out of lightweight acrylic and Arduino with servo motors for the powertrain mechanism. I designed the powertrain and gearbox so that a minimum amount of motors and gears were used to reduce weight and prevent gear slip. Using Excel, my team and I made a simple program that visualized each motor's angular displacement and grip strength.<br><br>
-            <div class="text-center" style="margin-top: 10px;">
-              <img loading="lazy" decoding="async" src="media/brachiation/br_excel.png" class="img-fluid rounded" alt="powertrain" style="width: 800px;"> <br>
-              <i class="fig-caption">Powertrain calculations visualized in Excel.</i></div><br>
-            With my knowledge of C++ and Arduino, I used a motor controller to control each motor's precise movement for each phase of brachiation. I also designed and arranged the circuitry as symmetrically as possible so that there was no unnecessary shear force while the robot progressed.<br>
-            <div class="text-center" style="margin-top: 10px;">
-               <img loading="lazy" decoding="async" src="media/brachiation/br_code.png" class="img-fluid rounded" alt="cplusplus code" style="width: 400px;"> <br>
-               <i class="fig-caption">Servo motor C++ code</i></div><br>
-            After four months of brainstorming and building, our team was able to get the shortest crossing time out of all of the competing teams.<br><br>
-            <div class="container">
-              <div class="row">
-              <div class="col-md-6 text-start" style="margin-top: 10px;">
-                <img loading="lazy" decoding="async" src="media/brachiation/br_gif.gif" class="img-fluid rounded" alt="moving mechanism" style="width: 100%;"> <br>
-                <i class="fig-caption">Brachiation test drive.</i></div>
-              
-              <div class="col-md-6 text-end" style="margin-top: 10px;">
-                <img loading="lazy" decoding="async" src="media/brachiation/br_award.JPEG" class="img-fluid rounded" alt="Brachiating robot award ceremony" style="width: 100%;"> <br>
-                <i class="fig-caption">Final product and award (최우수상, 1st place)</i></div>
-              </div>
+            <p>For my MECH300 class, my team and I were assigned to design and build a robot that could cross a jungle gym with sporadically missing bars. It was my first time building a machine without any guidance, so I immediately knew it was going to be a challenging task.</p>
+            <p>Brachiation is a form of transportation for apes; think of Tarzan swinging from branch to branch, one arm after the other. Thinking that this was the most efficient way of traversing a jungle gym, I came up with a moving mechanism and persuaded my fellow teammates.</p>
+            <p>My team and I decided to make the body and grippers out of lightweight acrylic and Arduino with servo motors for the powertrain mechanism. I designed the powertrain and gearbox so that a minimum amount of motors and gears were used to reduce weight and prevent gear slip. Using Excel, my team and I made a simple program that visualized each motor's angular displacement and grip strength.</p>
+            <figure class="sheet-fig">
+              <img loading="lazy" decoding="async" src="media/brachiation/br_excel.png" class="rounded" alt="powertrain" width="800">
+              <figcaption class="fig-caption">Powertrain calculations visualized in Excel.</figcaption>
+            </figure>
+            <p>With my knowledge of C++ and Arduino, I used a motor controller to control each motor's precise movement for each phase of brachiation. I also designed and arranged the circuitry as symmetrically as possible so that there was no unnecessary shear force while the robot progressed.</p>
+            <figure class="sheet-fig">
+              <img loading="lazy" decoding="async" src="media/brachiation/br_code.png" class="rounded" alt="cplusplus code" width="400">
+              <figcaption class="fig-caption">Servo motor C++ code</figcaption>
+            </figure>
+            <p>After four months of brainstorming and building, our team was able to get the shortest crossing time out of all of the competing teams.</p>
+            <div class="row g-3 justify-content-center sheet-figs">
+              <figure class="col-md-6 sheet-fig">
+                <img loading="lazy" decoding="async" src="media/brachiation/br_gif.gif" class="rounded w-100" alt="moving mechanism">
+                <figcaption class="fig-caption">Brachiation test drive.</figcaption>
+              </figure>
+              <figure class="col-md-6 sheet-fig">
+                <img loading="lazy" decoding="async" src="media/brachiation/br_award.JPEG" class="rounded w-100" alt="Brachiating robot award ceremony">
+                <figcaption class="fig-caption">Final product and award (최우수상, 1st place)</figcaption>
+              </figure>
             </div>
           </div>
         </div>
@@ -1834,28 +1973,30 @@ html,
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            As part of Eoulsure (어울수레), Korea University's Formula Student racing team, I spent the 2023 season on our E-Formula racecar's electrical systems. For the electrical safety examination, my teammate (YDS) and I designed and fabricated custom PCB panels, most notably the RTDS (Ready to Drive Sound) circuit. This involved meticulous component selection and layout to ensure reliable signal processing from the brake sensor and activation button, making a loud audible alarm. The panels were then carefully assembled and tested, contributing directly to the vehicle's successful safety inspection. <br><br>
-            <div class="text-center" style="margin-top: 10px;">
-              <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_parts.jpg" class="img-fluid rounded" alt="w/parts" style="width: 400px;"> <br>
-              <i class="fig-caption">PCB panels with their corresponding parts</i></div><br>
-            <div class="text-center" style="margin-top: 10px;">
-              <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_tsalpcb.jpg" class="img-fluid rounded" alt="TSAL" style="width: 600px;"> <br>
-              <i class="fig-caption">TSAL panel</i></div><br>
-            The photo above is the PCB for the TSAL (Tractive System Active Light) circuit. The TSAL circuit is a safety feature that indicates when the car is ready to drive. The circuit is connected to the motor controller and the battery management system. When the car is ready to drive, the TSAL circuit lights up and the driver can start the car. <br><br>
-            <div class="text-center" style="margin-top: 10px;">
-              <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_tsal.JPEG" class="img-fluid rounded" alt="TSAL in action" style="width: 400px;"> <br>
-              <i class="fig-caption">TSAL light in action</i></div><br>
-            We also developed countless other PCBs through trial and error, often failing to meet the safety regulations, going back to square one. Although we tried our best and made it to the KSAE competition, undergraduates building an electric car without the help of electrical engineers and professional guidance had its limitations and we failed to pass the safety inspection. However, it was rewarding to see our hard work pay off when our successors passed the electrical safety examination in 2024. <br><br>
-            <div class="text-center" style="margin-top: 10px;">
-              <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_sodler.JPEG" class="img-fluid rounded" alt="soldering" style="width: 400px;">
-              <div>
-              <i class="fig-caption">Soldering skills increased exponentially.</i>
-              </div>
-            </div><br>
-              <div class="text-center" style="margin-top: 10px;">
-                <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_finalrungif.gif" class="img-fluid rounded" alt="2024 run" style="width: 100%;">
-                <i class="fig-caption">Our car finally running in 2024 (30-second clip).</i></div><br>
-            I learned a valuable lesson where even the smallest of components requires countless hours of attention and feedback to achieve its final role in the grand scheme of the machine. This lesson has stuck to me and continued to grow as I learned more and more about the production of a race car. And the joy of finally watching your thought move from idea to paper and then from paper to reality feels like nothing else in this world.
+            <p>As part of Eoulsure (어울수레), Korea University's Formula Student racing team, I spent the 2023 season on our E-Formula racecar's electrical systems. For the electrical safety examination, my teammate (YDS) and I designed and fabricated custom PCB panels, most notably the RTDS (Ready to Drive Sound) circuit. This involved meticulous component selection and layout to ensure reliable signal processing from the brake sensor and activation button, making a loud audible alarm. The panels were then carefully assembled and tested, contributing directly to the vehicle's successful safety inspection.</p>
+            <figure class="sheet-fig">
+              <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_parts.jpg" class="rounded" alt="w/parts" width="400">
+              <figcaption class="fig-caption">PCB panels with their corresponding parts</figcaption>
+            </figure>
+            <figure class="sheet-fig">
+              <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_tsalpcb.jpg" class="rounded" alt="TSAL" width="600">
+              <figcaption class="fig-caption">TSAL panel</figcaption>
+            </figure>
+            <p>The photo above is the PCB for the TSAL (Tractive System Active Light) circuit. The TSAL circuit is a safety feature that indicates when the car is ready to drive. The circuit is connected to the motor controller and the battery management system. When the car is ready to drive, the TSAL circuit lights up and the driver can start the car.</p>
+            <figure class="sheet-fig">
+              <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_tsal.JPEG" class="rounded" alt="TSAL in action" width="400">
+              <figcaption class="fig-caption">TSAL light in action</figcaption>
+            </figure>
+            <p>We also developed countless other PCBs through trial and error, often failing to meet the safety regulations, going back to square one. Although we tried our best and made it to the KSAE competition, undergraduates building an electric car without the help of electrical engineers and professional guidance had its limitations and we failed to pass the safety inspection. However, it was rewarding to see our hard work pay off when our successors passed the electrical safety examination in 2024.</p>
+            <figure class="sheet-fig">
+              <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_sodler.JPEG" class="rounded" alt="soldering" width="400">
+              <figcaption class="fig-caption">Soldering skills increased exponentially.</figcaption>
+            </figure>
+            <figure class="sheet-fig">
+              <img loading="lazy" decoding="async" src="media/eoul23 pcb/23pcb_finalrungif.gif" class="rounded w-100" alt="2024 run">
+              <figcaption class="fig-caption">Our car finally running in 2024 (30-second clip).</figcaption>
+            </figure>
+            <p>I learned a valuable lesson where even the smallest of components requires countless hours of attention and feedback to achieve its final role in the grand scheme of the machine. This lesson has stuck to me and continued to grow as I learned more and more about the production of a race car. And the joy of finally watching your thought move from idea to paper and then from paper to reality feels like nothing else in this world.</p>
           </div>
         </div>
       </div>
@@ -1867,7 +2008,7 @@ html,
         <div class="col-md-6 col-12 mb-4">
           <div class="blur-on-hover" role="button" tabindex="0" data-bs-toggle="modal" data-bs-target="#modal23EoulBB" data-location="Korea University" data-date="Dec 2022 - Sep 2023">
             <img loading="lazy" decoding="async" src="media/23eoul bb/23bb_cover.JPEG" class="rounded" alt="23EoulBB">
-            <div class="overlay-text"><span class="tag-row"><span class="tag">Battery Systems</span><span class="tag">Formula Student</span></span><span class="fit-line">2023 E-Formula Racecar &#8212; Battery Box</span></div>
+            <div class="overlay-text"><span class="tag-row"><span class="tag">Battery Systems</span><span class="tag">Formula Student</span></span>2023 E-Formula Racecar &#8212; Battery Box</div>
           </div>
         </div>
         <div class="col-md-6 col-12 mb-4">
@@ -1888,17 +2029,17 @@ html,
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            Around the winter break of 2022, as our club's seniors graduated and the juniors shifted their focus to the job market, the responsibility of managing Eoulsure — Korea University's Formula Student racing team — fell into our sophomores' hands.<br><br>
-            After carefully dissecting last year's (2022) racecar and dedicating countless hours to study sessions over winter break, the challenge of designing our 2023 vehicle began. Eager to learn a thing or two outside the boundaries of our school's standard M.E. curriculum, I chose to join the powertrain team. This team's critical responsibility lay in the intricate task of delivering power to the motor via a sophisticated battery system, and implementing vital safety mechanisms throughout the entire vehicle. This opportunity allowed me to dive into the world of high and low voltage electrical systems, battery management, and crucial safety protocols, equipping me with invaluable skills beyond traditional mechanical engineering knowledge.<br><br>
-            <div class="text-center" style="margin-top: 10px;">
-              <img loading="lazy" decoding="async" src="media/23eoul bb/23bb_dissect.jpg" class="img-fluid rounded" alt="dissecting BB" style="width: 400px;"> <br>
-              <i class="fig-caption">Our team dissecting the previous year's battery box.</i>
-            </div><br>
-            Regarding the battery box, I actively participated in its construction, utilizing CATIA to optimize component placement for efficient space utilization and thermal management. To enhance durability and protect sensitive circuitry from vibrations, I designed and 3D-printed custom holsters for various components within the box. This approach ensured that the battery system remained secure and functional under the demanding conditions of the race.<br><br>
-            <div class="text-center">
-              <img loading="lazy" decoding="async" src="media/23eoul bb/23bb_motorgif.gif" class="img-fluid rounded" alt="motor gif"> <br>
-              <i class="fig-caption">Test driving the main motor.</i>
-            </div>
+            <p>Around the winter break of 2022, as our club's seniors graduated and the juniors shifted their focus to the job market, the responsibility of managing Eoulsure — Korea University's Formula Student racing team — fell into our sophomores' hands.</p>
+            <p>After carefully dissecting last year's (2022) racecar and dedicating countless hours to study sessions over winter break, the challenge of designing our 2023 vehicle began. Eager to learn a thing or two outside the boundaries of our school's standard M.E. curriculum, I chose to join the powertrain team. This team's critical responsibility lay in the intricate task of delivering power to the motor via a sophisticated battery system, and implementing vital safety mechanisms throughout the entire vehicle. This opportunity allowed me to dive into the world of high and low voltage electrical systems, battery management, and crucial safety protocols, equipping me with invaluable skills beyond traditional mechanical engineering knowledge.</p>
+            <figure class="sheet-fig">
+              <img loading="lazy" decoding="async" src="media/23eoul bb/23bb_dissect.jpg" class="rounded" alt="dissecting BB" width="400">
+              <figcaption class="fig-caption">Our team dissecting the previous year's battery box.</figcaption>
+            </figure>
+            <p>Regarding the battery box, I actively participated in its construction, utilizing CATIA to optimize component placement for efficient space utilization and thermal management. To enhance durability and protect sensitive circuitry from vibrations, I designed and 3D-printed custom holsters for various components within the box. This approach ensured that the battery system remained secure and functional under the demanding conditions of the race.</p>
+            <figure class="sheet-fig">
+              <img loading="lazy" decoding="async" src="media/23eoul bb/23bb_motorgif.gif" class="rounded" alt="motor gif">
+              <figcaption class="fig-caption">Test driving the main motor.</figcaption>
+            </figure>
           </div>
         </div>
       </div>
@@ -1912,30 +2053,29 @@ html,
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            During my freshman year I wanted to join a club. A club where I could experience the engineering process in the flesh (and also drink beer). "Eoulsure" was the perfect fit for that mission. Eoulsure in Korean is a compound word Eoul (어울) meaning ‘getting along with’ and sure (수레, pronounced soo-re) meaning ‘wagon’ or ‘car’. As you can tell from the name, Eoulsure is a club where people interested in automobiles come together to compete in the annual Korean Student Formula Grand Prix.<br><br>
-We competed in the E-Formula division where the car runs on lithium batteries and a motor instead of the conventional diesel engine. E-Formula cars are generally considered more challenging than regular formula and baja cars, as there are far more safety regulations and systems that need to be implemented in the car. 2022 was the first year Eoulsure competed in E-Formula, starting from square one with no knowledge of making an electric car.<br><br>
-At the start of the semester, freshmen like me were not used to heavy-duty tools like grinders, welders, and drills, so we were first taught how to use each tool along with its safety precautions. 
-<div class="text-center" style="margin-top: 10px;">
-  <img loading="lazy" decoding="async" src="media/eoul22/22_safe.jpg" class="img-fluid rounded" alt="safety seminar" style="width: 500px;"> <br>
-  <i class="fig-caption">Me (in the blue hoodie) learning how to weld.</i></div>
-Summer break was when the actual building began, sophomores and juniors did the design process while we freshmen were stuck out in the garage under the scorching sun, cutting pipes and pieces of metal.<br>
-<div class="text-center" style="margin-top: 10px;">
-  <img loading="lazy" decoding="async" src="media/eoul22/22_grinder.jpg" class="img-fluid rounded" alt="grinder" style="width: 300px;"> <br>
-  <i class="fig-caption">Grinder sparks often burn a hole in your shirt, so you need to be careful.</i></div>
-We went to Gunsan (군산) with our car to compete on the track. Although the process was hard (dealing with the heat was even harder), I felt fulfilled seeing my contribution in the final product. By observing over their shoulders, I learned a lot from my upperclassmen; I was glad I had chosen engineering as my career. 
-<div class="container">
-  <div class="row">
-    <div class="col-md-3 text-start" style="margin-top: 10px;">
-        <img loading="lazy" decoding="async" src="media/eoul22/22_baja.jpg" class="img-fluid rounded" alt="bajaeoul" style="width: 300px;"> <br>
-                <i class="fig-caption">Racecars are cool.</i></div>
-    
-    <div class="col-md-6 text-center" style="margin-top: 10px;">
-        <img loading="lazy" decoding="async" src="media/eoul22/22_garage.jpg" class="img-fluid rounded" alt="garage" style="width: 100%;"> <br>
-                <i class="fig-caption">In order to meet the deadline, overnight construction is inevitable.</i></div>
-              
-     </div>
-  </div>
-          
+            <p>During my freshman year I wanted to join a club. A club where I could experience the engineering process in the flesh (and also drink beer). "Eoulsure" was the perfect fit for that mission. Eoulsure in Korean is a compound word Eoul (어울) meaning ‘getting along with’ and sure (수레, pronounced soo-re) meaning ‘wagon’ or ‘car’. As you can tell from the name, Eoulsure is a club where people interested in automobiles come together to compete in the annual Korean Student Formula Grand Prix.</p>
+            <p>We competed in the E-Formula division where the car runs on lithium batteries and a motor instead of the conventional diesel engine. E-Formula cars are generally considered more challenging than regular formula and baja cars, as there are far more safety regulations and systems that need to be implemented in the car. 2022 was the first year Eoulsure competed in E-Formula, starting from square one with no knowledge of making an electric car.</p>
+            <p>At the start of the semester, freshmen like me were not used to heavy-duty tools like grinders, welders, and drills, so we were first taught how to use each tool along with its safety precautions.</p>
+            <figure class="sheet-fig">
+              <img loading="lazy" decoding="async" src="media/eoul22/22_safe.jpg" class="rounded" alt="safety seminar" width="500">
+              <figcaption class="fig-caption">Me (in the blue hoodie) learning how to weld.</figcaption>
+            </figure>
+            <p>Summer break was when the actual building began, sophomores and juniors did the design process while we freshmen were stuck out in the garage under the scorching sun, cutting pipes and pieces of metal.</p>
+            <figure class="sheet-fig">
+              <img loading="lazy" decoding="async" src="media/eoul22/22_grinder.jpg" class="rounded" alt="grinder" width="300">
+              <figcaption class="fig-caption">Grinder sparks often burn a hole in your shirt, so you need to be careful.</figcaption>
+            </figure>
+            <p>We went to Gunsan (군산) with our car to compete on the track. Although the process was hard (dealing with the heat was even harder), I felt fulfilled seeing my contribution in the final product. By observing over their shoulders, I learned a lot from my upperclassmen; I was glad I had chosen engineering as my career.</p>
+            <div class="row g-3 justify-content-center sheet-figs">
+              <figure class="col-md-3 sheet-fig">
+                <img loading="lazy" decoding="async" src="media/eoul22/22_baja.jpg" class="rounded" alt="bajaeoul" width="300">
+                <figcaption class="fig-caption">Racecars are cool.</figcaption>
+              </figure>
+              <figure class="col-md-6 sheet-fig">
+                <img loading="lazy" decoding="async" src="media/eoul22/22_garage.jpg" class="rounded w-100" alt="garage">
+                <figcaption class="fig-caption">In order to meet the deadline, overnight construction is inevitable.</figcaption>
+              </figure>
+            </div>
           </div>
         </div>
       </div>
@@ -1948,8 +2088,7 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
     <section id="mini-projects" class="pt-3">
     <div class="text-center">
       <h2 class="display-6 section-heading">mini projects</h2>
-    </div> 
-    <br>
+    </div>
     <!-- Row 1 -->
     <div class="container">
       <div class="row">
@@ -1990,15 +2129,16 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            COMING SOON! <br><br> This project is currently under development and will be updated soon. Stay tuned for more information on the Reusable Hexagonal Packaging project, including design details, research findings, and potential transformable structure applications in sustainable packaging.
-            <div class="row g-3 mt-2 justify-content-center">
-              <div class="col-md-6 text-center">
-                <img loading="lazy" decoding="async" src="media/Hexa_unit.png" class="img-fluid rounded" alt="Hexagonal Packaging Unit" style="width: 150px;">
-              </div>
-              <div class="col-md-6 text-center">
-                <img loading="lazy" decoding="async" src="media/Hexa_444.png" class="img-fluid rounded" alt="Hexagonal Packaging 4x4x4" style="width: 300px;">
-              </div>
-            </div><br>
+            <p>COMING SOON!</p>
+            <p>This project is currently under development and will be updated soon. Stay tuned for more information on the Reusable Hexagonal Packaging project, including design details, research findings, and potential transformable structure applications in sustainable packaging.</p>
+            <div class="row g-3 justify-content-center sheet-figs">
+              <figure class="col-md-6 sheet-fig">
+                <img loading="lazy" decoding="async" src="media/Hexa_unit.png" class="rounded" alt="Hexagonal Packaging Unit" width="150">
+              </figure>
+              <figure class="col-md-6 sheet-fig">
+                <img loading="lazy" decoding="async" src="media/Hexa_444.png" class="rounded" alt="Hexagonal Packaging 4x4x4" width="300">
+              </figure>
+            </div>
           </div>
         </div>
       </div>
@@ -2012,12 +2152,12 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            E-Safe Solutions (이세이프솔루션즈) is a Korea University startup club founded by Eoulsure members who wanted to turn the high-voltage safety know-how from building E-Formula racecars &#8212; BMS, IMD, BSPD, and TSAL circuits &#8212; into a product: pre-verified high-voltage DC shutdown-circuit modules, sold together with electrical-safety consulting, so that small labs and hardware startups can pass electrical safety certification without designing every protection circuit from scratch.
-            <br><br>
-            After an idea pitching presentation, the team was awarded Korea University's startup funding to build a working prototype, and integrated its BMS, insulation-monitoring (IMD), and deadman-switch designs into the IMSDC (Integrated Monitor and Shutdown Circuitry) module. I joined in September 2025 with direct circuit-design experience from Formula racing, contributing to the safety modules and handling the team's partnerships.
-            <div class="text-center" style="margin-top: 10px;">
-  <img loading="lazy" decoding="async" src="media/esafe_slide.png" class="img-fluid rounded" alt="E-Safe Solutions pitch slide" style="width: 500px;"> <br>
-  <i class="fig-caption">A slide we used in the pitching presentation.</i></div>
+            <p>E-Safe Solutions (이세이프솔루션즈) is a Korea University startup club founded by Eoulsure members who wanted to turn the high-voltage safety know-how from building E-Formula racecars &#8212; BMS, IMD, BSPD, and TSAL circuits &#8212; into a product: pre-verified high-voltage DC shutdown-circuit modules, sold together with electrical-safety consulting, so that small labs and hardware startups can pass electrical safety certification without designing every protection circuit from scratch.</p>
+            <p>After an idea pitching presentation, the team was awarded Korea University's startup funding to build a working prototype, and integrated its BMS, insulation-monitoring (IMD), and deadman-switch designs into the IMSDC (Integrated Monitor and Shutdown Circuitry) module. I joined in September 2025 with direct circuit-design experience from Formula racing, contributing to the safety modules and handling the team's partnerships.</p>
+            <figure class="sheet-fig">
+              <img loading="lazy" decoding="async" src="media/esafe_slide.png" class="rounded" alt="E-Safe Solutions pitch slide" width="500">
+              <figcaption class="fig-caption">A slide we used in the pitching presentation.</figcaption>
+            </figure>
           </div>
         </div>
       </div>
@@ -2025,67 +2165,56 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
 
     <div class="modal fade" id="modalWeb" tabindex="-1" aria-labelledby="modalWebLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title" id="modalWebLabel">Forging my own website from scratch</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalWebLabel">Forging my own website from scratch</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>As a corporal in the Air Force, I had nothing to do during my free time. Of course there was always going to the gym, playing video games with my mates, but none of that was fulfilling to the mind. After deep consideration of how to spend my time, I decided to study the basics of HTML. 'Cause why not? I had nothing else to do anyway.</p>
+            <p>After experimenting with some HTML and CSS, I naturally wanted to make my own website. Rather than explaining my projects to every new person I meet, I thought it would be a good way to introduce myself and my projects in a more orderly fashion.<br> Learning Bootstrap helped me a lot in organizing code and adding effects.<br> This website is the result of my HTML learning journey. I hope you enjoy reading.</p>
+            <p>P.S. I'm still learning so please mind the bugs!!</p>
+            <figure class="sheet-fig">
+              <img loading="lazy" decoding="async" src="media/mini projects/my website/web_early.jpg" class="rounded" alt="early stages" width="700">
+              <figcaption class="fig-caption">Learning HTML the hard way: the early stages of my website.</figcaption>
+            </figure>
+          </div>
         </div>
-        <div class="modal-body">
-          As a corporal in the Air Force, I had nothing to do during my free time. Of course there was always going to the gym, playing video games with my mates, but none of that was fulfilling to the mind. After deep consideration of how to spend my time, I decided to study the basics of HTML. 'Cause why not? I had nothing else to do anyway.<br><br>
-          After experimenting with some HTML and CSS, I naturally wanted to make my own website. Rather than explaining my projects to every new person I meet,  I thought it would be a good way to introduce myself and my projects in a more orderly fashion.<br>
-          Learning Bootstrap helped me a lot in organizing code and adding effects.
-          <br>This website is the result of my HTML learning journey. I hope you enjoy reading. 
-          <br> <br> P.S. I'm still learning so please mind the bugs!!
-          <div class="text-center" style="margin-top: 10px;">
-            <img loading="lazy" decoding="async" src="media/mini projects/my website/web_early.jpg" class="img-fluid rounded" alt="early stages" style="width: 700px;"> <br>
-            <i class="fig-caption">Learning HTML the hard way: the early stages of my website.</i></div>
-        </div>
-      </div>
       </div>
     </div>
-    
+
     <div class="modal fade" id="modaleoulmini" tabindex="-1" aria-labelledby="modaleoulminiLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title" id="modaleoulminiLabel">Camaraderie in Formula Racing</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          The moment I became a sophomore member of Eoulsure, Korea University's Formula Student racing team, I had a batch of freshmen who were so eager to learn but didn't know where to start. Remembering our own struggles as freshmen, many senior members held weekly or monthly seminars to pass down what they had learned during their time on the team. <br><br>
-          Traditionally, the team only held a power tools seminar for freshmen in the spring to prime them for heavy-duty work in the summer.
-          But as the team grew and became more diverse in its projects, we started to open more specialized seminars for different areas of interest, such as CAD, electrical circuits, racecar dynamics, etc. Additionally, we invited KUME alumni working in the automobile industry such as "Hyundai", "Alpine Formula One Team", and "KAI" to give advice from an expert's point of view.<br><br>
-          These seminars not only helped freshmen get accustomed to the technical skills required for building a racecar, but also fostered a sense of camaraderie and teamwork. By sharing knowledge and experiences, we were able to create a supportive learning environment without any barriers between ages.<br><br>
-          I personally assisted the Chassis team in holding weekly CAD seminars, teaching freshmen the basics of CATIA and SolidWorks. By the end of the summer they were able to 3D print basic switch boxes and fasteners.<br>
-          I also held my own seminar specialized in electrical circuitry, sharing what I should've done from the start in retrospect and the hardships I've experienced along the way (2023 Grand Prix). <br><br>
-          Sharing my knowledge and experience contributed to the collective development of our younger members, ensuring that they were well-equipped to tackle the challenges they will eventually face when making their own race car.<br><br> The pictures below are from some of the seminars I participated in as a sophomore mentor. <br>
-
-            <div class="container">
-              <div class="row">
-                <div class="col-md-6 text-center" style="margin-top: 10px;">
-                  <img loading="lazy" decoding="async" src="media/mini projects/eoulmini_cadseminar.jpg" class="img-fluid rounded" alt="Cad seminar" style="width: 80%;"> <br>
-                   <i class="fig-caption">CAD seminar with freshmen</i>
-                </div>
-
-                <div class="col-md-6 text-center" style="margin-top: 10px;">
-                  <img loading="lazy" decoding="async" src="media/mini projects/eoulmini_powertools.png" class="img-fluid rounded" alt="powertoolsem" style="width: 80%;"> <br>
-                   <i class="fig-caption">Teaching how to use the drill with my back against the camera.</i>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-6 text-center" style="margin-top: 10px;">
-                   <img loading="lazy" decoding="async" src="media/mini projects/eoulmini_seminar.png" class="img-fluid rounded" alt="LVslides" style="width: 80%;"> <br>
-                  <i class="fig-caption">The slides I used to teach circuit basics and my personal experiences.</i>
-                </div>
-              </div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modaleoulminiLabel">Camaraderie in Formula Racing</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>The moment I became a sophomore member of Eoulsure, Korea University's Formula Student racing team, I had a batch of freshmen who were so eager to learn but didn't know where to start. Remembering our own struggles as freshmen, many senior members held weekly or monthly seminars to pass down what they had learned during their time on the team.</p>
+            <p>Traditionally, the team only held a power tools seminar for freshmen in the spring to prime them for heavy-duty work in the summer. But as the team grew and became more diverse in its projects, we started to open more specialized seminars for different areas of interest, such as CAD, electrical circuits, racecar dynamics, etc. Additionally, we invited KUME alumni working in the automobile industry such as "Hyundai", "Alpine Formula One Team", and "KAI" to give advice from an expert's point of view.</p>
+            <p>These seminars not only helped freshmen get accustomed to the technical skills required for building a racecar, but also fostered a sense of camaraderie and teamwork. By sharing knowledge and experiences, we were able to create a supportive learning environment without any barriers between ages.</p>
+            <p>I personally assisted the Chassis team in holding weekly CAD seminars, teaching freshmen the basics of CATIA and SolidWorks. By the end of the summer they were able to 3D print basic switch boxes and fasteners.<br> I also held my own seminar specialized in electrical circuitry, sharing what I should've done from the start in retrospect and the hardships I've experienced along the way (2023 Grand Prix).</p>
+            <p>Sharing my knowledge and experience contributed to the collective development of our younger members, ensuring that they were well-equipped to tackle the challenges they will eventually face when making their own race car.</p>
+            <p>The pictures below are from some of the seminars I participated in as a sophomore mentor.</p>
+            <div class="row g-3 justify-content-center sheet-figs">
+              <figure class="col-md-5 sheet-fig">
+                <img loading="lazy" decoding="async" src="media/mini projects/eoulmini_cadseminar.jpg" class="rounded w-100" alt="Cad seminar">
+                <figcaption class="fig-caption">CAD seminar with freshmen</figcaption>
+              </figure>
+              <figure class="col-md-5 sheet-fig">
+                <img loading="lazy" decoding="async" src="media/mini projects/eoulmini_powertools.png" class="rounded w-100" alt="powertoolsem">
+                <figcaption class="fig-caption">Teaching how to use the drill with my back against the camera.</figcaption>
+              </figure>
+              <figure class="col-md-5 sheet-fig">
+                <img loading="lazy" decoding="async" src="media/mini projects/eoulmini_seminar.png" class="rounded w-100" alt="LVslides">
+                <figcaption class="fig-caption">The slides I used to teach circuit basics and my personal experiences.</figcaption>
+              </figure>
             </div>
-
-      </div>
+          </div>
+        </div>
       </div>
     </div>
-    </div>  
-
 
     </section>
     <hr class="title-spacer">
@@ -2142,12 +2271,10 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
       </div>
     </section>
 
-
-
     <hr class="title-spacer">
 
     <!-- ==================== CONTACT (drawing title block) ==================== -->
-    <section id="contact">
+    <section id="contact" class="pt-3">
     <div class="text-center">
       <h2 class="display-6 section-heading">contact</h2>
     </div>
@@ -2158,31 +2285,31 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
         </div>
         <div class="contact-actions">
           <div class="d-flex flex-wrap justify-content-center gap-3">
-            <a class="btn updates-btn" href="https://drive.google.com/file/d/1kmKSGBgtTaMU30lCcMTLOEAhII6G31_6/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-              <i class="bi bi-file-earmark-text"></i><span>CV</span>
+            <a class="btn updates-btn" href="https://drive.google.com/file/d/10vLA8FY-3JZ6Z8m2BfI-63t9HxaBBECA/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+              <i class="bi bi-file-earmark-text" aria-hidden="true"></i><span>CV</span>
             </a>
-            <a class="btn updates-btn" href="https://drive.google.com/file/d/1ZSqx018VJidFp9sAd_-wVntwg3lF6-kj/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-              <i class="bi bi-file-earmark-person"></i><span>Resume</span>
+            <a class="btn updates-btn" href="https://drive.google.com/file/d/1QsOo75zInwUSqIa1VW-5fxN9APq8riT0/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+              <i class="bi bi-file-earmark-person" aria-hidden="true"></i><span>Resume</span>
             </a>
           </div>
           <div class="d-flex flex-wrap justify-content-center gap-3 mt-3">
             <a class="btn updates-btn" href="mailto:minkyu414@korea.ac.kr">
-              <i class="bi bi-envelope"></i><span>Email</span>
+              <i class="bi bi-envelope" aria-hidden="true"></i><span>Email</span>
             </a>
             <a class="btn updates-btn" href="https://www.linkedin.com/in/ryan-chung-2a42a1262/" target="_blank" rel="noopener noreferrer">
-              <i class="bi bi-linkedin"></i><span>LinkedIn</span>
+              <i class="bi bi-linkedin" aria-hidden="true"></i><span>LinkedIn</span>
             </a>
             <a class="btn updates-btn" href="https://github.com/mnkuu/mnku" target="_blank" rel="noopener noreferrer">
-              <i class="bi bi-github"></i><span>GitHub</span>
+              <i class="bi bi-github" aria-hidden="true"></i><span>GitHub</span>
             </a>
             <a class="btn updates-btn" href="https://www.instagram.com/m_n.k_u/" target="_blank" rel="noopener noreferrer">
-              <i class="bi bi-instagram"></i><span>Instagram</span>
+              <i class="bi bi-instagram" aria-hidden="true"></i><span>Instagram</span>
             </a>
           </div>
         </div>
         <div class="tb-grid">
           <div class="tb-cell"><span class="tb-label">Drawn by</span><span class="tb-value">Ryan Minkyu Chung</span></div>
-          <div class="tb-cell"><span class="tb-label">Last revised</span><span class="tb-value">Sep 22, 2026</span></div>
+          <div class="tb-cell"><span class="tb-label">Last revised</span><span class="tb-value">Oct 1, 2026</span></div>
           <div class="tb-cell"><span class="tb-label">Sheet</span><span class="tb-value">Portfolio &#8212; 01 of 01</span></div>
           <div class="tb-cell"><span class="tb-label">Note</span><span class="tb-value">Korean version coming soon, maybe. <br> Thank you so much for reading.</span></div>
         </div>
@@ -2280,28 +2407,6 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
         });
       })();
 
-      /* largest font size that keeps a .fit-line on a single line */
-      (function () {
-        var els = document.querySelectorAll('.fit-line');
-        if (!els.length) return;
-        function fit() {
-          els.forEach(function (el) {
-            el.style.fontSize = '';
-            var size = parseFloat(window.getComputedStyle(el).fontSize);
-            var guard = 60;
-            el.style.fontSize = size + 'px';
-            while (el.scrollWidth > el.clientWidth + 1 && size > 11 && guard-- > 0) {
-              size -= 0.5;
-              el.style.fontSize = size + 'px';
-            }
-          });
-        }
-        var t;
-        window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(fit, 120); });
-        if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fit); }
-        fit();
-      })();
-
       /* Scale each ring so its text fills the circle without ever clipping.
          Iterative: re-measures after every adjustment and aims just under the
          true circumference (219.91), so engines whose text measurement differs
@@ -2374,39 +2479,404 @@ We went to Gunsan (군산) with our car to compete on the track. Although the pr
         window.addEventListener('resize', updateActiveLink);
       });
     </script>
+    <!-- ==================== THEME TOGGLE ==================== -->
     <script>
-      document.addEventListener('DOMContentLoaded', function(){
-        const btn = document.getElementById('themeToggle');
-        const root = document.documentElement;
-        function applyTheme(theme){
-          if(theme === 'dark'){
-            root.setAttribute('data-bs-theme','dark');
-            if(btn){ btn.setAttribute('aria-label','Switch to light theme'); btn.title = 'Switch to light theme'; }
+      /* The theme is already set (script in <head>); this keeps the toggle's
+         label and the browser's theme colour in step and saves the choice.
+         Bootstrap 5.3 recolours the modal close buttons on its own. */
+      (function () {
+        var btn = document.getElementById('themeToggle');
+        var root = document.documentElement;
+        function applyTheme(theme) {
+          root.setAttribute('data-bs-theme', theme);
+          var label = theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+          if (btn) { btn.setAttribute('aria-label', label); btn.title = label; }
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', theme === 'dark' ? '#050d1a' : '#e3ecf7');
+        }
+        applyTheme(root.getAttribute('data-bs-theme') === 'dark' ? 'dark' : 'light');
+        if (btn) btn.addEventListener('click', function () {
+          var next = root.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+          applyTheme(next);
+          try { localStorage.setItem('site-theme', next); } catch (e) {}
+        });
+      })();
+    </script>
+
+    <!-- ==================== ABOUT-ME AVATAR (dial pops up large, then shrinks into place; screens under 1200px) ==================== -->
+    <script>
+      /* Below 1200px the about-me dial is a small avatar the text wraps around.
+         When the modal opens, the dial first appears large, centred at the top
+         of the text, then shrinks into place. Tapping the avatar enlarges it
+         again; tapping it or the text shrinks it back. The large state is a
+         transform measured from the layout, so the text never reflows. */
+      (function () {
+        var modal = document.getElementById('aboutMeModal');
+        var body = modal && modal.querySelector('.about-me-content');
+        var dial = body && body.querySelector('.circle-container');
+        var text = body && body.querySelector('.about-me-text');
+        if (!dial || !text) return;
+        var compact = window.matchMedia('(max-width: 1199.98px)');
+        var motionOK = window.matchMedia('(prefers-reduced-motion: no-preference)');
+        var timer = 0, waiting = 0;
+
+        function isBig() { return body.classList.contains('is-big'); }
+
+        /* translate + scale that centres the dial, 300px or as wide as fits, at the top of the text */
+        function bigTransform() {
+          var cs = getComputedStyle(body);
+          var padL = parseFloat(cs.paddingLeft);
+          var avail = body.clientWidth - padL - parseFloat(cs.paddingRight);
+          var w = dial.offsetWidth, big = Math.min(300, avail);
+          var tx = padL + avail / 2 - (dial.offsetLeft + w / 2);
+          return 'translate(' + tx.toFixed(1) + 'px,' + ((big - w) / 2).toFixed(1) + 'px) scale(' + (big / w).toFixed(4) + ')';
+        }
+
+        function setBig(on, instant) {
+          clearTimeout(timer);
+          body.classList.toggle('is-big', on);
+          if (compact.matches) dial.setAttribute('aria-label', on ? 'Shrink photo' : 'Enlarge photo');
+          if (instant) dial.style.transition = text.style.transition = 'none';
+          dial.style.transform = on ? bigTransform() : '';
+          if (instant) { void dial.offsetWidth; dial.style.transition = text.style.transition = ''; }
+        }
+
+        /* the avatar is a button only while it is an avatar */
+        function sync() {
+          if (compact.matches) {
+            dial.setAttribute('role', 'button');
+            dial.setAttribute('tabindex', '0');
+            dial.setAttribute('aria-label', isBig() ? 'Shrink photo' : 'Enlarge photo');
           } else {
-            root.setAttribute('data-bs-theme','light');
-            if(btn){ btn.setAttribute('aria-label','Switch to dark theme'); btn.title = 'Switch to dark theme'; }
+            setBig(false, true);
+            dial.removeAttribute('role');
+            dial.removeAttribute('tabindex');
+            dial.removeAttribute('aria-label');
+          }
+        }
+
+        modal.addEventListener('show.bs.modal', function () {
+          if (!compact.matches || !motionOK.matches) return;
+          /* wait for Bootstrap to lay the modal out, then go large before its first paint */
+          (function wait() {
+            if (!dial.offsetWidth) { waiting = requestAnimationFrame(wait); return; }
+            setBig(true, true);
+          })();
+        });
+
+        modal.addEventListener('shown.bs.modal', function () {
+          if (isBig()) timer = setTimeout(function () { setBig(false); }, 600);
+        });
+
+        modal.addEventListener('hidden.bs.modal', function () {
+          cancelAnimationFrame(waiting);
+          setBig(false, true);
+        });
+
+        body.addEventListener('click', function (e) {
+          if (!compact.matches) return;
+          if (dial.contains(e.target)) setBig(!isBig());
+          else if (isBig()) setBig(false);
+        });
+
+        dial.addEventListener('keydown', function (e) {
+          if (compact.matches && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); setBig(!isBig()); }
+        });
+
+        window.addEventListener('resize', function () { if (isBig()) setBig(true, true); });
+
+        if (compact.addEventListener) compact.addEventListener('change', sync); else compact.addListener(sync);
+        sync();
+      })();
+    </script>
+
+    <!-- ==================== INK FIELD (ASCII layer on the dot-matrix ground; skipped for reduced motion) ==================== -->
+    <script>
+      /* The ASCII layer over the dot-matrix ground (styles: "Ink field" in the stylesheet).
+         Every 14px cell holds a heat value that only ever cools:
+           - the red dot heats the cells along its path, harder the faster it moves
+           - a click (or a tap on touch screens) sends a ring of heat outward
+           - every few seconds the paper pings a small blue ring on its own
+         Hot cells scramble dense glyphs in signal red; as they cool they settle
+         through  + x = *,  then flow strokes  - \ | /  pointing along the motion,
+         then  :  and a dot in drafting blue, and vanish. Glyphs are pre-drawn
+         into a small sprite atlas, so a frame is a few hundred image copies,
+         and the loop sleeps whenever the field is empty. */
+      (function () {
+        if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext && canvas.getContext('2d');
+        if (!ctx) return;
+        canvas.className = 'ink-field';
+        canvas.setAttribute('aria-hidden', 'true');
+        document.body.insertBefore(canvas, document.body.firstChild);
+
+        var CELL = 14;                                   /* half the 28px dot pitch */
+        /* atlas columns: 0 dot, 1 colon, 2-5 flow  - \ | /  (6 = no direction),
+           7-10 warm  + x = *,  11-18 hot scramble */
+        var GLYPHS = ['\u00b7', ':', '-', '\\', '|', '/', '+', '+', 'x', '=', '*', '#', '@', '%', '&', '$', '8', '0', '?'];
+        var TIERS = 6;                                   /* color steps, drafting blue to signal red */
+        var READING = 'p, li, .xp-item';                 /* text blocks get a gentler wake */
+
+        var atlas = document.createElement('canvas');
+        var actx = atlas.getContext('2d');
+        var atlasReady = false, strength = 1;
+        var dpr = 1, S = CELL, W = 0, H = 0, cols = 0, rows = 0;
+        var heat = new Float32Array(0), warm = new Float32Array(0), dir = new Uint8Array(0), seed = new Uint8Array(0);
+        var ripples = [], path = [];                     /* path: x, y, time triples */
+        var lastX = null, lastY = null, lastTs = 0, speed = 0;
+        var dim = 1, dimTarget = 1;
+        var running = false, lastT = 0, needResize = false;
+
+        function modalOpen() { return document.body.classList.contains('modal-open'); }
+
+        function token(name, fallback) {
+          return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+        }
+
+        /* any CSS color -> [r, g, b], with the canvas doing the parsing */
+        function rgb(color) {
+          actx.fillStyle = '#000';
+          actx.fillStyle = color;
+          var c = String(actx.fillStyle);
+          if (c.charAt(0) === '#') return [parseInt(c.substr(1, 2), 16), parseInt(c.substr(3, 2), 16), parseInt(c.substr(5, 2), 16)];
+          var m = c.match(/[\d.]+/g) || [0, 0, 0];
+          return [+m[0], +m[1], +m[2]];
+        }
+
+        function buildAtlas() {
+          var cold = rgb(token('--field-cold', '#1e4a8a'));
+          var hot = rgb(token('--field-hot', '#dc143c'));
+          strength = parseFloat(token('--field-strength', '1')) || 1;
+          atlas.width = GLYPHS.length * S;               /* resizing also resets the context */
+          atlas.height = TIERS * S;
+          actx.font = '600 ' + (11 * dpr).toFixed(1) + 'px ' + token('--font-mono', 'monospace');
+          actx.textAlign = 'center';
+          actx.textBaseline = 'middle';
+          for (var t = 0; t < TIERS; t++) {
+            var k = t / (TIERS - 1);
+            actx.fillStyle = 'rgb(' + Math.round(cold[0] + (hot[0] - cold[0]) * k) + ',' +
+              Math.round(cold[1] + (hot[1] - cold[1]) * k) + ',' +
+              Math.round(cold[2] + (hot[2] - cold[2]) * k) + ')';
+            for (var g = 0; g < GLYPHS.length; g++) actx.fillText(GLYPHS[g], g * S + S / 2, t * S + S / 2);
+          }
+          atlasReady = true;
+        }
+
+        function resize() {
+          var oldCols = cols, oldRows = rows, oldHeat = heat, oldWarm = warm, oldDir = dir, oldDpr = dpr;
+          W = canvas.clientWidth || window.innerWidth;
+          H = canvas.clientHeight || window.innerHeight;
+          /* full sharpness, but keep the bitmap under ~12 megapixels on very large screens */
+          dpr = Math.min(window.devicePixelRatio || 1, 3, Math.sqrt(12e6 / Math.max(1, W * H)));
+          canvas.width = Math.round(W * dpr);
+          canvas.height = Math.round(H * dpr);
+          cols = Math.ceil(W / CELL);
+          rows = Math.ceil(H / CELL);
+          var n = cols * rows;
+          heat = new Float32Array(n); warm = new Float32Array(n); dir = new Uint8Array(n); seed = new Uint8Array(n);
+          for (var i = 0; i < n; i++) seed[i] = Math.random() * 256;
+          /* whatever is still cooling stays where it was */
+          for (var r = 0; r < Math.min(rows, oldRows); r++) {
+            for (var c = 0; c < Math.min(cols, oldCols); c++) {
+              heat[r * cols + c] = oldHeat[r * oldCols + c];
+              warm[r * cols + c] = oldWarm[r * oldCols + c];
+              dir[r * cols + c] = oldDir[r * oldCols + c];
+            }
+          }
+          var s = Math.max(8, Math.round(CELL * dpr));
+          if (!atlasReady || s !== S || dpr !== oldDpr) { S = s; buildAtlas(); }
+        }
+
+        /* direction of travel -> 0 '-', 1 '\', 2 '|', 3 '/' (screen y points down) */
+        function quant(dx, dy) {
+          var a = Math.atan2(dy, dx);
+          if (a < 0) a += Math.PI;
+          return Math.round(a / (Math.PI / 4)) % 4;
+        }
+
+        /* cheap per-cell hash so hot cells flicker out of step with each other */
+        function scramble(i, n) {
+          var h = Math.imul(i ^ Math.imul(n, 0x27d4eb2d), 0x165667b1);
+          return (h ^ (h >>> 15)) & 7;
+        }
+
+        /* heat the cells within R of a pointer segment; a cell only ever takes the hotter value */
+        function stamp(x0, y0, x1, y1, R, amp) {
+          var dx = x1 - x0, dy = y1 - y0, len2 = dx * dx + dy * dy, R2 = R * R;
+          var d = quant(dx, dy);
+          var c0 = Math.max(0, Math.floor((Math.min(x0, x1) - R) / CELL)), c1 = Math.min(cols - 1, Math.floor((Math.max(x0, x1) + R) / CELL));
+          var r0 = Math.max(0, Math.floor((Math.min(y0, y1) - R) / CELL)), r1 = Math.min(rows - 1, Math.floor((Math.max(y0, y1) + R) / CELL));
+          for (var r = r0; r <= r1; r++) {
+            var py = r * CELL + CELL / 2;
+            for (var c = c0; c <= c1; c++) {
+              var px = c * CELL + CELL / 2;
+              var t = len2 ? ((px - x0) * dx + (py - y0) * dy) / len2 : 0;
+              t = t < 0 ? 0 : t > 1 ? 1 : t;
+              var qx = x0 + t * dx - px, qy = y0 + t * dy - py, d2 = qx * qx + qy * qy;
+              if (d2 >= R2) continue;
+              var f = 1 - d2 / R2, v = amp * f * f, i = r * cols + c;
+              if (v > heat[i]) { heat[i] = v; warm[i] = 1; dir[i] = d; }
+            }
+          }
+        }
+
+        /* heat the band the ring's front swept since last frame (prev..rad), so
+           a slow frame can't leave gaps; strokes point outward */
+        function ring(q, prev, rad) {
+          var out = rad + q.w, inn = prev - q.w;
+          var c0 = Math.max(0, Math.floor((q.x - out) / CELL)), c1 = Math.min(cols - 1, Math.floor((q.x + out) / CELL));
+          var r0 = Math.max(0, Math.floor((q.y - out) / CELL)), r1 = Math.min(rows - 1, Math.floor((q.y + out) / CELL));
+          for (var r = r0; r <= r1; r++) {
+            var dy = r * CELL + CELL / 2 - q.y;
+            for (var c = c0; c <= c1; c++) {
+              var dx = c * CELL + CELL / 2 - q.x, d = Math.sqrt(dx * dx + dy * dy);
+              if (d > out || d < inn) continue;
+              var at = d < prev ? prev : d > rad ? rad : d;      /* nearest point of the swept band */
+              var v = q.amp * (1 - Math.pow(at / q.max, q.pow)) * (1 - Math.abs(d - at) / q.w), i = r * cols + c;
+              if (v > heat[i]) { heat[i] = v; warm[i] = q.warm; dir[i] = d < CELL ? 4 : quant(dx, dy); }
+            }
+          }
+        }
+
+        /* a click fades linearly as it spreads (hot centre, then a starburst);
+           a ping holds its strength longer (pow 2), so it reads as a ring.
+           Both shrink on small screens, where a full-size ring would cover the text. */
+        function ripple(x, y, mine) {
+          var k = Math.max(0.6, Math.min(1, Math.min(W, H) / 900));
+          ripples.push(mine
+            ? { x: x, y: y, t: 0, r: 0, v: 560 * k, max: 240 * k, amp: 1, pow: 1, warm: 1, w: 16 }
+            : { x: x, y: y, t: 0, r: 0, v: (180 + Math.random() * 60) * k, max: (90 + Math.random() * 70) * k, amp: 0.6, pow: 2, warm: 0, w: 13 });
+          wake();
+        }
+
+        function wake() {
+          if (running) return;
+          running = true;
+          lastT = performance.now();
+          requestAnimationFrame(tick);
+        }
+
+        function tick(now) {
+          if (needResize) { needResize = false; resize(); }
+          var dt = Math.min(0.05, Math.max(0, (now - lastT) / 1000));
+          lastT = now;
+          dim += (dimTarget - dim) * Math.min(1, dt * 8);
+
+          /* 1. heat along the pointer's path since the last frame. Speed is
+                measured over the whole frame, so it doesn't depend on how
+                often the mouse reports; a long gap means it was resting. */
+          if (modalOpen()) { path.length = 0; lastX = null; }
+          if (path.length) {
+            var travel = 0, px = lastX, py = lastY;
+            for (var p = 0; p < path.length; p += 3) {
+              if (px !== null) travel += Math.sqrt((path[p] - px) * (path[p] - px) + (path[p + 1] - py) * (path[p + 1] - py));
+              px = path[p]; py = path[p + 1];
+            }
+            var span = path[path.length - 1] - (lastX === null ? path[2] : lastTs);
+            var inst = travel / Math.max(span, 8) * 1000;
+            speed = span > 150 ? inst : speed + (inst - speed) * 0.5;
+            var amp = Math.min(1, 0.5 + speed / 800) * dim, R = Math.min(68, 22 + speed * 0.03);
+            for (p = 0; p < path.length; p += 3) {
+              var x = path[p], y = path[p + 1];
+              if (lastX !== null && (x !== lastX || y !== lastY)) stamp(lastX, lastY, x, y, R, amp);
+              lastX = x; lastY = y;
+            }
+            lastTs = path[path.length - 1];
+            path.length = 0;
           }
 
-          const themeMeta = document.querySelector('meta[name="theme-color"]');
-          if(themeMeta) themeMeta.setAttribute('content', theme === 'dark' ? '#050d1a' : '#e3ecf7');
+          /* 2. rings travelling outward */
+          for (var k = ripples.length - 1; k >= 0; k--) {
+            var q = ripples[k], rad = Math.min(q.max, q.v * q.t);
+            ring(q, q.r, rad);
+            q.r = rad;
+            q.t += dt;
+            if (rad >= q.max) ripples.splice(k, 1);
+          }
 
-          // Ensure modal close icons match theme (btn-close-white for dark backgrounds)
-          const modalCloseBtns = document.querySelectorAll('.modal .btn-close');
-          modalCloseBtns.forEach(el => {
-            if(theme === 'dark') el.classList.add('btn-close-white');
-            else el.classList.remove('btn-close-white');
+          /* 3. cool every cell (dh/dt = -(0.3 + 1.05h), a little over a second
+                from hot to gone) and draw the ones still warm */
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          var live = false, alpha = -1, k1 = dt * 0.3, k2 = dt * 1.05, clock = now / 75;
+          for (var r = 0; r < rows; r++) {
+            var py = Math.round(r * CELL * dpr);
+            for (var c = 0, i = r * cols; c < cols; c++, i++) {
+              var h = heat[i];
+              if (h === 0) continue;
+              h -= k1 + k2 * h;
+              if (h < 0.05) { heat[i] = 0; continue; }
+              heat[i] = h;
+              live = true;
+              var g = h < 0.2 ? 0 : h < 0.36 ? 1 : h < 0.6 ? 2 + dir[i] : h < 0.8 ? 7 + (seed[i] & 3) : 11 + scramble(i, (clock + seed[i]) | 0);
+              var s = (h - 0.25) * 2;
+              s = s < 0 ? 0 : s > 1 ? 1 : s;
+              var tier = Math.round(warm[i] * s * s * (3 - 2 * s) * (TIERS - 1));
+              var a = Math.round(Math.min(0.95, (0.12 + 0.62 * h) * strength) * 32) / 32;
+              if (a !== alpha) { ctx.globalAlpha = a; alpha = a; }
+              ctx.drawImage(atlas, g * S, tier * S, S, S, Math.round(c * CELL * dpr), py, S, S);
+            }
+          }
+
+          if (live || ripples.length) requestAnimationFrame(tick);
+          else running = false;
+        }
+
+        /* the red dot: only on mouse/pen devices, matching the custom cursor */
+        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+          window.addEventListener('pointermove', function (e) {
+            if (e.pointerType === 'touch') return;
+            if (modalOpen()) { lastX = null; path.length = 0; return; }   /* a detail sheet is open: the paper rests */
+            path.push(e.clientX, e.clientY, e.timeStamp || performance.now());
+            wake();
+          }, { passive: true });
+
+          /* pointer left the window: don't draw a line to where it comes back in */
+          window.addEventListener('mouseout', function (e) {
+            if (!e.relatedTarget) { lastX = null; path.length = 0; }
+          });
+
+          document.addEventListener('mouseover', function (e) {
+            dimTarget = e.target.closest && e.target.closest(READING) ? 0.45 : 1;
           });
         }
-        const stored = localStorage.getItem('site-theme');
-        const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        applyTheme(stored || (systemDark ? 'dark' : 'light'));
 
-        if(btn) btn.addEventListener('click', function(){
-          const next = root.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
-          applyTheme(next);
-          localStorage.setItem('site-theme', next);
+        window.addEventListener('pointerdown', function (e) {
+          if (e.pointerType !== 'touch' && e.button === 0 && !modalOpen()) ripple(e.clientX, e.clientY, true);
+        }, { passive: true });
+
+        /* touch: a pan cancels the pointer, so a pointerup here is a tap */
+        window.addEventListener('pointerup', function (e) {
+          if (e.pointerType === 'touch' && !modalOpen()) ripple(e.clientX, e.clientY, true);
+        }, { passive: true });
+
+        window.addEventListener('resize', function () { needResize = true; wake(); });
+
+        /* new theme, new inks */
+        new MutationObserver(buildAtlas).observe(document.documentElement, { attributes: true, attributeFilter: ['data-bs-theme'] });
+
+        /* the paper's own heartbeat: a soft blue ping every few seconds, centred
+           on a cell so its starburst comes out symmetric */
+        (function ping(delay) {
+          setTimeout(function () {
+            if (!document.hidden && !modalOpen() && cols) {
+              var c = Math.floor(cols * (0.08 + Math.random() * 0.84)), r = Math.floor(rows * (0.12 + Math.random() * 0.76));
+              ripple((c + 0.5) * CELL, (r + 0.5) * CELL, false);
+            }
+            ping(3800 + Math.random() * 4200);
+          }, delay);
+        })(1600);
+
+        resize();
+
+        /* allocate the bitmap and upload the atlas while the page is idle, so the
+           first ping or mouse move doesn't pay for it */
+        (window.requestIdleCallback || function (f) { return setTimeout(f, 300); })(function () {
+          ctx.drawImage(atlas, 0, 0, 1, 1, 0, 0, 1, 1);
+          ctx.clearRect(0, 0, 1, 1);
         });
-      });
+      })();
     </script>
   </body>
 </html>
