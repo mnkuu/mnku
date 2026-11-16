@@ -511,7 +511,7 @@ hr.title-spacer::after  { right: 0; }
    Wide (1200px+, 1140px modal): the 300px dial sits beside the text.
    Below that the modal is 800px or narrower, too tight for both side by
    side, so the dial becomes a small avatar the text wraps around (centred
-   above the text on phones). When the modal opens it first shows the dial
+   above the text on phones). When the modal opens it shows the dial
    large, then shrinks it into place; tapping the avatar enlarges it again
    (script: "About-me avatar").
    -------------------------------------------------------------------------- */
@@ -873,7 +873,7 @@ hr.title-spacer::after  { right: 0; }
 
 .pub-status.is-open { color: var(--accent); }
 
-/* narrow columns: kind and status share the first line, the text runs full width below */
+/* narrow columns: kind and status share the line, the text runs full width below */
 @media (max-width: 767.98px) {
   .pub-item { grid-template-columns: auto 1fr; row-gap: 0.4rem; }
   .pub-body { grid-column: 1 / -1; grid-row: 2; }
@@ -1575,7 +1575,7 @@ html,
   color: var(--ink-soft);
 }
 
-/* hidden until focused, first tab stop on the page */
+/* hidden until focused, tab stop on the page */
 .skip-link {
   position: fixed;
   top: -100%;
@@ -1847,7 +1847,7 @@ html,
                 <div class="timeline-dot" aria-hidden="true"></div>
                 <div class="timeline-entry">
                   <div class="timeline-date">Feb 27, 2026</div>
-                  <div class="timeline-text">I was awarded a scholarship from the Korean Engineering Guarantee Insurance Foundation as part of their very first engineering undergraduate cohort.</div>
+                  <div class="timeline-text">I was awarded a scholarship from the Korean Engineering Guarantee Insurance Foundation as part of their very engineering undergraduate cohort.</div>
                 </div>
               </div>
               <div class="timeline-item">
@@ -2001,7 +2001,7 @@ html,
                 </figure>
                 <figure class="sheet-fig">
                   <img loading="lazy" decoding="async" src="media/KSME 2026 pic.jpg" class="rounded w-100" alt="RMC at the KSME Annual Conference 2026">
-                  <figcaption class="fig-caption">First rodeo</figcaption>
+                  <figcaption class="fig-caption">rodeo</figcaption>
                 </figure>
               </div>
             </div>
@@ -2090,10 +2090,10 @@ html,
                 </figure>
                 <figure class="col-md-6 sheet-fig">
                   <img loading="lazy" decoding="async" src="media/hearo/hro_award.JPEG" class="rounded" alt="Award ceremony" width="400">
-                  <figcaption class="fig-caption">We placed in 10th out of 441 teams and were awarded 장려상. That's me when I was a PFC (일등병).</figcaption>
+                  <figcaption class="fig-caption">We placed in 10th out of 441 teams and were awarded Honorable Mention (장려상). That's me when I was a Airman First Class (일등병).</figcaption>
                 </figure>
               </div>
-              <p>It was my first taste of building something as a business and not only as a gadget: who makes it, what it costs, and who pays for it. It also showed me how much you can get done with a microcontroller and your evenings.</p>
+              <p>It was my taste of building something as a business and not only as a gadget: who makes it, what it costs, and who pays for it. It also showed me how much you can get done with a microcontroller and your evenings.</p>
             </div>
           </div>
         </div>
@@ -2109,7 +2109,7 @@ html,
             <div class="modal-body">
               <p>For my Korean military service, I decided to put my English skills to good use. I applied for the Korean-English military interpreter (어학병) enlistment program for the Republic of Korea Air Force.</p>
               <p>After a translation and interpretation test as well as a series of interviews, I was officially recruited as an airman starting January of 2024. After basic training, I was stationed at one of the biggest international airports on the globe, Incheon International Airport (ICN).</p>
-              <p>My main role was to assist the Chief of Military Protocol when high-ranking foreign military officials required English translation aid and protocol. I also conducted protocol for Korean officials on their way to and from their business trips. Spending my time here, I experienced international diplomacy firsthand and had the honor of making countless precious memories talking to diplomats coming to Korea from across the world.</p>
+              <p>My main role was to assist the Chief of Military Protocol when high-ranking foreign military officials required English translation aid and protocol. I also conducted protocol for Korean officials on their way to and from their business trips. Spending my time here, I experienced international diplomacy firsthand and had the honor of making countless precious memories talking to diplomats and generals coming to Korea from across the world.</p>
               <p>P.S. Spending about a year and a half inside an airport, it feels like you're Tom Hanks from the movie 'The Terminal' (2004).</p>
               <figure class="sheet-fig">
                 <img loading="lazy" decoding="async" src="media/mlo/mlo_sunset.jpg" class="rounded" alt="Sunset at Incheon International Airport" width="500">
@@ -2147,7 +2147,7 @@ html,
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <p>For my MECH300 class, my team and I were assigned to design and build a robot that could cross a jungle gym with sporadically missing bars. It was my first time building a machine without any guidance, so I immediately knew it was going to be a challenging task.</p>
+              <p>For my MECH300 class, my team and I were assigned to design and build a robot that could cross a jungle gym with sporadically missing bars. It was my time building a machine without any guidance, so I immediately knew it was going to be a challenging task.</p>
               <p>Brachiation is a form of transportation for apes; think of Tarzan swinging from branch to branch, one arm after the other. Thinking that this was the most efficient way of traversing a jungle gym, I came up with a moving mechanism and persuaded my fellow teammates.</p>
               <p>My team and I decided to make the body and grippers out of lightweight acrylic and Arduino with servo motors for the powertrain mechanism. I designed the powertrain and gearbox so that a minimum amount of motors and gears were used to reduce weight and prevent gear slip. Using Excel, my team and I made a simple program that visualized each motor's angular displacement and grip strength.</p>
               <div class="media-slot" data-kind="Render"><strong>BR-1 &#183; The mechanism</strong><span>CAD or an exploded view of the gearbox and grippers, so the reader can see how the swing works before the numbers.</span><code>media/brachiation/br_cad.png</code></div>
@@ -2271,8 +2271,8 @@ html,
             </div>
             <div class="modal-body">
               <p>During my freshman year I wanted to join a club. A club where I could experience the engineering process in the flesh (and also drink beer). "Eoulsure" was the perfect fit for that mission. Eoulsure in Korean is a compound word Eoul (어울) meaning ‘getting along with’ and sure (수레, pronounced soo-re) meaning ‘wagon’ or ‘car’. As you can tell from the name, Eoulsure is a club where people interested in automobiles come together to compete in the annual Korean Student Formula Grand Prix.</p>
-              <p>We competed in the E-Formula division where the car runs on lithium batteries and a motor instead of a conventional combustion engine. E-Formula cars are generally considered more challenging than regular formula and baja cars, as there are far more safety regulations and systems that need to be implemented in the car. 2022 was the first year Eoulsure competed in E-Formula, starting from square one with no knowledge of making an electric car.</p>
-              <p>At the start of the semester, freshmen like me were not used to heavy-duty tools like grinders, welders, and drills, so we were first taught how to use each tool along with its safety precautions.</p>
+              <p>We competed in the E-Formula division where the car runs on lithium batteries and a motor instead of a conventional combustion engine. E-Formula cars are generally considered more challenging than regular formula and baja cars, as there are far more safety regulations and systems that need to be implemented in the car. 2022 was the year Eoulsure competed in E-Formula, starting from square one with no knowledge of making an electric car.</p>
+              <p>At the start of the semester, freshmen like me were not used to heavy-duty tools like grinders, welders, and drills, so we were taught how to use each tool along with its safety precautions.</p>
               <figure class="sheet-fig">
                 <img loading="lazy" decoding="async" src="media/eoul22/22_safe.jpg" class="rounded" alt="Welding safety seminar" width="500">
                 <figcaption class="fig-caption">Me (in the blue hoodie) learning how to weld.</figcaption>
@@ -2726,7 +2726,7 @@ html,
 
       /* ---------- About-me avatar (screens under 1200px) ----------
          Below 1200px the about-me dial is a small avatar the text wraps around.
-         When the modal opens, the dial first appears large, centred at the top
+         When the modal opens, the dial appears large, centred at the top
          of the text, then shrinks into place. Tapping the avatar enlarges it
          again; tapping it or the text shrinks it back. The large state is a
          transform measured from the layout, so the text never reflows. */
@@ -2777,7 +2777,7 @@ html,
 
         modal.addEventListener('show.bs.modal', function () {
           if (!compact.matches || !motionOK.matches) return;
-          /* wait for Bootstrap to lay the modal out, then go large before its first paint */
+          /* wait for Bootstrap to lay the modal out, then go large before its paint */
           (function wait() {
             if (!dial.offsetWidth) { waiting = requestAnimationFrame(wait); return; }
             setBig(true, true);
